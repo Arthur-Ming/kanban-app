@@ -1,0 +1,63 @@
+.wrapper{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -100%);
+  width: 400px;
+  background-color: var(--task-content-background);
+  border-radius: 8px;
+  padding: 40px 40px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+}
+
+.title{
+  text-align: center;
+  color: var(--text-color-dark);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
+}
+.button_ok, .button_cancel{
+    border: none;
+    box-shadow: none;
+    width: 120px;
+    color: #fff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 18px;
+    font-weight: 400;
+    justify-content: center;
+    line-height: 28px;
+    padding: 6px 25px 8px;
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+   
+    &:focus-visible{
+      outline: 2px solid var(--text-color-dark);
+    }
+}
+
+.button_ok{
+  background-color: var(--main-color);
+  &:hover{
+    background-color: var(--main-color-dark);
+  }
+}
+
+.button_cancel{
+  background-color: var(--dark-button-hover);
+  color: var(--text-color-dark);
+  &:hover{
+    color: var(--text-color-dark);
+    background-color: var(--bottom-border-task-color);
+  }
+}

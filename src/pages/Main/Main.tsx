@@ -1,0 +1,37 @@
+import s from './style.module.scss';
+import { useLanguage } from 'hooks/useLanguage';
+import NotFound from 'pages/NotFound';
+import Loader from 'components/Loader';
+import BoardsList from './BoardsList';
+
+interface ILANG {
+  [key: string]: string;
+}
+
+export interface ITEXT {
+  [key: string]: ILANG;
+}
+
+const TEXT_MAIN_PAGE: Readonly<ITEXT> = {
+  title: {
+    en: 'Main page',
+    ru: 'Главная страница',
+  },
+};
+
+const MainPage = () => {
+  const isLoading = false;
+
+  const lang = useLanguage();
+
+  if (isLoading) return <Loader />;
+
+  return (
+    <div className={s.page}>
+      <h2 className={s.title}>{TEXT_MAIN_PAGE.title[lang]}</h2>
+      <BoardsList />
+    </div>
+  );
+};
+
+export default MainPage;

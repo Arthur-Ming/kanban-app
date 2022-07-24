@@ -1,0 +1,27 @@
+.dropdown_body{
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  padding: 5px 0px 10px 0px;
+  color: var(--text-color-gray);
+
+}
+.dropdown_li{
+  padding: 5px 15px;
+  cursor: pointer;
+  &:hover{
+    background-color: #f4f5f7;
+  }
+}
+.close{
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  color: var(--text-color-gray);
+  position: absolute;
+  left: calc(100% - 25px);
+  top: 5px;
+  &:hover{
+    color: var(--text-color-dark);
+  }
+}

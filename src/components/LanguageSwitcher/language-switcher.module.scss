@@ -1,0 +1,48 @@
+.switcher {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  left: 0;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.switcherBtn {
+  color: white;
+  position: relative;
+  cursor: pointer;
+}
+
+.switcherBtn:not(:last-child) {
+  margin-right: 3px;
+}
+
+.switcherBtn:not(:last-child):after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background-color: white;
+}
+
+.switcherBtn > input {
+  display: none;
+}
+
+.switcherBtn > input:checked ~ span {
+  color: #f0ad4e;
+}
+
+.switcherBtn > span {
+  display: inline-block;
+  padding: 3px 6px;
+}
+
+.globe {
+  width: 24px;
+  height: 24px;
+}

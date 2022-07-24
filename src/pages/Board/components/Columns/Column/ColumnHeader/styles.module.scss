@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 18px;
+  line-height: 25px;
+  color: var(--text-color-dark);
+  font-weight: 600;
+  padding: 0px 3px 0px 6px;
+  height: 32px;
+  width: calc(100% - 20px);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.remove {
+  color: var(--text-color-gray);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 3px 3px;
+
+  &:hover {
+    color: var(--text-color-dark);
+  }
+}

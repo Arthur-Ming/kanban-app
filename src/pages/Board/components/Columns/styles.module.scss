@@ -1,0 +1,16 @@
+.box{
+  display: flex;
+  
+  
+}
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+  list-style-type: none;
+  width: fit-content;
+  padding: 0px 20px;
+}
