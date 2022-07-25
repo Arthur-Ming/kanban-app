@@ -12,11 +12,13 @@ const TEXT_CREAT_CARD: ITEXT = {
   },
 };
 
-interface IProps {
+interface OwnProps {
   columnId?: string;
 }
 
-const CreatTask = ({ columnId }: IProps) => {
+type TProps = OwnProps;
+
+const CreatTask = ({ columnId }: TProps) => {
   const { boardId = '', columnId: id = '' } = useParams();
   const lang = useLanguage();
 

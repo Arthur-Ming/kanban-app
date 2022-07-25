@@ -1,15 +1,17 @@
-import useColumnTitleEdit from 'hooks/useColumnTitleEdit';
+import useColumnTitleEdit from 'hooks/columns/useColumnTitleEdit';
 import { IColumn } from 'interfaces';
 import ColumnControl from '../ColumnControl';
 import ColumnTitleEdit from '../ColumnHeaderEdit';
 import styles from './styles.module.scss';
 
-interface IProps {
+interface OwnProps {
   column: IColumn;
   boardId: string;
 }
 
-const ColumnHeader = ({ column, boardId }: IProps) => {
+type TProps = OwnProps;
+
+const ColumnHeader = ({ column, boardId }: TProps) => {
   const { newTitle = '', isTitleEdit, setIsTitleEdit, handlers } = useColumnTitleEdit(column);
   return (
     <div className={styles.container}>

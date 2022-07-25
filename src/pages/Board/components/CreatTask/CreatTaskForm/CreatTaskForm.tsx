@@ -1,10 +1,10 @@
 import useCreatCardForm from 'hooks/tasks/useCreatCardForm';
 import Textarea from 'components/Textarea';
-import { ITEXT } from 'interfaces';
+import { ICreatTask, ITEXT } from 'interfaces';
 import { useLanguage } from 'hooks/useLanguage';
 import { creatTask } from 'redux/actions';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { Dispatch } from 'react';
 
 const TEXT_CREAT_CARD_FORM: ITEXT = {
   placeholder: {
@@ -17,13 +17,18 @@ const TEXT_CREAT_CARD_FORM: ITEXT = {
   },
 };
 
-interface IProps {
-  boardId: string;
-  columnId: string;
-  creatTask?: (title: string) => void;
+interface DispatchProps {
+  creatTask: (title: string) => void;
 }
 
-const CreatCardForm = ({ creatTask, boardId, columnId }: IProps) => {
+interface OwnProps {
+  boardId: string;
+  columnId: string;
+}
+
+type TProps = DispatchProps & OwnProps;
+
+const CreatCardForm = ({ creatTask }: TProps) => {
   const { handlers, textareaEl, isDisabled } = useCreatCardForm(creatTask);
   const lang = useLanguage();
 
@@ -40,7 +45,7 @@ const CreatCardForm = ({ creatTask, boardId, columnId }: IProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch, props: IProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ICreatTask>, props: OwnProps) => ({
   creatTask: (title: string) =>
     dispatch(
       creatTask({
@@ -50,9 +55,5 @@ const mapDispatchToProps = (dispatch: Dispatch, props: IProps) => ({
       })
     ),
 });
-
-/* const mapDispatchToProps = {
-  creatTask,
-}; */
 
 export default connect(null, mapDispatchToProps)(CreatCardForm);

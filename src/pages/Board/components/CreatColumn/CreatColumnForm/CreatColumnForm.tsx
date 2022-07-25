@@ -1,10 +1,10 @@
 import useCreatCardForm from 'hooks/tasks/useCreatCardForm';
 import Textarea from 'components/Textarea';
-import { ITEXT } from 'interfaces';
+import { ICreatColumn, ITEXT } from 'interfaces';
 import { useLanguage } from 'hooks/useLanguage';
 import { creatColumn } from 'redux/actions';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { Dispatch } from 'react';
 
 const TEXT_CREAT_CARD_FORM: ITEXT = {
   placeholder: {
@@ -17,12 +17,17 @@ const TEXT_CREAT_CARD_FORM: ITEXT = {
   },
 };
 
-interface IProps {
-  boardId: string;
-  creatColumn?: (title: string) => void;
+interface DispatchProps {
+  creatColumn: (title: string) => void;
 }
 
-const CreatColumnForm = ({ creatColumn }: IProps) => {
+interface OwnProps {
+  boardId: string;
+}
+
+type TProps = DispatchProps & OwnProps;
+
+const CreatColumnForm = ({ creatColumn }: TProps) => {
   const { handlers, textareaEl, isDisabled } = useCreatCardForm(creatColumn);
   const lang = useLanguage();
 
@@ -39,7 +44,7 @@ const CreatColumnForm = ({ creatColumn }: IProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch, props: IProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ICreatColumn>, props: OwnProps) => ({
   creatColumn: (title: string) =>
     dispatch(
       creatColumn({

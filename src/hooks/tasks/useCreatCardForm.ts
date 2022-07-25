@@ -32,7 +32,7 @@ const toastOption: ToastOptions = {
   autoClose: 2000,
 };
 
-const useCreatCardForm = (submitValue?: (title: string) => void) => {
+const useCreatCardForm = (submitValue: (title: string) => void) => {
   const textareaEl = useRef<HTMLTextAreaElement>(null);
 
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const useCreatCardForm = (submitValue?: (title: string) => void) => {
     if (textarea) {
       const value = textarea.value.trim();
       if (value) {
-        submitValue && submitValue(value);
+        submitValue(value);
         textarea.value = '';
       }
     }

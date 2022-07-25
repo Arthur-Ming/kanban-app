@@ -6,9 +6,14 @@ import columnsSelector from './middleware/columnsSelector';
 
 import reducer from './reducer';
 
-export default configureStore({
+const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api, columnsSelector, tasksSelector),
-  //  middleware: [api, columnsSelector, tasksSelector],
 });
+
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;

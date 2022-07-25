@@ -5,25 +5,25 @@ import { columnIdsSelector } from 'redux/selectors';
 import { RootState } from 'redux/reducer';
 import Dragging from 'components/Dragging';
 import { columnsOrderChange } from 'redux/actions';
-import { Dispatch } from 'redux';
-import CreatTask from '../CreatTask';
 import CreatColumn from '../CreatColumn';
+import { Dispatch } from 'react';
+import { IColumnsOrderChange } from 'interfaces';
 
 interface StateProps {
-  columnIds?: string[];
+  columnIds: string[] | undefined;
 }
 
 interface DispatchProps {
-  columnsOrderChange?: (columnId: string, order: number) => void;
+  columnsOrderChange: (columnId: string, order: number) => void;
 }
 
 interface OwnProps {
   boardId: string;
 }
 
-type IProps = StateProps & DispatchProps & OwnProps;
+type TProps = StateProps & DispatchProps & OwnProps;
 
-const Columns = ({ columnIds, boardId, columnsOrderChange }: IProps) => {
+const Columns = ({ columnIds, boardId, columnsOrderChange }: TProps) => {
   return (
     <Dragging
       draggingElementSelector="[data-columns-grab-handle]"
@@ -31,7 +31,8 @@ const Columns = ({ columnIds, boardId, columnsOrderChange }: IProps) => {
       onDropped={columnsOrderChange}
     >
       <div data-drag-columns-parent className={styles.container}>
-        {columnIds?.length &&
+        {columnIds &&
+          columnIds?.length &&
           columnIds.map((columnId: string) => (
             <Column key={columnId} columnId={columnId} boardId={boardId} />
           ))}
@@ -41,15 +42,15 @@ const Columns = ({ columnIds, boardId, columnsOrderChange }: IProps) => {
   );
 };
 
-const mapStateToProps = (state: RootState): StateProps => ({
+const mapStateToProps = (state: RootState) => ({
   columnIds: columnIdsSelector(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, props: IProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IColumnsOrderChange>, { boardId }: OwnProps) => ({
   columnsOrderChange: (columnId: string, order: number) =>
     dispatch(
       columnsOrderChange({
-        boardId: props.boardId,
+        boardId,
         columnId,
         order,
       })

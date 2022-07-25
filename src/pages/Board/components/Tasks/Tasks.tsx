@@ -1,20 +1,29 @@
 import Dragging from 'components/Dragging';
+import { IColumnsOrderChange } from 'interfaces';
+import { Dispatch } from 'react';
 import { connect } from 'react-redux';
 import { tasksOrderChange } from 'redux/actions';
 import { RootState } from 'redux/reducer';
 import { taskIdsSelector } from 'redux/selectors';
-
 import Task from './Task';
 import styles from './tasks.module.scss';
 
-interface IProps {
-  columnId: string;
-  boardId: string;
-  taskIds?: string[];
-  cardSelect?: (columnId: string, order: number, taskId?: string) => void;
+interface StateProps {
+  taskIds: string[];
 }
 
-const Tasks = ({ boardId, columnId, taskIds, cardSelect }: IProps) => {
+interface DispatchProps {
+  cardSelect: (columnId: string, order: number, taskId?: string) => void;
+}
+
+interface OwnProps {
+  columnId: string;
+  boardId: string;
+}
+
+type TProps = StateProps & DispatchProps & OwnProps;
+
+const Tasks = ({ columnId, taskIds, cardSelect }: TProps) => {
   return (
     <Dragging
       draggingElementSelector="[data-tasks-grab-handle]"
@@ -24,17 +33,14 @@ const Tasks = ({ boardId, columnId, taskIds, cardSelect }: IProps) => {
       <div data-drag-tasks-parent data-column-id={columnId} className={styles.list}>
         {taskIds &&
           taskIds.map((taskId: string) => (
-            <Task key={taskId} taskId={taskId} columnId={columnId} boardId={boardId} />
+            <Task key={taskId} taskId={taskId} columnId={columnId} />
           ))}
       </div>
     </Dragging>
   );
 };
 
-const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; boardId: string; columnId: string; order: number }) => void,
-  props: IProps
-) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IColumnsOrderChange>, props: OwnProps) => ({
   cardSelect: (columnId: string, order: number, taskId?: string) =>
     dispatch(
       tasksOrderChange({
@@ -46,7 +52,7 @@ const mapDispatchToProps = (
     ),
 });
 
-const mapStateToProps = (state: RootState, props: IProps) => ({
+const mapStateToProps = (state: RootState, props: OwnProps) => ({
   taskIds: taskIdsSelector(state, props),
 });
 

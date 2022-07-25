@@ -4,12 +4,11 @@ import ColumnControlDropdown from '../ColumnControlDropdown';
 import { Dispatch, SetStateAction } from 'react';
 import Modal from 'components/Modal';
 import ConfirmPopup from 'components/ConfirmPopup';
-import { ITEXT } from 'interfaces';
+import { IDeleteColumn, ITEXT } from 'interfaces';
 import { useLanguage } from 'hooks/useLanguage';
-import useControlColumn from 'hooks/useControlColumn';
 import { connect } from 'react-redux';
 import { deleteColumn } from 'redux/actions';
-import { AnyAction } from 'redux';
+import useControlColumn from 'hooks/columns/useControlColumn';
 
 const TEXT_COLUMN_CONTROL: ITEXT = {
   title: {
@@ -23,7 +22,7 @@ const TEXT_COLUMN_CONTROL: ITEXT = {
 };
 
 type DispatchProps = {
-  onDeleteColumn: () => void;
+  deleteColumn: () => void;
 };
 
 type OwnProps = {
@@ -32,10 +31,10 @@ type OwnProps = {
   setIsTitleEdit: Dispatch<SetStateAction<boolean>>;
 };
 
-type IProps = DispatchProps & OwnProps;
+type TProps = DispatchProps & OwnProps;
 
-const ColumnControl = ({ boardId, columnId, setIsTitleEdit, onDeleteColumn }: IProps) => {
-  const { isControlOpen, isRemove, handlers } = useControlColumn(boardId, columnId, onDeleteColumn);
+const ColumnControl = ({ boardId, columnId, setIsTitleEdit, deleteColumn }: TProps) => {
+  const { isControlOpen, isRemove, handlers } = useControlColumn(boardId, columnId, deleteColumn);
   const lang = useLanguage();
   const onEdit = () => {
     setIsTitleEdit(true);
@@ -68,12 +67,8 @@ const ColumnControl = ({ boardId, columnId, setIsTitleEdit, onDeleteColumn }: IP
   );
 };
 
-const mapDispatchToProps = (
-  // dispatch: Dispatch<{ type: string; CallAPI: string; boardId: string; columnId: string }>,
-  dispatch: Dispatch<AnyAction>,
-  props: OwnProps
-) => ({
-  onDeleteColumn: () =>
+const mapDispatchToProps = (dispatch: Dispatch<IDeleteColumn>, props: OwnProps) => ({
+  deleteColumn: () =>
     dispatch(
       deleteColumn({
         boardId: props.boardId,

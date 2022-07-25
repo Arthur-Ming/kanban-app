@@ -1,4 +1,4 @@
-import { IBoard, IColumn, IColumnWithTasks, ITask } from 'interfaces';
+import { IBoard, IColumn, IColumnWithTaskIds, ITask } from 'interfaces';
 import {
   CREATE_COLUMN,
   CREATE_TASK,
@@ -9,28 +9,29 @@ import {
 } from '../constants';
 import { arrToMap } from 'utils/arrToMap';
 
-interface g extends IColumn {
+interface IColumnWithTasks extends IColumn {
   tasks: ITask[];
 }
 
 export interface IColumnsState {
-  [key: string]: IColumnWithTasks;
+  [key: string]: IColumnWithTaskIds;
 }
 
 const initialState: IColumnsState = {};
 
 interface IAction {
   type: string;
-  data?: g[];
-  _id: string;
+  data?: IColumnWithTasks[];
+  taskId: string;
   columnId?: string;
   boardId: string;
   title: string;
   order: number;
+  newColumn: IColumn | null;
 }
 
 export default function (state = initialState, action: IAction) {
-  const { type, data = [] } = action;
+  const { type, data = [], newColumn = null } = action;
 
   switch (type) {
     case LOAD_COLUMNS:
@@ -44,29 +45,25 @@ export default function (state = initialState, action: IAction) {
         }))
         .reduce((acc, item) => ({ ...acc, [item._id]: item }), {});
     case CREATE_COLUMN + SUCCESS:
-      const { boardId, title, _id, order } = action;
+      if (!newColumn) return state;
 
       return {
         ...state,
-        [_id]: {
-          boardId,
-          title,
-          _id,
-          order,
+        [newColumn._id]: {
+          ...newColumn,
           taskIds: [],
         },
       };
     case CREATE_TASK + SUCCESS: {
-      const { _id = '', columnId = '', boardId = '' } = action;
+      const { taskId = '', columnId = '', boardId = '' } = action;
 
-      if (!_id && !columnId && !boardId) return state;
-      console.log(state[columnId].taskIds);
-      console.log(columnId);
+      if (!taskId && !columnId && !boardId) return state;
+
       return {
         ...state,
         [columnId]: {
           ...state[columnId],
-          taskIds: [...state[columnId].taskIds, _id],
+          taskIds: [...state[columnId].taskIds, taskId],
         },
       };
     }
@@ -81,15 +78,15 @@ export default function (state = initialState, action: IAction) {
     }
 
     case DELETE_TASK: {
-      const { _id = '', columnId = '', boardId = '' } = action;
+      const { taskId = '', columnId = '', boardId = '' } = action;
 
-      if (!_id && !columnId && !boardId) return state;
+      if (!taskId && !columnId && !boardId) return state;
 
       return {
         ...state,
         [columnId]: {
           ...state[columnId],
-          taskIds: state[columnId].taskIds.filter((taskIds) => taskIds !== _id),
+          taskIds: state[columnId].taskIds.filter((id) => id !== taskId),
         },
       };
     }

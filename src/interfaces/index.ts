@@ -16,7 +16,7 @@ export interface IColumn {
   order: number;
 }
 
-export interface IColumnWithTasks extends IColumn {
+export interface IColumnWithTaskIds extends IColumn {
   taskIds: string[];
 }
 
@@ -24,6 +24,7 @@ export interface IBoard {
   _id: string;
   title: string;
   description: string;
+  taskIds: string[];
 }
 
 export interface IBoardWithColumnIds extends IBoard {
@@ -118,4 +119,46 @@ export interface ISignInResponse {
 export interface IFiles {
   filename: string;
   fileSize: number;
+}
+//=================
+export interface IAction {
+  type: string;
+}
+
+export interface IActionCallApi extends IAction {
+  CallAPI: string;
+}
+
+export interface IGetBoardById extends IActionCallApi {
+  error: unknown | null;
+  data: ICompleteBoard | null;
+}
+
+export interface IColumnsOrderChange extends IActionCallApi {
+  boardId: string;
+  columnId: string;
+  order: number;
+}
+
+export interface ICreatTask extends IActionCallApi {
+  boardId: string;
+  columnId: string;
+  title: string;
+}
+
+export interface IDeleteColumn extends IActionCallApi {
+  boardId: string;
+  columnId: string;
+}
+
+export interface ICreatColumn extends IActionCallApi {
+  boardId: string;
+  title: string;
+  newColumn: IColumn | null;
+}
+
+export interface IDeleteTask extends IActionCallApi {
+  boardId: string;
+  columnId: string;
+  taskId: string;
 }

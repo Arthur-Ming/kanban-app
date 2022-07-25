@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { RootState } from './reducer';
+import { RootState } from './store';
 import { IBoardState } from './reducer/board';
 import { IBoardsState } from './reducer/boards';
 

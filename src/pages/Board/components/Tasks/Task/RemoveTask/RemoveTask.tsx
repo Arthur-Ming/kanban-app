@@ -2,7 +2,7 @@ import ConfirmPopup from 'components/ConfirmPopup';
 import Modal from 'components/Modal';
 import useRemoveTask from 'hooks/tasks/useRemoveTask';
 import { useLanguage } from 'hooks/useLanguage';
-import { ITEXT } from 'interfaces';
+import { IDeleteTask, ITEXT } from 'interfaces';
 import { AiFillDelete as RemoveIcon } from 'react-icons/ai';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -46,7 +46,7 @@ const RemoveTask = ({ columnId, taskId, onDelete }: IProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IDeleteTask>) => ({
   onDelete: (boardId: string, columnId: string, taskId: string) =>
     dispatch(
       deleteTask({

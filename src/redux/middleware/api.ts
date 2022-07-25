@@ -28,7 +28,7 @@ const api: Middleware<Record<string, unknown>, RootState> = () => (next) => asyn
         const data = await res.json();
 
         if (!res.ok) throw data;
-
+        console.log(data);
         next({ ...rest, type: type + SUCCESS, data });
       } catch (error) {
         throw next({ ...rest, type: type + FAILURE, error });
@@ -72,13 +72,12 @@ const api: Middleware<Record<string, unknown>, RootState> = () => (next) => asyn
         body: JSON.stringify({ title: action.title }),
       });
 
-      const { _id } = await res.json();
-      return next({ ...rest, type: type + SUCCESS, _id });
+      const newColumn = await res.json();
+      return next({ ...rest, type: type + SUCCESS, newColumn });
     }
 
     case DELETE_TASK:
     case DELETE_COLUMN: {
-      console.log(action.CallAPI);
       fetch(action.CallAPI, {
         method: 'DELETE',
       });

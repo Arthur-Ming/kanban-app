@@ -4,21 +4,25 @@ import Columns from './components/Columns';
 import Loader from 'components/Loader';
 import { IBoardWithColumnIds } from 'interfaces';
 import { connect } from 'react-redux';
-import { RootState } from 'redux/reducer';
 import { getBoardById } from 'redux/actions';
 import { useEffect } from 'react';
 import { boardLoadedSelector, boardLoadingSelector, boardSelector } from 'redux/selectors';
 import NotFound from 'pages/NotFound';
-import CreatTask from './components/CreatTask';
+import { RootState } from 'redux/store';
 
-interface IProps {
+interface StateProps {
   board: IBoardWithColumnIds | null;
   loading: boolean;
   loaded: boolean;
+}
+
+interface DispatchProps {
   getBoardById: (boardId: string) => void;
 }
 
-const Board = ({ board, getBoardById, loading, loaded }: IProps) => {
+type TProps = StateProps & DispatchProps;
+
+const Board = ({ board, getBoardById, loading, loaded }: TProps) => {
   const { boardId } = useParams();
   useEffect(() => {
     if (!loading && !loaded && boardId) getBoardById(boardId);

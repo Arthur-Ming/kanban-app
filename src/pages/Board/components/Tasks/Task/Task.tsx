@@ -6,17 +6,20 @@ import { Link, Route, Routes, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { taskByIdSelector } from 'redux/selectors';
 import { RootState } from 'redux/reducer';
-import { memo } from 'react';
 import TaskContent from '../../TaskContent';
 
-interface IProps {
-  task?: ITask;
+interface StateProps {
+  task: ITask;
+}
+
+interface OwnProps {
   columnId: string;
-  boardId: string;
   taskId: string;
 }
 
-const Task = ({ task, boardId, columnId, taskId }: IProps) => {
+type TProps = StateProps & OwnProps;
+
+const Task = ({ task, columnId, taskId }: TProps) => {
   const { taskId: id = '' } = useParams();
   return (
     <div data-tasks-grab-handle data-task-id={taskId} className={styles.task}>
@@ -33,8 +36,8 @@ const Task = ({ task, boardId, columnId, taskId }: IProps) => {
   );
 };
 
-const mapStateToProps = (state: RootState, params: IProps) => ({
+const mapStateToProps = (state: RootState, params: OwnProps) => ({
   task: taskByIdSelector(state, params),
 });
 
-export default connect(mapStateToProps, null)(Task);
+export default connect(mapStateToProps)(Task);
