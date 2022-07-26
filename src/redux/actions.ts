@@ -8,6 +8,8 @@ import {
   RESET_BOARD,
   TASKS_ORDER_CHANGE,
   DELETE_COLUMN,
+  LOAD_COLUMNS,
+  LOAD_TASKS,
 } from './constants';
 import { Dispatch } from 'redux';
 import {
@@ -29,6 +31,20 @@ export const getAllBoards = (): IActionCallApi => ({
 export const getBoardById = (boardId: string): IGetBoardById => ({
   type: LOAD_BOARD,
   CallAPI: `http://localhost:8000/boards/${boardId}`,
+  data: null,
+  error: null,
+});
+
+export const getAllColumns = (boardId: string): IGetBoardById => ({
+  type: LOAD_COLUMNS,
+  CallAPI: `http://localhost:8000/boards/${boardId}/columns`,
+  data: null,
+  error: null,
+});
+
+export const getAllTasks = (boardId: string, colomnId = ' '): IGetBoardById => ({
+  type: LOAD_TASKS,
+  CallAPI: `http://localhost:8000/boards/${boardId}/columns/${colomnId}/tasks`,
   data: null,
   error: null,
 });

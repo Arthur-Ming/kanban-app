@@ -7,7 +7,7 @@ import Modal from 'components/Modal';
 import { useNavigate, useParams } from 'react-router';
 import { pathRoutes } from 'utils/pathRoutes';
 import { IBoard, IColumn, ITask } from 'interfaces';
-import { columnByIdSelector } from 'redux/selectors';
+
 import { connect, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducer';
 

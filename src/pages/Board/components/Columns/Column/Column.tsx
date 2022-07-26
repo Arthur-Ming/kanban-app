@@ -1,6 +1,6 @@
 import CreatTask from 'pages/Board/components/CreatTask';
 import styles from './styles.module.scss';
-import { IColumnWithTaskIds } from 'interfaces';
+import { IColumn } from 'interfaces';
 import Tasks from '../../Tasks';
 import ColumnHeader from './ColumnHeader';
 import { connect } from 'react-redux';
@@ -8,7 +8,7 @@ import { RootState } from 'redux/reducer';
 import { columnByIdSelector } from 'redux/selectors';
 
 interface StateProps {
-  column: IColumnWithTaskIds;
+  column: IColumn;
 }
 
 interface OwnProps {

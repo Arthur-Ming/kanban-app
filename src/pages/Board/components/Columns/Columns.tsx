@@ -42,9 +42,9 @@ const Columns = ({ columnIds, boardId, columnsOrderChange }: TProps) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
+/* const mapStateToProps = (state: RootState) => ({
   columnIds: columnIdsSelector(state),
-});
+}); */
 
 const mapDispatchToProps = (dispatch: Dispatch<IColumnsOrderChange>, { boardId }: OwnProps) => ({
   columnsOrderChange: (columnId: string, order: number) =>
@@ -57,4 +57,4 @@ const mapDispatchToProps = (dispatch: Dispatch<IColumnsOrderChange>, { boardId }
     ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Columns);
+export default connect(null, mapDispatchToProps)(Columns);

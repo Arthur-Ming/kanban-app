@@ -2,7 +2,7 @@ import s from './style.module.scss';
 import { useLanguage } from 'hooks/useLanguage';
 import NotFound from 'pages/NotFound';
 import Loader from 'components/Loader';
-import BoardsList from './BoardsList';
+import BoardsList from '../Boards/BoardsList';
 
 interface ILANG {
   [key: string]: string;
@@ -20,17 +20,14 @@ const TEXT_MAIN_PAGE: Readonly<ITEXT> = {
 };
 
 const MainPage = () => {
-  const isLoading = false;
-
   const lang = useLanguage();
 
-  if (isLoading) return <Loader />;
-
   return (
-    <div className={s.page}>
+    <div>Main Page</div>
+    /* <div className={s.page}>
       <h2 className={s.title}>{TEXT_MAIN_PAGE.title[lang]}</h2>
       <BoardsList />
-    </div>
+    </div> */
   );
 };
 

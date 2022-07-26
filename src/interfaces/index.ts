@@ -14,9 +14,6 @@ export interface IColumn {
   boardId: string;
   title: string;
   order: number;
-}
-
-export interface IColumnWithTaskIds extends IColumn {
   taskIds: string[];
 }
 
@@ -24,7 +21,7 @@ export interface IBoard {
   _id: string;
   title: string;
   description: string;
-  taskIds: string[];
+  columnIds: string[];
 }
 
 export interface IBoardWithColumnIds extends IBoard {
@@ -132,6 +129,16 @@ export interface IActionCallApi extends IAction {
 export interface IGetBoardById extends IActionCallApi {
   error: unknown | null;
   data: ICompleteBoard | null;
+}
+
+export interface IGetAllColumns extends IActionCallApi {
+  error: unknown | null;
+  data: IColumn[] | null;
+}
+
+export interface IGetAllTasks extends IActionCallApi {
+  error: unknown | null;
+  data: ITask[] | null;
 }
 
 export interface IColumnsOrderChange extends IActionCallApi {

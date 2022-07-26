@@ -1,50 +1,56 @@
-import { IBoard, IColumn, IColumnWithTaskIds, ITask } from 'interfaces';
+import { IBoard, IColumn, IGetAllColumns, ITask } from 'interfaces';
 import {
   CREATE_COLUMN,
   CREATE_TASK,
   DELETE_COLUMN,
   DELETE_TASK,
+  FAILURE,
   LOAD_COLUMNS,
+  REQUEST,
   SUCCESS,
 } from '../constants';
 import { arrToMap } from 'utils/arrToMap';
 
-interface IColumnWithTasks extends IColumn {
-  tasks: ITask[];
-}
-
 export interface IColumnsState {
-  [key: string]: IColumnWithTaskIds;
+  loading: boolean;
+  loaded: boolean;
+  error: null;
+  entities: {
+    [key: string]: IColumn;
+  };
 }
 
-const initialState: IColumnsState = {};
+const initialState: IColumnsState = {
+  loading: false,
+  loaded: false,
+  error: null,
+  entities: {},
+};
 
-interface IAction {
-  type: string;
-  data?: IColumnWithTasks[];
-  taskId: string;
-  columnId?: string;
-  boardId: string;
-  title: string;
-  order: number;
-  newColumn: IColumn | null;
-}
+type IAction = IGetAllColumns;
 
 export default function (state = initialState, action: IAction) {
-  const { type, data = [], newColumn = null } = action;
-
+  const { type, error, data } = action;
+  console.log(data);
   switch (type) {
-    case LOAD_COLUMNS:
-      return data
-        .map(({ _id, boardId, title, order, tasks }) => ({
-          _id,
-          boardId,
-          title,
-          order,
-          taskIds: tasks.map((task) => task._id),
-        }))
-        .reduce((acc, item) => ({ ...acc, [item._id]: item }), {});
-    case CREATE_COLUMN + SUCCESS:
+    case LOAD_COLUMNS + REQUEST:
+      return { ...state, loading: true, error: null };
+    case LOAD_COLUMNS + SUCCESS:
+      if (!data) return state;
+      return {
+        loading: false,
+        loaded: true,
+        entities: arrToMap(data),
+      };
+    case LOAD_COLUMNS + FAILURE:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        error,
+      };
+
+    /*  case CREATE_COLUMN + SUCCESS:
       if (!newColumn) return state;
 
       return {
@@ -89,7 +95,7 @@ export default function (state = initialState, action: IAction) {
           taskIds: state[columnId].taskIds.filter((id) => id !== taskId),
         },
       };
-    }
+    } */
     default:
       return state;
   }

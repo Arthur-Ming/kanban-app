@@ -9,26 +9,15 @@ import { getAllBoards, resetBoard } from 'redux/actions';
 import { IBoardsState } from 'redux/reducer/boards';
 import Loader from 'components/Loader';
 import { RootState } from 'redux/reducer';
+import { Route, Routes } from 'react-router';
+import Board from 'pages/Board';
+import NotFound from 'pages/NotFound';
 
 interface IProps {
-  boards: Omit<IBoard, 'columns'>[];
-  loading: boolean;
-  loaded: boolean;
-  getAllBoards: () => void;
-  resetBoard: () => void;
+  boards: IBoard[];
 }
 
-const BoardsList = ({ boards, getAllBoards, resetBoard, loading, loaded }: IProps) => {
-  useEffect(() => {
-    if (!loading && !loaded) getAllBoards();
-  }, [loading, loaded, getAllBoards]);
-
-  useEffect(() => {
-    resetBoard();
-  }, [resetBoard]);
-
-  if (loading) return <Loader />;
-  // if (!loaded) return 'No data :(';
+const BoardsList = ({ boards }: IProps) => {
   return (
     <div className={styles.container}>
       {boards.map(({ title, _id: id, description }) => (

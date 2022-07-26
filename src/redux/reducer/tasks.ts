@@ -1,33 +1,56 @@
-import { IBoard, IColumn, ITask } from 'interfaces';
-import { CREATE_TASK, DELETE_TASK, LOAD_COLUMNS, LOAD_TASKS, SUCCESS } from '../constants';
+import { IBoard, IColumn, IGetAllTasks, ITask } from 'interfaces';
+import {
+  CREATE_TASK,
+  DELETE_TASK,
+  FAILURE,
+  LOAD_COLUMNS,
+  LOAD_TASKS,
+  REQUEST,
+  SUCCESS,
+} from '../constants';
 import { arrToMap } from 'utils/arrToMap';
 import { pathRoutes } from 'utils/pathRoutes';
 
-export interface IColumnsState {
-  [key: string]: ITask;
+export interface ITasksState {
+  loading: boolean;
+  loaded: boolean;
+  error: null;
+  entities: {
+    [key: string]: ITask;
+  };
 }
 
-const initialState: IColumnsState = {};
+const initialState: ITasksState = {
+  loading: false,
+  loaded: false,
+  error: null,
+  entities: {},
+};
 
-interface IAction {
-  type: string;
-  data?: ITask[];
-  boardId: string;
-  columnId: string;
-  title: string;
-  _id: string;
-  description: string;
-}
+type IAction = IGetAllTasks;
 
 export default function (state = initialState, action: IAction) {
-  const { type, data = [] } = action;
+  const { type, error, data } = action;
+  console.log(data);
 
   switch (type) {
-    case LOAD_TASKS:
-      return data.reduce((acc, item) => {
-        return { ...acc, [item._id]: item };
-      }, {});
-    case CREATE_TASK + SUCCESS: {
+    case LOAD_TASKS + REQUEST:
+      return { ...state, loading: true, error: null };
+    case LOAD_TASKS + SUCCESS:
+      if (!data) return state;
+      return {
+        loading: false,
+        loaded: true,
+        entities: arrToMap(data),
+      };
+    case LOAD_TASKS + FAILURE:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        error,
+      };
+    /*  case CREATE_TASK + SUCCESS: {
       const { boardId, columnId, title, _id, description } = action;
       return {
         ...state,
@@ -46,7 +69,7 @@ export default function (state = initialState, action: IAction) {
       const stateCopy = { ...state };
       delete stateCopy[_id];
       return stateCopy;
-    }
+    } */
     default:
       return state;
   }

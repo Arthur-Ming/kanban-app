@@ -20,7 +20,7 @@ interface OwnProps {
 type TProps = StateProps & OwnProps;
 
 const Task = ({ task, columnId, taskId }: TProps) => {
-  const { taskId: id = '' } = useParams();
+  const { taskId: id } = useParams();
   return (
     <div data-tasks-grab-handle data-task-id={taskId} className={styles.task}>
       <Link to={routes.tasks.content.absolute(columnId, taskId)} className={styles.link}>
@@ -36,8 +36,8 @@ const Task = ({ task, columnId, taskId }: TProps) => {
   );
 };
 
-const mapStateToProps = (state: RootState, params: OwnProps) => ({
-  task: taskByIdSelector(state, params),
+const mapStateToProps = (state: RootState, props: OwnProps) => ({
+  task: taskByIdSelector(state, props),
 });
 
 export default connect(mapStateToProps)(Task);

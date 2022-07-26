@@ -49,7 +49,7 @@ const BoardCard = ({ id }: IProps) => {
 
   return (
     <div className={s.card}>
-      <Link className={s.link} to={`${pathRoutes.board.relative}/${id}`}>
+      <Link className={s.link} to={`${id}`}>
         <span>{TEXT_PAGE.link[lang]}</span>
       </Link>
     </div>

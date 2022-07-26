@@ -8,8 +8,7 @@ import reducer from './reducer';
 
 const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api, columnsSelector, tasksSelector),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api),
 });
 
 export default store;

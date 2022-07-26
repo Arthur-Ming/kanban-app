@@ -9,7 +9,7 @@ import Task from './Task';
 import styles from './tasks.module.scss';
 
 interface StateProps {
-  taskIds: string[];
+  taskIds: string[] | undefined;
 }
 
 interface DispatchProps {
@@ -32,6 +32,7 @@ const Tasks = ({ columnId, taskIds, cardSelect }: TProps) => {
     >
       <div data-drag-tasks-parent data-column-id={columnId} className={styles.list}>
         {taskIds &&
+          taskIds.length &&
           taskIds.map((taskId: string) => (
             <Task key={taskId} taskId={taskId} columnId={columnId} />
           ))}

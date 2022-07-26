@@ -12,23 +12,27 @@ import {
   DELETE_TASK,
   CREATE_COLUMN,
   DELETE_COLUMN,
+  LOAD_COLUMNS,
+  LOAD_TASKS,
 } from '../constants';
 
 const api: Middleware<Record<string, unknown>, RootState> = () => (next) => async (action) => {
   if (!action.CallAPI) return next(action);
 
   const { type, ...rest } = action;
-
+  console.log(type);
   switch (type) {
     case LOAD_BOARD:
-    case LOAD_BOARDS: {
+    case LOAD_BOARDS:
+    case LOAD_COLUMNS:
+    case LOAD_TASKS: {
       next({ ...rest, type: type + REQUEST });
       try {
         const res = await fetch(action.CallAPI);
         const data = await res.json();
 
         if (!res.ok) throw data;
-        console.log(data);
+
         next({ ...rest, type: type + SUCCESS, data });
       } catch (error) {
         throw next({ ...rest, type: type + FAILURE, error });
