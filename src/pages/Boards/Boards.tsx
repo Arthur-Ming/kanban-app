@@ -1,12 +1,11 @@
 import Loader from 'components/Loader';
-import { IBoard } from 'interfaces';
 import Board from 'pages/Board/Board';
 import NotFound from 'pages/NotFound';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Route, Routes, useParams } from 'react-router';
 import { getAllBoards } from 'redux/actions';
-import { boardsListSelector, boardsLoadedSelector, boardsLoadingSelector } from 'redux/selectors';
+import { boardsLoadedSelector, boardsLoadingSelector } from 'redux/selectors';
 import { RootState } from 'redux/store';
 import BoardsList from './BoardsList';
 

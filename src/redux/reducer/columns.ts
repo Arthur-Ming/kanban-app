@@ -1,4 +1,4 @@
-import { IBoard, IColumn, IGetAllColumns, ITask } from 'interfaces';
+import { IBoard, IColumn, ICreatColumn, ICreatTask, IGetAllColumns, ITask } from 'interfaces';
 import {
   CREATE_COLUMN,
   CREATE_TASK,
@@ -10,10 +10,16 @@ import {
   SUCCESS,
 } from '../constants';
 import { arrToMap } from 'utils/arrToMap';
+import { createReducer } from '@reduxjs/toolkit';
+import { truncate } from 'fs';
 
 export interface IColumnsState {
-  loading: boolean;
-  loaded: boolean;
+  loading: {
+    [key: string]: boolean;
+  };
+  loaded: {
+    [key: string]: boolean;
+  };
   error: null;
   entities: {
     [key: string]: IColumn;
@@ -21,82 +27,33 @@ export interface IColumnsState {
 }
 
 const initialState: IColumnsState = {
-  loading: false,
-  loaded: false,
+  loading: {},
+  loaded: {},
   error: null,
   entities: {},
 };
 
-type IAction = IGetAllColumns;
+/* type IAction = IGetAllColumns | ICreatColumn | ICreatTask; */
 
-export default function (state = initialState, action: IAction) {
-  const { type, error, data } = action;
-  console.log(data);
-  switch (type) {
-    case LOAD_COLUMNS + REQUEST:
-      return { ...state, loading: true, error: null };
-    case LOAD_COLUMNS + SUCCESS:
-      if (!data) return state;
-      return {
-        loading: false,
-        loaded: true,
-        entities: arrToMap(data),
-      };
-    case LOAD_COLUMNS + FAILURE:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error,
-      };
-
-    /*  case CREATE_COLUMN + SUCCESS:
-      if (!newColumn) return state;
-
-      return {
-        ...state,
-        [newColumn._id]: {
-          ...newColumn,
-          taskIds: [],
-        },
-      };
-    case CREATE_TASK + SUCCESS: {
-      const { taskId = '', columnId = '', boardId = '' } = action;
-
-      if (!taskId && !columnId && !boardId) return state;
-
-      return {
-        ...state,
-        [columnId]: {
-          ...state[columnId],
-          taskIds: [...state[columnId].taskIds, taskId],
-        },
-      };
-    }
-
-    case DELETE_COLUMN: {
-      const { columnId = '', boardId = '' } = action;
-
-      if (!columnId && !boardId) return state;
-      const stateCopy = { ...state };
-      delete stateCopy[columnId];
-      return stateCopy;
-    }
-
-    case DELETE_TASK: {
-      const { taskId = '', columnId = '', boardId = '' } = action;
-
-      if (!taskId && !columnId && !boardId) return state;
-
-      return {
-        ...state,
-        [columnId]: {
-          ...state[columnId],
-          taskIds: state[columnId].taskIds.filter((id) => id !== taskId),
-        },
-      };
-    } */
-    default:
-      return state;
-  }
-}
+export default createReducer(initialState, (builder) => {
+  builder
+    .addCase(LOAD_COLUMNS + REQUEST, (state, action) => {
+      const { boardId } = <IGetAllColumns>action;
+      state.loading[boardId] = true;
+    })
+    .addCase(LOAD_COLUMNS + SUCCESS, (state, action) => {
+      const { data, boardId } = <IGetAllColumns>action;
+      state.loading[boardId] = false;
+      state.loaded[boardId] = true;
+      state.error = null;
+      data && (state.entities = arrToMap(data));
+    })
+    .addCase(CREATE_COLUMN + SUCCESS, (state, action) => {
+      const { newColumn } = <ICreatColumn>action;
+      newColumn && (state.entities[newColumn._id] = newColumn);
+    })
+    .addCase(CREATE_TASK + SUCCESS, (state, action) => {
+      const { newTask, columnId } = <ICreatTask>action;
+      newTask && state.entities[columnId].taskIds.push(newTask._id);
+    });
+});

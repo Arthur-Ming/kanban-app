@@ -1,12 +1,8 @@
-export interface ITask {
+export interface IBoard {
   _id: string;
   title: string;
-  order: number;
   description: string;
-  userId: string;
-  boardId: string;
-  columnId: string;
-  files?: IFiles[] | [];
+  columnIds: string[];
 }
 
 export interface IColumn {
@@ -17,19 +13,13 @@ export interface IColumn {
   taskIds: string[];
 }
 
-export interface IBoard {
+export interface ITask {
   _id: string;
   title: string;
+  order: number;
   description: string;
-  columnIds: string[];
-}
-
-export interface IBoardWithColumnIds extends IBoard {
-  columnIds: string[];
-}
-
-export interface ICompleteBoard extends IBoard {
-  columns: IColumn[] | [];
+  boardId: string;
+  columnId: string;
 }
 
 export interface INewBoard {
@@ -126,19 +116,27 @@ export interface IActionCallApi extends IAction {
   CallAPI: string;
 }
 
+export interface IGetAllBoards extends IActionCallApi {
+  error: unknown | null;
+  data: IBoard[] | null;
+}
+
 export interface IGetBoardById extends IActionCallApi {
   error: unknown | null;
-  data: ICompleteBoard | null;
+  data: IBoard | null;
 }
 
 export interface IGetAllColumns extends IActionCallApi {
   error: unknown | null;
   data: IColumn[] | null;
+  boardId: string;
 }
 
 export interface IGetAllTasks extends IActionCallApi {
   error: unknown | null;
   data: ITask[] | null;
+  boardId: string;
+  columnId: string;
 }
 
 export interface IColumnsOrderChange extends IActionCallApi {
@@ -151,6 +149,7 @@ export interface ICreatTask extends IActionCallApi {
   boardId: string;
   columnId: string;
   title: string;
+  newTask: ITask | null;
 }
 
 export interface IDeleteColumn extends IActionCallApi {

@@ -20,12 +20,17 @@ import {
   ICreatTask,
   IDeleteColumn,
   IDeleteTask,
+  IGetAllBoards,
+  IGetAllColumns,
+  IGetAllTasks,
   IGetBoardById,
 } from 'interfaces';
 
-export const getAllBoards = (): IActionCallApi => ({
+export const getAllBoards = (): IGetAllBoards => ({
   type: LOAD_BOARDS,
   CallAPI: 'http://localhost:8000/boards',
+  data: null,
+  error: null,
 });
 
 export const getBoardById = (boardId: string): IGetBoardById => ({
@@ -35,18 +40,21 @@ export const getBoardById = (boardId: string): IGetBoardById => ({
   error: null,
 });
 
-export const getAllColumns = (boardId: string): IGetBoardById => ({
+export const getAllColumns = (boardId: string): IGetAllColumns => ({
   type: LOAD_COLUMNS,
   CallAPI: `http://localhost:8000/boards/${boardId}/columns`,
   data: null,
   error: null,
+  boardId,
 });
 
-export const getAllTasks = (boardId: string, colomnId = ' '): IGetBoardById => ({
+export const getAllTasks = (boardId: string, columnId = ' '): IGetAllTasks => ({
   type: LOAD_TASKS,
-  CallAPI: `http://localhost:8000/boards/${boardId}/columns/${colomnId}/tasks`,
+  CallAPI: `http://localhost:8000/boards/${boardId}/columns/${columnId}/tasks`,
   data: null,
   error: null,
+  boardId,
+  columnId,
 });
 
 export const resetBoard = (): IAction => ({
@@ -113,6 +121,7 @@ export const creatTask = ({
   boardId,
   columnId,
   title,
+  newTask: null,
 });
 
 export const deleteTask = ({

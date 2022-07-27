@@ -1,4 +1,4 @@
-import { IBoard, IColumn, IGetAllTasks, ITask } from 'interfaces';
+import { IBoard, IColumn, ICreatTask, IGetAllTasks, ITask } from 'interfaces';
 import {
   CREATE_TASK,
   DELETE_TASK,
@@ -10,10 +10,15 @@ import {
 } from '../constants';
 import { arrToMap } from 'utils/arrToMap';
 import { pathRoutes } from 'utils/pathRoutes';
+import { createReducer } from '@reduxjs/toolkit';
 
 export interface ITasksState {
-  loading: boolean;
-  loaded: boolean;
+  loading: {
+    [key: string]: boolean;
+  };
+  loaded: {
+    [key: string]: boolean;
+  };
   error: null;
   entities: {
     [key: string]: ITask;
@@ -21,56 +26,27 @@ export interface ITasksState {
 }
 
 const initialState: ITasksState = {
-  loading: false,
-  loaded: false,
+  loading: {},
+  loaded: {},
   error: null,
   entities: {},
 };
 
-type IAction = IGetAllTasks;
-
-export default function (state = initialState, action: IAction) {
-  const { type, error, data } = action;
-  console.log(data);
-
-  switch (type) {
-    case LOAD_TASKS + REQUEST:
-      return { ...state, loading: true, error: null };
-    case LOAD_TASKS + SUCCESS:
-      if (!data) return state;
-      return {
-        loading: false,
-        loaded: true,
-        entities: arrToMap(data),
-      };
-    case LOAD_TASKS + FAILURE:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error,
-      };
-    /*  case CREATE_TASK + SUCCESS: {
-      const { boardId, columnId, title, _id, description } = action;
-      return {
-        ...state,
-        [_id]: {
-          boardId,
-          columnId,
-          title,
-          _id,
-          description,
-        },
-      };
-    }
-    case DELETE_TASK: {
-      const { boardId, columnId, _id } = action;
-
-      const stateCopy = { ...state };
-      delete stateCopy[_id];
-      return stateCopy;
-    } */
-    default:
-      return state;
-  }
-}
+export default createReducer(initialState, (builder) => {
+  builder
+    .addCase(LOAD_TASKS + REQUEST, (state, action) => {
+      const { columnId } = <IGetAllTasks>action;
+      state.loading[columnId] = true;
+    })
+    .addCase(LOAD_TASKS + SUCCESS, (state, action) => {
+      const { data, columnId } = <IGetAllTasks>action;
+      state.loading[columnId] = false;
+      state.loaded[columnId] = true;
+      state.error = null;
+      data && (state.entities = { ...state.entities, ...arrToMap(data) });
+    })
+    .addCase(CREATE_TASK + SUCCESS, (state, action) => {
+      const { newTask } = <ICreatTask>action;
+      newTask && (state.entities[newTask._id] = newTask);
+    });
+});

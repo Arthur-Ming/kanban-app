@@ -20,7 +20,7 @@ const api: Middleware<Record<string, unknown>, RootState> = () => (next) => asyn
   if (!action.CallAPI) return next(action);
 
   const { type, ...rest } = action;
-  console.log(type);
+
   switch (type) {
     case LOAD_BOARD:
     case LOAD_BOARDS:
@@ -32,7 +32,7 @@ const api: Middleware<Record<string, unknown>, RootState> = () => (next) => asyn
         const data = await res.json();
 
         if (!res.ok) throw data;
-
+        console.log(type);
         next({ ...rest, type: type + SUCCESS, data });
       } catch (error) {
         throw next({ ...rest, type: type + FAILURE, error });
@@ -62,9 +62,9 @@ const api: Middleware<Record<string, unknown>, RootState> = () => (next) => asyn
         body: JSON.stringify({ title: action.title }),
       });
 
-      const { _id, description } = await res.json();
+      const newTask = await res.json();
 
-      return next({ ...rest, type: type + SUCCESS, _id, description });
+      return next({ ...rest, type: type + SUCCESS, newTask });
     }
     case CREATE_COLUMN: {
       const res = await fetch(action.CallAPI, {

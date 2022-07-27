@@ -21,6 +21,7 @@ type TProps = StateProps & OwnProps;
 
 const Task = ({ task, columnId, taskId }: TProps) => {
   const { taskId: id } = useParams();
+  if (!task) return <div>!!!</div>;
   return (
     <div data-tasks-grab-handle data-task-id={taskId} className={styles.task}>
       <Link to={routes.tasks.content.absolute(columnId, taskId)} className={styles.link}>

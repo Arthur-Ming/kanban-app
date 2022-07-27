@@ -1,20 +1,25 @@
 import styles from './styles.module.scss';
 import Column from './Column';
 import { connect } from 'react-redux';
-import { columnIdsSelector } from 'redux/selectors';
+import { columnIdsSelector, columnsLoadedSelector, columnsLoadingSelector } from 'redux/selectors';
 import { RootState } from 'redux/reducer';
 import Dragging from 'components/Dragging';
-import { columnsOrderChange } from 'redux/actions';
+import { columnsOrderChange, getAllColumns } from 'redux/actions';
 import CreatColumn from '../CreatColumn';
-import { Dispatch } from 'react';
-import { IColumnsOrderChange } from 'interfaces';
+import { Dispatch, useEffect } from 'react';
+import { IColumnsOrderChange, IGetAllColumns } from 'interfaces';
+import Loader from 'components/Loader';
+import NotFound from 'pages/NotFound';
 
 interface StateProps {
   columnIds: string[] | undefined;
+  loading: boolean;
+  loaded: boolean;
 }
 
 interface DispatchProps {
   columnsOrderChange: (columnId: string, order: number) => void;
+  getAllColumns: () => void;
 }
 
 interface OwnProps {
@@ -23,7 +28,24 @@ interface OwnProps {
 
 type TProps = StateProps & DispatchProps & OwnProps;
 
-const Columns = ({ columnIds, boardId, columnsOrderChange }: TProps) => {
+const Columns = ({
+  loading,
+  loaded,
+  columnIds,
+  boardId,
+  getAllColumns,
+  columnsOrderChange,
+}: TProps) => {
+  useEffect(() => {
+    if (!loading && !loaded && boardId) {
+      console.log('getAllColumns');
+      getAllColumns();
+    }
+  }, [loading, loaded, getAllColumns, boardId]);
+
+  if (loading) return <Loader />;
+  if (!loaded) return <NotFound />;
+
   return (
     <Dragging
       draggingElementSelector="[data-columns-grab-handle]"
@@ -42,11 +64,17 @@ const Columns = ({ columnIds, boardId, columnsOrderChange }: TProps) => {
   );
 };
 
-/* const mapStateToProps = (state: RootState) => ({
-  columnIds: columnIdsSelector(state),
-}); */
+const mapStateToProps = (state: RootState, props: OwnProps) => ({
+  columnIds: columnIdsSelector(state, props),
+  loading: columnsLoadingSelector(state, props),
+  loaded: columnsLoadedSelector(state, props),
+});
 
-const mapDispatchToProps = (dispatch: Dispatch<IColumnsOrderChange>, { boardId }: OwnProps) => ({
+const mapDispatchToProps = (
+  dispatch: Dispatch<IColumnsOrderChange | IGetAllColumns>,
+  { boardId }: OwnProps
+) => ({
+  getAllColumns: () => dispatch(getAllColumns(boardId)),
   columnsOrderChange: (columnId: string, order: number) =>
     dispatch(
       columnsOrderChange({
@@ -57,4 +85,4 @@ const mapDispatchToProps = (dispatch: Dispatch<IColumnsOrderChange>, { boardId }
     ),
 });
 
-export default connect(null, mapDispatchToProps)(Columns);
+export default connect(mapStateToProps, mapDispatchToProps)(Columns);
