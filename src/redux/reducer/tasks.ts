@@ -1,4 +1,4 @@
-import { IBoard, IColumn, ICreatTask, IGetAllTasks, ITask } from 'interfaces';
+import { IBoard, IColumn, ICreatTask, IDeleteTask, IGetAllTasks, ITask } from 'interfaces';
 import {
   CREATE_TASK,
   DELETE_TASK,
@@ -48,5 +48,9 @@ export default createReducer(initialState, (builder) => {
     .addCase(CREATE_TASK + SUCCESS, (state, action) => {
       const { newTask } = <ICreatTask>action;
       newTask && (state.entities[newTask._id] = newTask);
+    })
+    .addCase(DELETE_TASK + SUCCESS, (state, action) => {
+      const { taskId } = <IDeleteTask>action;
+      delete state.entities[taskId];
     });
 });

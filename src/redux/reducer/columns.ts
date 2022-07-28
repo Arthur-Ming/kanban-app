@@ -1,4 +1,13 @@
-import { IBoard, IColumn, ICreatColumn, ICreatTask, IGetAllColumns, ITask } from 'interfaces';
+import {
+  IBoard,
+  IColumn,
+  ICreatColumn,
+  ICreatTask,
+  IDeleteColumn,
+  IDeleteTask,
+  IGetAllColumns,
+  ITask,
+} from 'interfaces';
 import {
   CREATE_COLUMN,
   CREATE_TASK,
@@ -52,8 +61,18 @@ export default createReducer(initialState, (builder) => {
       const { newColumn } = <ICreatColumn>action;
       newColumn && (state.entities[newColumn._id] = newColumn);
     })
+    .addCase(DELETE_COLUMN + SUCCESS, (state, action) => {
+      const { columnId } = <IDeleteColumn>action;
+      delete state.entities[columnId];
+    })
     .addCase(CREATE_TASK + SUCCESS, (state, action) => {
       const { newTask, columnId } = <ICreatTask>action;
       newTask && state.entities[columnId].taskIds.push(newTask._id);
+    })
+    .addCase(DELETE_TASK + SUCCESS, (state, action) => {
+      const { columnId, taskId } = <IDeleteTask>action;
+      state.entities[columnId].taskIds = state.entities[columnId].taskIds.filter(
+        (id) => id !== taskId
+      );
     });
 });

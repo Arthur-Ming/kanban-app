@@ -1,5 +1,5 @@
-import { IBoard, IGetAllBoards, ICreatColumn } from 'interfaces';
-import { LOAD_BOARDS, REQUEST, FAILURE, SUCCESS, CREATE_COLUMN } from '../constants';
+import { IBoard, IGetAllBoards, ICreatColumn, IDeleteColumn } from 'interfaces';
+import { LOAD_BOARDS, REQUEST, FAILURE, SUCCESS, CREATE_COLUMN, DELETE_COLUMN } from '../constants';
 import { arrToMap } from 'utils/arrToMap';
 import { createReducer } from '@reduxjs/toolkit';
 
@@ -34,5 +34,11 @@ export default createReducer(initialState, (builder) => {
     .addCase(CREATE_COLUMN + SUCCESS, (state, action) => {
       const { newColumn, boardId } = <ICreatColumn>action;
       newColumn && state.entities[boardId].columnIds.push(newColumn._id);
+    })
+    .addCase(DELETE_COLUMN + SUCCESS, (state, action) => {
+      const { boardId, columnId } = <IDeleteColumn>action;
+      state.entities[boardId].columnIds = state.entities[boardId].columnIds.filter(
+        (id) => columnId !== id
+      );
     });
 });

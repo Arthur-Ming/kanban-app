@@ -86,7 +86,7 @@ const api: Middleware<Record<string, unknown>, RootState> = () => (next) => asyn
         method: 'DELETE',
       });
 
-      return next({ ...rest, type: type });
+      return next({ ...rest, type: type + SUCCESS });
     }
     default:
       return next(action);
