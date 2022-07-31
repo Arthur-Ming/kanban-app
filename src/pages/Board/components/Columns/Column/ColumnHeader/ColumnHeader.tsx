@@ -1,34 +1,32 @@
 import useColumnTitleEdit from 'hooks/columns/useColumnTitleEdit';
 import { IColumn } from 'interfaces';
-import ColumnControl from '../ColumnControl';
-import ColumnTitleEdit from '../ColumnHeaderEdit';
+import ColumnRemove from '../ColumnRemove';
+import ColumnTitle from '../ColumnTitle';
 import styles from './styles.module.scss';
 
 interface OwnProps {
-  column: IColumn;
+  columnId: string;
   boardId: string;
+  column: IColumn;
 }
 
 type TProps = OwnProps;
 
-const ColumnHeader = ({ column, boardId }: TProps) => {
-  const { newTitle = '', isTitleEdit, setIsTitleEdit, handlers } = useColumnTitleEdit(column);
+const ColumnHeader = ({ columnId, boardId, column }: TProps) => {
+  const { title, isTitleEdit, handlers } = useColumnTitleEdit(column);
+  const { onChange, onSubmit, onKeyDown, onCancel, onClick } = handlers;
   return (
     <div className={styles.container}>
-      {isTitleEdit ? (
-        <ColumnTitleEdit
-          value={newTitle}
-          onChange={handlers.onChange}
-          onSubmit={handlers.onSubmit}
-          onKeyDown={handlers.onKeyDown}
-          onCancel={handlers.onCancel}
-        />
-      ) : (
-        <h3 className={styles.title} onClick={handlers.onClick}>
-          {newTitle}
-        </h3>
-      )}
-      <ColumnControl boardId={boardId} columnId={column._id} setIsTitleEdit={setIsTitleEdit} />
+      <ColumnTitle
+        title={title}
+        isTitleEdit={isTitleEdit}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        onKeyDown={onKeyDown}
+        onCancel={onCancel}
+        onClick={onClick}
+      />
+      <ColumnRemove boardId={boardId} columnId={columnId} />
     </div>
   );
 };

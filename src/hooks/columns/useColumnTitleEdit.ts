@@ -7,8 +7,8 @@ import { ColumnService } from 'utils/services/Column.service';
 export default function (column: IColumn) {
   const { boardId = '' } = useParams();
 
-  const { title, _id: columnId } = column;
-  const [newTitle, setValue] = useState(title);
+  /* const { title, _id: columnId } = column; */
+  const [title, setValue] = useState(column.title);
   const [isTitleEdit, setIsTitleEdit] = useState(false);
 
   const onChange: FormEventHandler<HTMLInputElement> = (e) => {
@@ -27,20 +27,20 @@ export default function (column: IColumn) {
   };
 
   const onSubmit = () => {
-    if (column && newTitle?.trim()) {
+    if (column && title?.trim()) {
       console.log({
-        title: newTitle.trim(),
+        title: title.trim(),
         order: column.order,
       });
     }
-    setValue(newTitle?.trim());
+    setValue(title?.trim());
     setIsTitleEdit(false);
   };
 
   const onClick = () => setIsTitleEdit(true);
 
   return {
-    newTitle,
+    title,
     isTitleEdit,
     setIsTitleEdit,
     handlers: {

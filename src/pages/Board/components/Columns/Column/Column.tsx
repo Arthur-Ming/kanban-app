@@ -22,7 +22,7 @@ const Column = ({ columnId, boardId, column }: TProps) => {
   return (
     <div data-columns-grab-handle className={styles.column} data-column-id={columnId}>
       <div className={styles.wrapper}>
-        {column && <ColumnHeader column={column} boardId={boardId} />}
+        <ColumnHeader column={column} columnId={columnId} boardId={boardId} />
         <Tasks columnId={columnId} boardId={boardId} />
         <CreatTask columnId={columnId} />
       </div>
