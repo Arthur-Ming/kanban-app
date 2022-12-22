@@ -1,29 +1,24 @@
 import { join } from 'path-browserify';
 
-/*
 export const xRoutes = {
-    root: "/",
-    list: {
-        relative: "list",
-        create: {
-            relative: "create",
-            absolute: () =>
-                xRoutes.root +
-                xRoutes.list.relative +
-                xRoutes.list.create.relative,
-        },
-        delete: {
-            relative: "",
-            absolute: (id = ":id") => xRoutes.root + "/list/delete" + id,
-        },
-        update: {
-            relative: "",
-            absolute: (id = ":id") => join(xRoutes.root, "update", id),
-        },
+  root: '/',
+  list: {
+    relative: 'list',
+    create: {
+      relative: 'create',
+      absolute: () => xRoutes.root + xRoutes.list.relative + xRoutes.list.create.relative,
     },
+    delete: {
+      relative: '',
+      absolute: (id = ':id') => xRoutes.root + '/list/delete' + id,
+    },
+    update: {
+      relative: '',
+      absolute: (id = ':id') => join(xRoutes.root, 'update', id),
+    },
+  },
 };
 
-*/
 interface IGetById {
   relative: string;
   absolute: string;

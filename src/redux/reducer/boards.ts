@@ -33,7 +33,7 @@ export default createReducer(initialState, (builder) => {
     })
     .addCase(CREATE_COLUMN + SUCCESS, (state, action) => {
       const { newColumn, boardId } = <ICreatColumn>action;
-      newColumn && state.entities[boardId].columnIds.push(newColumn._id);
+      newColumn && state.entities[boardId].columnIds.push(newColumn.id);
     })
     .addCase(DELETE_COLUMN + SUCCESS, (state, action) => {
       const { boardId, columnId } = <IDeleteColumn>action;

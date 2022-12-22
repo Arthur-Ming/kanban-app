@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  width: 100%;
+  padding: 10px 40px;
+}
+.title{
+  font-size: 20px;
+  line-height: 24px;
+}
+.columns {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+  list-style-type: none;
+  width: fit-content;
+  padding: 0px 20px;
+}

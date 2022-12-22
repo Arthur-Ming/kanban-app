@@ -1,22 +1,33 @@
-export interface IBoard {
-  _id: string;
+export interface IBoardBase {
+  id: string;
   title: string;
   description: string;
+}
+
+export interface IColumnBase {
+  id: string;
+  boardId: string;
+  title: string;
+}
+
+export interface IPopulatedBoard extends IBoardBase {
+  columns: IPopulatedColumn[];
+}
+export interface IBoard extends IBoardBase {
   columnIds: string[];
 }
 
-export interface IColumn {
-  _id: string;
-  boardId: string;
-  title: string;
-  order: number;
+export interface IColumn extends IColumnBase {
   taskIds: string[];
 }
 
+export interface IPopulatedColumn extends IColumnBase {
+  tasks: ITask[];
+}
+
 export interface ITask {
-  _id: string;
+  id: string;
   title: string;
-  order: number;
   description: string;
   boardId: string;
   columnId: string;
@@ -116,6 +127,14 @@ export interface IActionCallApi extends IAction {
   CallAPI: string;
 }
 
+export interface ISetColumnsAction extends IAction {
+  columns: IColumn[];
+}
+
+export interface ISetTasksAction extends IAction {
+  tasks: ITask[];
+}
+
 export interface IGetAllBoards extends IActionCallApi {
   error: unknown | null;
   data: IBoard[] | null;
@@ -142,6 +161,13 @@ export interface IGetAllTasks extends IActionCallApi {
 export interface IColumnsOrderChange extends IActionCallApi {
   boardId: string;
   columnId: string;
+  order: number;
+}
+
+export interface IColumnUpdate extends IActionCallApi {
+  boardId: string;
+  columnId: string;
+  title: string;
   order: number;
 }
 

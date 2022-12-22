@@ -2,8 +2,6 @@ import { ITask, IUpdateTask } from 'interfaces';
 import { FormEventHandler, useState } from 'react';
 import { useParams } from 'react-router';
 import { toast, ToastOptions } from 'react-toastify';
-import { pathRoutes } from 'utils/pathRoutes';
-import { TaskService } from 'utils/services/Task.service';
 
 const toastOption: ToastOptions = {
   position: 'bottom-right',

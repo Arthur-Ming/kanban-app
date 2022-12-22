@@ -2,7 +2,6 @@ import { ITask, IUpdateTask } from 'interfaces';
 import { FormEventHandler, useState } from 'react';
 import { useParams } from 'react-router';
 import { pathRoutes } from 'utils/pathRoutes';
-import { TaskService } from 'utils/services/Task.service';
 
 export default function (task: ITask) {
   const { boardId = '', columnId = '', taskId = '' } = useParams();

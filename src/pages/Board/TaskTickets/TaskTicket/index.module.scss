@@ -1,0 +1,69 @@
+.task {
+  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 #091e4240;
+  cursor: pointer;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 0;
+  color: var(--text-color-gray);
+  transition: background-color 0.3s ease 0s;
+  cursor: pointer;
+  &:hover {
+    background-color: #f4f5f7;
+    .link {
+      color: var(--text-color-dark);
+    }
+    .remove{
+      opacity: 0.9;
+    }
+  }
+  &.dragging {
+    cursor: grab;
+  }
+ 
+}
+
+
+.link {
+  flex-grow: 1;
+  display: block;
+  max-width: 300px;
+  line-height: 32px;
+  text-decoration: none;
+  color: var(--text-color-gray);
+  transition: color 0.3s ease 0s;
+  padding: 0px 8px;
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+
+.remove {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(100% - 30px);
+
+  z-index: 100;
+}
+
+.remove_icon{
+  width: 20px;
+  height: 20px;
+  opacity: 0.4;
+  transition: opacity 0.2s ease 0s;
+   &:hover {
+    opacity: 1;
+    color: var(--text-color-dark);
+  }
+  padding: 3px;
+}
+
+

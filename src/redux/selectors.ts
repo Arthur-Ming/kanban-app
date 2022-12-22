@@ -15,6 +15,8 @@ export const boardLoadingSelector = (state: RootState) => (<IBoardState>state.bo
 export const boardLoadedSelector = (state: RootState) => (<IBoardState>state.board).loaded; */
 
 export const boardByIdSelector = (state: RootState, { boardId = '' }: { boardId?: string }) => {
+  console.log(boardId);
+  console.log(boardsSelector(state));
   return boardsSelector(state)[boardId];
 };
 

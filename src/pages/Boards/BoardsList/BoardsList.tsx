@@ -10,16 +10,14 @@ interface StateProps {
   boards: IBoard[];
 }
 
-const BoardsList = ({ boards }: StateProps) => {
-  return (
-    <div className={styles.container}>
-      {boards.map(({ title, _id: id, description }) => (
-        <BoardCard id={id} description={description} title={title} key={id} />
-      ))}
-      <CreatBoard />
-    </div>
-  );
-};
+const BoardsList = ({ boards }: StateProps) => (
+  <div className={styles.container}>
+    {boards.map(({ title, id, description }) => (
+      <BoardCard id={id} description={description} title={title} key={id} />
+    ))}
+    <CreatBoard />
+  </div>
+);
 
 const mapStateToProps = (state: RootState) => ({
   boards: boardsListSelector(state),

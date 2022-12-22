@@ -34,12 +34,7 @@ body {
   background-color: var(--main-color);
   color: var(--text-color-white);
 }
-* {
-  padding: 0px;
-  margin: 0px;
-  border: 0px;
-  box-sizing: border-box;
-}
+
 *,
 *:before,
 *:after {

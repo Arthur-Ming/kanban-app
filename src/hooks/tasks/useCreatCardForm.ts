@@ -2,11 +2,6 @@ import { useEffectOnce } from 'hooks/useEffectOnce';
 import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { toast, ToastOptions } from 'react-toastify';
-import { creatTask } from 'redux/actions';
-import store from 'redux/store';
-import { pathRoutes } from 'utils/pathRoutes';
-import { TaskService } from 'utils/services/Task.service';
-import { getNewTaskBody } from 'utils/tasksService';
 
 export interface IGetBoardById {
   boardId: string;

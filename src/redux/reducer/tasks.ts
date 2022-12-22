@@ -1,16 +1,7 @@
-import { IBoard, IColumn, ICreatTask, IDeleteTask, IGetAllTasks, ITask } from 'interfaces';
-import {
-  CREATE_TASK,
-  DELETE_TASK,
-  FAILURE,
-  LOAD_COLUMNS,
-  LOAD_TASKS,
-  REQUEST,
-  SUCCESS,
-} from '../constants';
+import { ISetTasksAction, ITask } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
-import { pathRoutes } from 'utils/pathRoutes';
 import { createReducer } from '@reduxjs/toolkit';
+import { SET_TASKS } from 'redux/action-types';
 
 export interface ITasksState {
   loading: {
@@ -33,24 +24,8 @@ const initialState: ITasksState = {
 };
 
 export default createReducer(initialState, (builder) => {
-  builder
-    .addCase(LOAD_TASKS + REQUEST, (state, action) => {
-      const { columnId } = <IGetAllTasks>action;
-      state.loading[columnId] = true;
-    })
-    .addCase(LOAD_TASKS + SUCCESS, (state, action) => {
-      const { data, columnId } = <IGetAllTasks>action;
-      state.loading[columnId] = false;
-      state.loaded[columnId] = true;
-      state.error = null;
-      data && (state.entities = { ...state.entities, ...arrToMap(data) });
-    })
-    .addCase(CREATE_TASK + SUCCESS, (state, action) => {
-      const { newTask } = <ICreatTask>action;
-      newTask && (state.entities[newTask._id] = newTask);
-    })
-    .addCase(DELETE_TASK + SUCCESS, (state, action) => {
-      const { taskId } = <IDeleteTask>action;
-      delete state.entities[taskId];
-    });
+  builder.addCase(SET_TASKS, (state, action) => {
+    const { tasks } = <ISetTasksAction>action;
+    tasks && (state.entities = arrToMap(tasks));
+  });
 });

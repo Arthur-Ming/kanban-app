@@ -10,12 +10,14 @@ import {
   DELETE_COLUMN,
   LOAD_COLUMNS,
   LOAD_TASKS,
+  COLUMNS_TITLE_EDIT,
 } from './constants';
 import { Dispatch } from 'redux';
 import {
   IAction,
   IActionCallApi,
   IColumnsOrderChange,
+  IColumnUpdate,
   ICreatColumn,
   ICreatTask,
   IDeleteColumn,
@@ -74,6 +76,25 @@ export const columnsOrderChange = ({
   CallAPI: `http://localhost:8000/boards/${boardId}/columns/${columnId}`,
   boardId,
   columnId,
+  order,
+});
+
+export const columnUpdate = ({
+  boardId,
+  columnId,
+  title,
+  order,
+}: {
+  boardId: string;
+  columnId: string;
+  title: string;
+  order: number;
+}): IColumnUpdate => ({
+  type: COLUMNS_TITLE_EDIT,
+  CallAPI: `http://localhost:8000/boards/${boardId}/columns/${columnId}`,
+  boardId,
+  columnId,
+  title,
   order,
 });
 

@@ -9,6 +9,7 @@ export const TASKS_ORDER_CHANGE = 'TASKS_ORDER_CHANGE';
 export const CREATE_TASK = 'CREATE_TASK';
 export const DELETE_TASK = 'DELETE_TASK';
 export const COLUMNS_ORDER_CHANGE = 'COLUMNS_ORDER_CHANGE';
+export const COLUMNS_TITLE_EDIT = 'COLUMNS_TITLE_EDIT';
 
 export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';

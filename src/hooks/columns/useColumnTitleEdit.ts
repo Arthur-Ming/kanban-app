@@ -1,10 +1,11 @@
 import { IColumn, IUpdateColumn } from 'interfaces';
 import { FormEventHandler, useState } from 'react';
 import { useParams } from 'react-router';
-import { pathRoutes } from 'utils/pathRoutes';
-import { ColumnService } from 'utils/services/Column.service';
 
-export default function (column: IColumn) {
+export default function (
+  column: IColumn,
+  onColumnTitleEdit: (boardId: string, columnId: string, title: string, order: number) => void
+) {
   const { boardId = '' } = useParams();
 
   /* const { title, _id: columnId } = column; */
@@ -28,10 +29,7 @@ export default function (column: IColumn) {
 
   const onSubmit = () => {
     if (column && title?.trim()) {
-      console.log({
-        title: title.trim(),
-        order: column.order,
-      });
+      //  onColumnTitleEdit(boardId, column.id, title.trim(), column.order);
     }
     setValue(title?.trim());
     setIsTitleEdit(false);
