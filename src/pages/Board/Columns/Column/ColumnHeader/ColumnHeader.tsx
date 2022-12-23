@@ -1,12 +1,10 @@
 import useColumnTitleEdit from 'hooks/columns/useColumnTitleEdit';
 import { IColumn } from 'interfaces';
-
 import { connect } from 'react-redux';
 import { AnyAction, Dispatch } from 'redux';
-import { columnUpdate } from 'redux/actions';
 import ColumnRemove from '../ColumnRemove';
 import ColumnTitle from '../ColumnTitle';
-import styles from './styles.module.scss';
+import styles from './index.module.scss';
 
 interface DispatchProps {
   onColumnTitleEdit: (boardId: string, columnId: string, title: string, order: number) => void;
@@ -32,23 +30,9 @@ const ColumnHeader = ({ column, onColumnTitleEdit }: TProps) => {
         onCancel={onCancel}
         onClick={onClick}
       />
-      {/*  <ColumnRemove boardId={boardId} columnId={columnId} /> */}
+      {/*   <ColumnRemove boardId={column.boardId} columnId={column.id} /> */}
     </div>
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
-  onColumnTitleEdit: (boardId: string, columnId: string, title: string, order: number) =>
-    dispatch(
-      columnUpdate({
-        boardId,
-        columnId,
-        title,
-        order,
-      })
-    ),
-});
-
-export default connect(null, mapDispatchToProps)(ColumnHeader);
-
-//export default ColumnHeader;
+export default ColumnHeader;

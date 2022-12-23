@@ -4,7 +4,7 @@ import RemoveTask from './RemoveTask';
 import styles from './index.module.scss';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { taskByIdSelector } from 'redux/selectors';
+import { taskByIdSelector } from 'redux/selectors/tasks';
 import { RootState } from 'redux/reducer';
 
 type StateProps = {
@@ -22,7 +22,7 @@ const TaskTicket = ({ task }: Props) => (
     <Link to={routes.tasks.content.absolute(task.columnId, task.id)} className={styles.link}>
       {task?.title}
     </Link>
-    <RemoveTask task={task} />
+    {/*  <RemoveTask task={task} /> */}
   </li>
 );
 

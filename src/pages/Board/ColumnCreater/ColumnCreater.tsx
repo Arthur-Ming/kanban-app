@@ -18,7 +18,7 @@ const ColumnCreater = () => {
   return (
     <div className={styles.box}>
       <Routes>
-        <Route path="creat-column" element={<CreatColumnForm boardId={boardId} />} />
+        {/*    <Route path="creat-column" element={<CreatColumnForm boardId={boardId} />} /> */}
         <Route
           path="/*"
           element={

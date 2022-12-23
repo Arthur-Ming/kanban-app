@@ -1,4 +1,4 @@
-import { ITask, IUpdateTask } from 'interfaces';
+import { ITask } from 'interfaces';
 import { FormEventHandler, useState } from 'react';
 import { useParams } from 'react-router';
 import { toast, ToastOptions } from 'react-toastify';

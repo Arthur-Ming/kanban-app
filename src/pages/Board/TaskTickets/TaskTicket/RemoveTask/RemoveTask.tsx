@@ -2,11 +2,10 @@ import ConfirmPopup from 'components/ConfirmPopup';
 import Modal from 'components/Modal';
 import useRemoveTask from 'hooks/tasks/useRemoveTask';
 import { useLanguage } from 'hooks/useLanguage';
-import { IDeleteTask, ITask, ITEXT } from 'interfaces';
+import { ITask, ITEXT } from 'interfaces';
 import { AiFillDelete as RemoveIcon } from 'react-icons/ai';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { deleteTask } from 'redux/actions';
 import styles from '../index.module.scss';
 
 const TEXT_REMOVE_TASK: ITEXT = {
@@ -53,15 +52,4 @@ const RemoveTask = ({ task, onDelete }: Props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<IDeleteTask>) => ({
-  onDelete: (boardId: string, columnId: string, taskId: string) =>
-    dispatch(
-      deleteTask({
-        boardId,
-        columnId,
-        taskId,
-      })
-    ),
-});
-
-export default connect(null, mapDispatchToProps)(RemoveTask);
+export default RemoveTask;

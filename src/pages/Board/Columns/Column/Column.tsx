@@ -5,7 +5,7 @@ import TaskTickets from '../../TaskTickets';
 import ColumnHeader from './ColumnHeader';
 import { connect } from 'react-redux';
 import { RootState } from 'redux/reducer';
-import { columnByIdSelector } from 'redux/selectors';
+import { columnByIdSelector } from 'redux/selectors/columns';
 
 type StateProps = {
   column: IColumn;
@@ -19,7 +19,7 @@ type Props = StateProps & OwnProps;
 
 const Column = ({ column }: Props) => (
   <div className={styles.box}>
-    <ColumnHeader column={column} />
+    {/*  <ColumnHeader column={column} /> */}
     <TaskTickets taskIds={column.taskIds} />
     <CreatTask columnId={column.id} />
   </div>

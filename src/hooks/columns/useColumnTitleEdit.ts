@@ -1,4 +1,4 @@
-import { IColumn, IUpdateColumn } from 'interfaces';
+import { IColumn } from 'interfaces';
 import { FormEventHandler, useState } from 'react';
 import { useParams } from 'react-router';
 

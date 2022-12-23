@@ -3,10 +3,9 @@ import { AiFillDelete as RemoveIcon } from 'react-icons/ai';
 import { Dispatch } from 'react';
 import Modal from 'components/Modal';
 import ConfirmPopup from 'components/ConfirmPopup';
-import { IDeleteColumn, ITEXT } from 'interfaces';
+import { ITEXT } from 'interfaces';
 import { useLanguage } from 'hooks/useLanguage';
 import { connect } from 'react-redux';
-import { deleteColumn } from 'redux/actions';
 import useColumnRemove from 'hooks/columns/useColumnRemove';
 
 const TEXT_COLUMN_CONTROL: ITEXT = {
@@ -51,14 +50,4 @@ const ColumnRemove = ({ columnId, deleteColumn }: TProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<IDeleteColumn>, props: OwnProps) => ({
-  deleteColumn: () =>
-    dispatch(
-      deleteColumn({
-        boardId: props.boardId,
-        columnId: props.columnId,
-      })
-    ),
-});
-
-export default connect(null, mapDispatchToProps)(ColumnRemove);
+export default ColumnRemove;

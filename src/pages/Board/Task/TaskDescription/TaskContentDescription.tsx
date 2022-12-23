@@ -4,7 +4,7 @@ import { ITask, ITEXT } from 'interfaces';
 import { IoMdList as DescriptionIcon } from 'react-icons/io';
 import styles from '../styles.module.scss';
 import TaskContentDescriptionEdit from './TaskContentDescriptionEdit';
-import { taskByIdSelector } from 'redux/selectors';
+import { taskByIdSelector } from 'redux/selectors/tasks';
 import { RootState } from 'redux/reducer';
 import { connect } from 'react-redux';
 

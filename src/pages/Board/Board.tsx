@@ -1,11 +1,12 @@
 import Loader from 'components/Loader';
+import { IBoard } from 'interfaces';
 import NotFound from 'pages/NotFound';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Route, Routes, useParams } from 'react-router';
-import { getBoardById } from 'redux/actions/boards';
+import { getBoardById } from 'redux/actions/board';
 import { RootState } from 'redux/reducer';
-import { boardsLoadingSelector, boardsLoadedSelector } from 'redux/selectors';
+import { boardLoadingSelector, boardLoadedSelector, boardSelector } from 'redux/selectors/board';
 import { routes } from 'utils/routes';
 import BoardContent from './BoardContent';
 import Task from './Task';
@@ -17,13 +18,13 @@ interface DispatchProps {
 interface StateProps {
   isBoardloading: boolean;
   isBoardloaded: boolean;
+  board: IBoard | null;
 }
 
 type Props = DispatchProps & StateProps;
 
-const Board = ({ getBoardById, isBoardloading, isBoardloaded }: Props) => {
+const Board = ({ board, getBoardById, isBoardloading, isBoardloaded }: Props) => {
   const { boardId, taskId = null } = useParams();
-
   useEffect(() => {
     if (boardId) {
       getBoardById(boardId);
@@ -33,10 +34,11 @@ const Board = ({ getBoardById, isBoardloading, isBoardloaded }: Props) => {
   if (!boardId) return <NotFound />;
   if (isBoardloading) return <Loader />;
   if (!isBoardloaded) return <div>No data</div>;
+  if (!board) return <div>No data</div>;
 
   return (
     <>
-      <BoardContent boardId={boardId} />
+      <BoardContent board={board} />
       <Routes>
         {taskId && <Route path={routes.tasks.content.absolute()} element={<Task />} />}
       </Routes>
@@ -45,8 +47,9 @@ const Board = ({ getBoardById, isBoardloading, isBoardloaded }: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  isBoardloading: boardsLoadingSelector(state),
-  isBoardloaded: boardsLoadedSelector(state),
+  isBoardloading: boardLoadingSelector(state),
+  isBoardloaded: boardLoadedSelector(state),
+  board: boardSelector(state),
 });
 
 const mapDispatchToProps = {

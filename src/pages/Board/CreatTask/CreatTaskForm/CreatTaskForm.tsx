@@ -1,8 +1,7 @@
 import useCreatCardForm from 'hooks/tasks/useCreatCardForm';
 import Textarea from 'components/Textarea';
-import { ICreatTask, ITEXT } from 'interfaces';
+import { ITEXT } from 'interfaces';
 import { useLanguage } from 'hooks/useLanguage';
-import { creatTask } from 'redux/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'react';
 
@@ -45,15 +44,4 @@ const CreatCardForm = ({ creatTask }: TProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ICreatTask>, props: OwnProps) => ({
-  creatTask: (title: string) =>
-    dispatch(
-      creatTask({
-        boardId: props.boardId,
-        columnId: props.columnId,
-        title,
-      })
-    ),
-});
-
-export default connect(null, mapDispatchToProps)(CreatCardForm);
+export default CreatCardForm;
