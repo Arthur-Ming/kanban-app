@@ -1,14 +1,11 @@
 import { RootState } from '../store';
 import { IBoardState } from '../reducer/board';
+import { selector, Selector } from '.';
 
-export const boardSelector = (state: RootState) => {
-  return (<IBoardState>state.board).entitie;
-};
+const boardStateSelector: Selector<IBoardState> = (state, field) => selector(state, 'board')[field];
 
-export const boardLoadingSelector = (state: RootState) => {
-  return (<IBoardState>state.board).loading;
-};
+export const boardSelector = (state: RootState) => boardStateSelector(state, 'entitie');
 
-export const boardLoadedSelector = (state: RootState) => {
-  return (<IBoardState>state.board).loaded;
-};
+export const boardLoadingSelector = (state: RootState) => boardStateSelector(state, 'loading');
+
+export const boardLoadedSelector = (state: RootState) => boardStateSelector(state, 'loaded');

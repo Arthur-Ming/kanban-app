@@ -1,15 +1,18 @@
 import { createSelector } from 'reselect';
 import { RootState } from '../store';
 import { IBoardsState } from '../reducer/boards';
+import { selector, Selector } from '.';
 
-const boardsSelector = (state: RootState) => (<IBoardsState>state.boards).entities;
+const boardsStateSelector: Selector<IBoardsState> = (state, field) =>
+  selector(state, 'boards')[field];
+
+const boardsSelector = (state: RootState) => boardsStateSelector(state, 'entities');
 
 export const boardsListSelector = createSelector(boardsSelector, Object.values);
 
-export const boardsLoadingSelector = (state: RootState) => (<IBoardsState>state.boards).loading;
+export const boardsLoadingSelector = (state: RootState) => boardsStateSelector(state, 'loading');
 
-export const boardsLoadedSelector = (state: RootState) => (<IBoardsState>state.boards).loaded;
+export const boardsLoadedSelector = (state: RootState) => boardsStateSelector(state, 'loaded');
 
-export const boardByIdSelector = (state: RootState, { boardId = '' }: { boardId?: string }) => {
-  return boardsSelector(state)[boardId];
-};
+export const boardByIdSelector = (state: RootState, { boardId }: { boardId: string }) =>
+  boardsSelector(state)[boardId];
