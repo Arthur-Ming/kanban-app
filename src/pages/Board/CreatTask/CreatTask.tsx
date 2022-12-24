@@ -24,12 +24,12 @@ const CreatTask = ({ columnId }: TProps) => {
 
   return (
     <Routes>
-      {/*   {columnId === id && (
+      {columnId === id && (
         <Route
           path={routes.tasks.creat.absolute()}
           element={<CreatTaskForm boardId={boardId} columnId={id} />}
         />
-      )} */}
+      )}
       <Route
         path="/*"
         element={

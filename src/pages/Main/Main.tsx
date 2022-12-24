@@ -2,7 +2,7 @@ import s from './style.module.scss';
 import { useLanguage } from 'hooks/useLanguage';
 import NotFound from 'pages/NotFound';
 import Loader from 'components/Loader';
-import BoardsList from '../Boards/BoardsList';
+import BoardTickets from '../Boards/BoardTickets';
 
 interface ILANG {
   [key: string]: string;

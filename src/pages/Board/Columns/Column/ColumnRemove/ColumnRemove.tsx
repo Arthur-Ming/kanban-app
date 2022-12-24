@@ -1,12 +1,9 @@
 import styles from './styles.module.scss';
 import { AiFillDelete as RemoveIcon } from 'react-icons/ai';
-import { Dispatch } from 'react';
 import Modal from 'components/Modal';
 import ConfirmPopup from 'components/ConfirmPopup';
 import { ITEXT } from 'interfaces';
 import { useLanguage } from 'hooks/useLanguage';
-import { connect } from 'react-redux';
-import useColumnRemove from 'hooks/columns/useColumnRemove';
 
 const TEXT_COLUMN_CONTROL: ITEXT = {
   title: {
@@ -31,13 +28,10 @@ type OwnProps = {
 type TProps = DispatchProps & OwnProps;
 
 const ColumnRemove = ({ columnId, deleteColumn }: TProps) => {
-  const { isRemove, handlers } = useColumnRemove();
-  const lang = useLanguage();
-
   return (
     <div className={styles.container} data-id={columnId}>
-      <RemoveIcon className={styles.remove} onClick={handlers.onRemoveClick} />
-      {isRemove && (
+      <RemoveIcon className={styles.remove} />
+      {/*  {isRemove && (
         <Modal handleClickOutside={handlers.onCancelClick}>
           <ConfirmPopup
             title={TEXT_COLUMN_CONTROL.remove[lang]}
@@ -45,7 +39,7 @@ const ColumnRemove = ({ columnId, deleteColumn }: TProps) => {
             onRightClick={deleteColumn}
           />
         </Modal>
-      )}
+      )} */}
     </div>
   );
 };

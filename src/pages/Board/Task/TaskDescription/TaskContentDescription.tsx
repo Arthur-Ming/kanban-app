@@ -1,5 +1,4 @@
 import { useLanguage } from 'hooks/useLanguage';
-import useTaskDescriptionEdit from 'hooks/tasks/useTaskDescriptionEdit';
 import { ITask, ITEXT } from 'interfaces';
 import { IoMdList as DescriptionIcon } from 'react-icons/io';
 import styles from '../styles.module.scss';
@@ -25,15 +24,13 @@ interface IProps {
 }
 
 const TaskContentDescription = ({ task }: IProps) => {
-  const { newDescription, isEdit, handlers } = useTaskDescriptionEdit(task);
-
   const lang = useLanguage();
 
   return (
     <section className={styles.description}>
       <DescriptionIcon className={styles.icon} />
       <h3 className={styles.subtitle}>{TEXT_TASK_CONTENT_DESCRIPTION.title[lang]}</h3>
-      {isEdit ? (
+      {/* {isEdit ? (
         <TaskContentDescriptionEdit
           value={newDescription}
           placeholder={TEXT_TASK_CONTENT_DESCRIPTION.defaultDescription[lang]}
@@ -48,7 +45,7 @@ const TaskContentDescription = ({ task }: IProps) => {
             ? TEXT_TASK_CONTENT_DESCRIPTION.defaultDescription[lang]
             : newDescription}
         </div>
-      )}
+      )} */}
     </section>
   );
 };

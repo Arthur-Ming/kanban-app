@@ -1,9 +1,5 @@
-import useCreatCardForm from 'hooks/tasks/useCreatCardForm';
-import Textarea from 'components/Textarea';
 import { ITEXT } from 'interfaces';
 import { useLanguage } from 'hooks/useLanguage';
-import { connect } from 'react-redux';
-import { Dispatch } from 'react';
 
 const TEXT_CREAT_CARD_FORM: ITEXT = {
   placeholder: {
@@ -27,11 +23,9 @@ interface OwnProps {
 type TProps = DispatchProps & OwnProps;
 
 const ColumnCreaterForm = ({ creatColumn }: TProps) => {
-  const { handlers, textareaEl, isDisabled } = useCreatCardForm(creatColumn);
-  const lang = useLanguage();
-
   return (
-    <Textarea
+    <div>ColumnCreaterForm</div>
+    /*  <Textarea
       onSubmit={handlers.onSubmit}
       onKeyDown={handlers.onKeyDown}
       onCloseClick={handlers.onCloseClick}
@@ -39,7 +33,7 @@ const ColumnCreaterForm = ({ creatColumn }: TProps) => {
       buttonTitle={TEXT_CREAT_CARD_FORM.button[lang]}
       placeholder={TEXT_CREAT_CARD_FORM.placeholder[lang]}
       isDisabled={isDisabled}
-    />
+    /> */
   );
 };
 

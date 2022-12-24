@@ -1,0 +1,44 @@
+.input{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background-color: #ebecf0;
+  box-shadow: 0 1px 1px #5e6c84;
+  border: 1px solid #0079bf;
+ 
+  font-size: 16px;
+  line-height: 20px;
+  outline: none;
+  color: #364765;
+  &:focus {
+    border-color: #0079bf;
+  }
+  &::placeholder {
+    opacity: 0.5;
+  }
+}
+
+.textarea {
+  width: 100%;
+  height: 80px;
+  box-sizing: border-box;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  padding: 0;
+  resize: none;
+  white-space: pre-line;
+  padding: 6px 12px;
+  background-color: #ebecf0;
+  box-shadow: 0 1px 1px #5e6c84;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #364765;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #0079bf;
+  &:disabled {
+    opacity: 0.5;
+  }
+}

@@ -1,6 +1,5 @@
 import ConfirmPopup from 'components/ConfirmPopup';
 import Modal from 'components/Modal';
-import useRemoveTask from 'hooks/tasks/useRemoveTask';
 import { useLanguage } from 'hooks/useLanguage';
 import { ITask, ITEXT } from 'interfaces';
 import { AiFillDelete as RemoveIcon } from 'react-icons/ai';
@@ -22,12 +21,7 @@ interface Props {
 
 const RemoveTask = ({ task, onDelete }: Props) => {
   const lang = useLanguage();
-  const { isRemove, onLabelClick, onClickOutside, onOkClick, onCanselClick } = useRemoveTask(
-    task.columnId,
-    task.id,
-    onDelete
-  );
-
+  const isRemove = false;
   return (
     <div
       className={styles.remove}
@@ -40,11 +34,11 @@ const RemoveTask = ({ task, onDelete }: Props) => {
         /* onClick={onLabelClick} */
       />
       {isRemove && (
-        <Modal handleClickOutside={onClickOutside}>
+        <Modal handleClickOutside={() => console.log(' onCanselClick')}>
           <ConfirmPopup
             title={TEXT_REMOVE_TASK.title[lang]}
-            onLeftClick={onCanselClick}
-            onRightClick={onOkClick}
+            onLeftClick={() => console.log(' onCanselClick')}
+            onRightClick={() => console.log(' onCanselClick')}
           />
         </Modal>
       )}

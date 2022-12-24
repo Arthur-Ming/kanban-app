@@ -6,10 +6,13 @@ import Board from 'pages/Board';
 import { routes } from 'utils/routes';
 import ColumnCreater from 'pages/Board/ColumnCreater';
 import Boards from 'pages/Boards';
+import BoardCreater from 'pages/Boards/BoardCreater';
 
 const AppRoutes = () => (
   <Routes>
-    <Route path={'/boards'} element={<Boards />} />
+    <Route path={'/boards/*'} element={<Boards />}>
+      <Route path="create-board" element={<BoardCreater />} />
+    </Route>
     <Route path={`/boards/:boardId/*`} element={<Board />}>
       <Route path="creat-column" element={<ColumnCreater />} />
       <Route path={routes.tasks.creat.absolute()} element={<CreatTask />} />

@@ -1,9 +1,5 @@
-import useCreatCardForm from 'hooks/tasks/useCreatCardForm';
-import Textarea from 'components/Textarea';
 import { ITEXT } from 'interfaces';
 import { useLanguage } from 'hooks/useLanguage';
-import { connect } from 'react-redux';
-import { Dispatch } from 'react';
 
 const TEXT_CREAT_CARD_FORM: ITEXT = {
   placeholder: {
@@ -15,24 +11,22 @@ const TEXT_CREAT_CARD_FORM: ITEXT = {
     ru: 'Добавить карточку',
   },
 };
-
+/* 
 interface DispatchProps {
   creatTask: (title: string) => void;
-}
+} */
 
 interface OwnProps {
   boardId: string;
   columnId: string;
 }
 
-type TProps = DispatchProps & OwnProps;
+type TProps = /* DispatchProps & */ OwnProps;
 
-const CreatCardForm = ({ creatTask }: TProps) => {
-  const { handlers, textareaEl, isDisabled } = useCreatCardForm(creatTask);
-  const lang = useLanguage();
-
+const CreatCardForm = ({ boardId, columnId }: TProps) => {
   return (
-    <Textarea
+    <div>CreatCardForm</div>
+    /*   <Textarea
       onSubmit={handlers.onSubmit}
       onKeyDown={handlers.onKeyDown}
       onCloseClick={handlers.onCloseClick}
@@ -40,7 +34,7 @@ const CreatCardForm = ({ creatTask }: TProps) => {
       buttonTitle={TEXT_CREAT_CARD_FORM.button[lang]}
       placeholder={TEXT_CREAT_CARD_FORM.placeholder[lang]}
       isDisabled={isDisabled}
-    />
+    /> */
   );
 };
 

@@ -22,6 +22,10 @@ const TaskTicket = ({ task }: Props) => (
     <Link to={routes.tasks.content.absolute(task.columnId, task.id)} className={styles.link}>
       {task?.title}
     </Link>
+    {
+      //TaskTicketContent
+      //TaskRemover
+    }
     {/*  <RemoveTask task={task} /> */}
   </li>
 );

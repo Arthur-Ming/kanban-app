@@ -1,0 +1,31 @@
+.box {
+  position: relative;
+  width: 220px;
+  height: 140px;
+  padding: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  background: var(--main-color-light);
+   &:hover {
+    box-shadow: 5px 5px 19px -5px rgba(13, 24, 32, 0.81);
+  }
+}
+.link {
+  display: flex;
+  flex-direction: column;
+
+}
+.title {
+  font-size: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--text-color-title);
+}
+.description {
+  letter-spacing: 1.2px;
+  font-size: 16px;
+  overflow: hidden;
+  line-height: 20px;
+  color: var(--text-color-title);
+}

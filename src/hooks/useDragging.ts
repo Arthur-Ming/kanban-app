@@ -1,5 +1,4 @@
-import { RefObject } from 'react';
-import { useEffectOnce } from './useEffectOnce';
+import { RefObject, useEffect } from 'react';
 
 class DraggingControl {
   private shiftX = 0;
@@ -186,7 +185,7 @@ class DraggingControl {
 }
 
 export function useDragging(draggableContainerRef: RefObject<HTMLDivElement>) {
-  useEffectOnce(() => {
+  useEffect(() => {
     console.log('useEffect');
     const draggableContainerEL: HTMLDivElement | null = draggableContainerRef.current;
     draggableContainerEL && new DraggingControl({ elem: draggableContainerEL });
