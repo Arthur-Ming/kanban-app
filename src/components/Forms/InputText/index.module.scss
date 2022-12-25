@@ -1,40 +1,40 @@
 .label {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 5px;
-    position: relative;
-    cursor: pointer;
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  position: relative;
+  cursor: pointer;
+}
 
-.input{
-    width: 100%;
-    box-sizing: border-box;
-    padding: 6px 16px;
-    border-radius: 8px;
-    background-color: #ebecf0;
-    box-shadow: 0 1px 1px #5e6c84;
-    border: 1px solid #0079bf;
-    font-size: 16px;
-    line-height: 20px;
-    outline: none;
-    color: #364765;
-    &:focus {
-      border-color: #0079bf;
-    }
-    &::placeholder {
-      opacity: 0.5;
-    }
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background-color: #ebecf0;
+  box-shadow: 0 1px 1px #5e6c84;
+  border: 1px solid #0079bf;
+  font-size: 16px;
+  line-height: 20px;
+  outline: none;
+  color: #364765;
+  &:focus {
+    border-color: #0079bf;
   }
+  &::placeholder {
+    opacity: 0.5;
+  }
+}
 
-  .invalid_text {
-    position: absolute;
-    top: calc(100% + 2px);
-    left: 5px;
-    font-size: 14px;
-    color: red;
-  }
-  
-  .invalid {
-    border-color: red;
-  }
+.invalid_text {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 5px;
+  font-size: 14px;
+  color: red;
+}
+
+.invalid {
+  border-color: red;
+}

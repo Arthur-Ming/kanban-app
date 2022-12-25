@@ -82,7 +82,7 @@
   height: 32px;
   line-height: 24px;
 }
-.header_title{
+.header_title {
   font-size: 20px;
   line-height: 25px;
   height: 33px;
@@ -96,7 +96,7 @@
   width: calc(100% - 40px);
   border-radius: 3px;
   transition: all 0.3s ease 0s;
-  &:hover{
+  &:hover {
     background-color: var(--dark-button-hover);
     color: var(--text-color-dark);
   }

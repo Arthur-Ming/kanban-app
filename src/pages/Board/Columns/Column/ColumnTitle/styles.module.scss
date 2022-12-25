@@ -6,7 +6,7 @@
   justify-content: space-between;
   cursor: pointer;
   &:hover {
-   .edit{
+    .edit {
       opacity: 1;
       color: $text-color-dark;
     }
@@ -26,7 +26,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.edit{
+.edit {
   color: $text-color-gray;
   width: 22px;
   height: 22px;
@@ -36,5 +36,3 @@
   cursor: pointer;
   padding: 3px;
 }
-
-
