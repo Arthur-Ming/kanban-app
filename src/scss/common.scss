@@ -1,29 +1,4 @@
-@import '~normalize.css/normalize.css';
-
-:root {
-  --main-color: #0079bf;
-  --main-color-light: #308bc1;
-  --main-color-light-hover: #4c94bd;
-  --main-color-dark: #0066a0;
-
-  --header-color: #3f51b5;
-
-  --column-background: #ebecf0;
-  --task-background: #fff;
-  --task-content-background: #f4f5f7;
-
-  --success-color: rgb(53, 177, 111);
-  --error-color: rgb(230, 117, 117);
-
-  --text-color-white: #fff;
-  --text-color-title: rgb(220, 223, 245);
-  --text-color-white-hover: rgb(220, 223, 245);
-
-  --text-color-dark: #364765;
-  --text-color-gray: #5e6c84;
-  --bottom-border-task-color: #b3b6bd;
-  --dark-button-hover: #d9dbe2;
-}
+@import './variables.scss';
 
 body {
   margin: 0;
