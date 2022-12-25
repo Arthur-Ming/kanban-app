@@ -1,4 +1,4 @@
-import CreaterLabel from 'pages/Board/CreatTask/CreaterLabel';
+import CreaterLabel from 'components/CreaterLabel';
 import { Link } from 'react-router-dom';
 import styles from './index.module.scss';
 

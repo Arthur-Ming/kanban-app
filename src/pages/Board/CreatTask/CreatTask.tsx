@@ -3,7 +3,7 @@ import { ITEXT } from 'interfaces';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import { routes } from 'utils/routes';
 import CreatTaskForm from './CreatTaskForm';
-import CreaterLabel from './CreaterLabel';
+import CreaterLabel from '../../../components/CreaterLabel';
 
 const TEXT_CREAT_CARD: ITEXT = {
   label: {

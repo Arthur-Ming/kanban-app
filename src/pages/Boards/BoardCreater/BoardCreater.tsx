@@ -1,3 +1,4 @@
+import InputButton from 'components/Forms/InputButton/InputButton';
 import InputText from 'components/Forms/InputText';
 import Textarea from 'components/Forms/Textarea';
 import { useForm } from 'react-hook-form';
@@ -17,7 +18,7 @@ const BoardCreater = () => {
   } = useForm<Inputs>();
   const onSubmit = (data: Inputs) => console.log(data);
   return (
-    <div>
+    <div className={styles.box}>
       <h4>Создать доску</h4>
       <form>
         <InputText<Inputs>
@@ -29,20 +30,13 @@ const BoardCreater = () => {
         />
         <Textarea error={errors.title} register={register} name="description" label="Описание" />
         <div className={styles.buttons}>
-          <input
+          <InputButton
             disabled={false}
-            onClick={handleSubmit(onSubmit)}
-            className={styles.button}
             type="submit"
             value="Готово"
+            onClick={handleSubmit(onSubmit)}
           />
-          <input
-            disabled={false}
-            type="button"
-            value="Очистить"
-            onClick={() => reset()}
-            className={styles.button}
-          />
+          <InputButton disabled={false} type="button" value="Очистить" onClick={() => reset()} />
         </div>
       </form>
     </div>

@@ -2,7 +2,7 @@ import { useLanguage } from 'hooks/useLanguage';
 import { ITEXT } from 'interfaces';
 import { Route, Routes, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import CreaterLabel from '../CreatTask/CreaterLabel';
+import CreaterLabel from '../../../components/CreaterLabel';
 import CreatColumnForm from './ColumnCreaterForm';
 import styles from './index.module.scss';
 
