@@ -12,9 +12,5 @@ export const boardsListSelector = createSelector(boardsSelector, Object.values);
 
 export const boardIdsSelector = createSelector(boardsSelector, Object.keys);
 
-export const boardsLoadingSelector = (state: RootState) => boardsStateSelector(state, 'loading');
-
-export const boardsLoadedSelector = (state: RootState) => boardsStateSelector(state, 'loaded');
-
 export const boardByIdSelector = (state: RootState, { boardId }: { boardId: string }) =>
   boardsSelector(state)[boardId];

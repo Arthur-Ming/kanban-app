@@ -1,16 +1,25 @@
 //import { apiRoutes } from '../../utils/apiRoutes';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { ADD_BOARD, FAILURE, LOAD_BOARDS, REQUEST, SUCCESS } from '../action-types';
-import { ICreateBoardBody } from 'interfaces';
+import {
+  ADD_BOARD,
+  FAILURE,
+  FETCH,
+  LOAD_BOARDS,
+  REQUEST,
+  SET_BOARDS,
+  SUCCESS,
+} from '../action-types';
+import { ICreateBoardBody, IRequestAction } from 'interfaces';
 
 export const getBoards = () => async (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-  dispatch({ type: LOAD_BOARDS + REQUEST });
+  dispatch({ type: FETCH + REQUEST, resource: 'boards' });
 
   try {
     const data = await fetch('http://localhost:8000/boards');
     const res = await data.json();
-    dispatch({ type: LOAD_BOARDS + SUCCESS, data: res });
+    dispatch({ type: SET_BOARDS, data: res });
+    dispatch({ type: FETCH + SUCCESS, resource: 'boards' });
   } catch (err: unknown) {
     if (err instanceof Error) {
       dispatch({ type: LOAD_BOARDS + FAILURE, error: err.message });

@@ -49,6 +49,11 @@ export interface IActionCallApi extends IAction {
   CallAPI: string;
 }
 
+export interface IRequestAction extends IAction {
+  resource: string;
+  error: unknown | null;
+}
+
 export interface ISetColumnsAction extends IAction {
   columns: IColumn[];
 }
@@ -58,8 +63,7 @@ export interface ISetTasksAction extends IAction {
 }
 
 export interface IGetAllBoards extends IAction {
-  error: unknown | null;
-  data: IBoard[] | null;
+  data: IBoard[];
 }
 
 export interface IGetBoardByIdAction extends IAction {
