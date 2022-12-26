@@ -1,0 +1,19 @@
+.remove {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(100% - 30px);
+  z-index: 100;
+}
+
+.remove_icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.4;
+  transition: opacity 0.2s ease 0s;
+  &:hover {
+    opacity: 1;
+    color: var(--text-color-dark);
+  }
+  padding: 3px;
+}

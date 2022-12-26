@@ -17,8 +17,8 @@ const InputText = <T extends FieldValues>({
   label = '',
   defaultValue,
 }: Props<T>) => (
-  <label className={styles.label}>
-    <span>{label}</span>
+  <label className={styles.box}>
+    <span className={styles.label}>{label}</span>
     <input
       className={classNames(styles.input, {
         [styles.invalid]: error,

@@ -66,3 +66,13 @@ export interface IGetBoardByIdAction extends IAction {
   error: unknown | null;
   data: IBoard | null;
 }
+
+export interface ICreateBoard extends IAction {
+  error: unknown | null;
+  data: IBoard | null;
+}
+
+export interface ICreateBoardBody {
+  title: string;
+  description: string;
+}

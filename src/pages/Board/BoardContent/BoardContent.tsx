@@ -1,7 +1,7 @@
 import styles from './index.module.scss';
 import Columns from '../Columns';
 import { IBoard } from 'interfaces';
-import ColumnCreater from '../ColumnCreater';
+import ColumnCreation from '../ColumnCreation';
 
 type Props = {
   board: IBoard;
@@ -12,7 +12,7 @@ const BoardContent = ({ board }: Props) => (
     <h4 className={styles.title}>{board?.title}</h4>
     <div className={styles.columns}>
       {board && <Columns columnIds={board.columnIds} />}
-      <ColumnCreater />
+      <ColumnCreation />
     </div>
   </div>
 );

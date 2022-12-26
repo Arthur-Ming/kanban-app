@@ -4,7 +4,7 @@ import styles from './index.module.scss';
 import { RootState } from 'redux/reducer';
 import { boardByIdSelector } from 'redux/selectors/boards';
 import { connect } from 'react-redux';
-import BoardRemover from 'pages/Boards/BoardRemover';
+import BoardRemoval from 'pages/Boards/BoardRemoval';
 
 type StateProps = {
   board: IBoard;
@@ -22,7 +22,7 @@ const BoardTicket = ({ board }: Props) => (
       <span className={styles.title}>{board.title}</span>
       <span className={styles.description}>{board.description}</span>
     </Link>
-    <BoardRemover boardId={board.id} />
+    <BoardRemoval boardId={board.id} />
   </div>
 );
 

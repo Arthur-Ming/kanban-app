@@ -3,7 +3,7 @@ import { ITEXT } from 'interfaces';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import { routes } from 'utils/routes';
 import CreatTaskForm from './CreatTaskForm';
-import CreaterLabel from '../../../components/CreaterLabel';
+import CreaterLabel from '../../../components/CreationLabel';
 
 const TEXT_CREAT_CARD: ITEXT = {
   label: {
@@ -18,7 +18,7 @@ interface OwnProps {
 
 type TProps = OwnProps;
 
-const CreatTask = ({ columnId }: TProps) => {
+const TaskCreation = ({ columnId }: TProps) => {
   const { boardId = '', columnId: id = '' } = useParams();
   const lang = useLanguage();
 
@@ -42,4 +42,4 @@ const CreatTask = ({ columnId }: TProps) => {
   );
 };
 
-export default CreatTask;
+export default TaskCreation;

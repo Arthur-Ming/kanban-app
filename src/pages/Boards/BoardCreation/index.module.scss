@@ -1,0 +1,16 @@
+.box {
+  background-color: #ebecf0;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  &:hover {
+    background-color: #f4f5f7;
+  }
+}
+
+.title {
+  margin: 0;
+  color: var(--text-color-gray);
+}

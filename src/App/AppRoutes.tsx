@@ -1,21 +1,21 @@
 import { Routes, Route, Navigate } from 'react-router';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
-import CreatTask from 'pages/Board/CreatTask';
+import TaskCreation from 'pages/Board/TaskCreation';
 import Task from 'pages/Board/Task';
 import Board from 'pages/Board';
 import { routes } from 'utils/routes';
-import ColumnCreater from 'pages/Board/ColumnCreater';
+import ColumnCreation from 'pages/Board/ColumnCreation';
 import Boards from 'pages/Boards';
-import BoardCreater from 'pages/Boards/BoardCreater';
+import BoardCreation from 'pages/Boards/BoardCreation';
 
 const AppRoutes = () => (
   <Routes>
     <Route path={'/boards/*'} element={<Boards />}>
-      <Route path="create-board" element={<BoardCreater />} />
+      <Route path="create-board" element={<BoardCreation />} />
     </Route>
     <Route path={`/boards/:boardId/*`} element={<Board />}>
-      <Route path="creat-column" element={<ColumnCreater />} />
-      <Route path={routes.tasks.creat.absolute()} element={<CreatTask />} />
+      <Route path="creat-column" element={<ColumnCreation />} />
+      <Route path={routes.tasks.creat.absolute()} element={<TaskCreation />} />
       <Route path={routes.tasks.content.absolute()} element={<Task />} />
     </Route>
     <Route path="/boards/:boardId/*" element={<ErrorPage />} />

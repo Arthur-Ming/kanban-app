@@ -2,8 +2,8 @@ import { useLanguage } from 'hooks/useLanguage';
 import { ITEXT } from 'interfaces';
 import { Route, Routes, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import CreaterLabel from '../../../components/CreaterLabel';
-import CreatColumnForm from './ColumnCreaterForm';
+import CreationLabel from '../../../components/CreationLabel';
+import ColumnCreationForm from './ColumnCreationForm';
 import styles from './index.module.scss';
 
 const TEXT_CREAT_CARD: ITEXT = {
@@ -23,7 +23,7 @@ const ColumnCreater = () => {
           path="/*"
           element={
             <Link to="creat-column" className={styles.label}>
-              <CreaterLabel label={TEXT_CREAT_CARD.label[lang]} />
+              <CreationLabel label={TEXT_CREAT_CARD.label[lang]} />
             </Link>
           }
         />

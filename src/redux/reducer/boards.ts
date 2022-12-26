@@ -1,5 +1,5 @@
-import { IBoard, IGetAllBoards } from 'interfaces';
-import { LOAD_BOARDS, REQUEST, SUCCESS } from '../action-types';
+import { IBoard, ICreateBoard, IGetAllBoards } from 'interfaces';
+import { ADD_BOARD, LOAD_BOARDS, REQUEST, SUCCESS } from '../action-types';
 import { arrToMap } from 'utils/arrToMap';
 import { createReducer } from '@reduxjs/toolkit';
 
@@ -25,7 +25,6 @@ export default createReducer(initialState, (builder) => {
       state.loading = true;
       state.loaded = false;
       state.error = null;
-      state.entities = {};
     })
     .addCase(LOAD_BOARDS + SUCCESS, (state, action) => {
       const { data } = <IGetAllBoards>action;
@@ -33,5 +32,9 @@ export default createReducer(initialState, (builder) => {
       state.loaded = true;
       state.error = null;
       data && (state.entities = arrToMap(data));
+    })
+    .addCase(ADD_BOARD + SUCCESS, (state, action: ICreateBoard) => {
+      const { data } = action;
+      data && (state.entities[data.id] = data);
     });
 });

@@ -1,3 +1,12 @@
+.box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  position: relative;
+  cursor: pointer;
+}
+
 .textarea {
   width: 100%;
   height: 80px;
@@ -17,7 +26,27 @@
   border-radius: 4px;
   outline: none;
   border: 1px solid #0079bf;
-  &:disabled {
+  &:focus {
+    border-color: #0079bf;
+  }
+  &::placeholder {
     opacity: 0.5;
   }
+}
+
+.label {
+  color: var(--text-color-gray);
+}
+.invalid_text {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 5px;
+  font-size: 14px;
+  color: red;
+  line-height: 16px;
+  height: 16px;
+}
+
+.invalid {
+  border-color: red;
 }

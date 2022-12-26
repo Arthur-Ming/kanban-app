@@ -1,4 +1,4 @@
-import CreatTask from 'pages/Board/CreatTask';
+import TaskCreation from 'pages/Board/TaskCreation';
 import styles from './index.module.scss';
 import { IColumn } from 'interfaces';
 import TaskTickets from '../../TaskTickets';
@@ -21,7 +21,7 @@ const Column = ({ column }: Props) => (
   <div className={styles.box}>
     {/*  <ColumnHeader column={column} /> */}
     <TaskTickets taskIds={column.taskIds} />
-    <CreatTask columnId={column.id} />
+    <TaskCreation columnId={column.id} />
   </div>
 );
 

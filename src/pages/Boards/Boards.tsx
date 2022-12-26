@@ -8,10 +8,10 @@ import {
   boardIdsSelector,
 } from 'redux/selectors/boards';
 import { useEffect } from 'react';
-import BoardCreater from './BoardCreater';
+import BoardCreation from './BoardCreation';
 import styles from './index.module.scss';
 import { Route, Routes } from 'react-router';
-import BoardCreaterTicket from './BoardCreaterTicket';
+import BoardCreationTicket from './BoardCreationTicket';
 
 interface DispatchProps {
   getBoards: () => void;
@@ -35,8 +35,8 @@ const Boards = ({ getBoards, boardIds }: Props) => {
       <BoardTickets boardIds={boardIds} />
       <div className={styles.create}>
         <Routes>
-          <Route path="create-board" element={<BoardCreater />} />
-          <Route index element={<BoardCreaterTicket />} />
+          <Route path="create-board" element={<BoardCreation />} />
+          <Route index element={<BoardCreationTicket />} />
         </Routes>
       </div>
     </div>
