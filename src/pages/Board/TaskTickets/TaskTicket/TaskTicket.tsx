@@ -19,7 +19,10 @@ type Props = StateProps & OwnProps;
 
 const TaskTicket = ({ task }: Props) => (
   <li className={styles.task}>
-    <Link to={routes.tasks.content.absolute(task.columnId, task.id)} className={styles.link}>
+    {/*    <Link to={routes.tasks.content.absolute(task.columnId, task.id)} className={styles.link}>
+      {task?.title}
+    </Link> */}
+    <Link to={routes.tasks.content(task.columnId, task.id)} className={styles.link}>
       {task?.title}
     </Link>
     {

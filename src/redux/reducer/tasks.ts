@@ -4,22 +4,12 @@ import { createReducer } from '@reduxjs/toolkit';
 import { SET_TASKS } from 'redux/action-types';
 
 export interface ITasksState {
-  loading: {
-    [key: string]: boolean;
-  };
-  loaded: {
-    [key: string]: boolean;
-  };
-  error: null;
   entities: {
     [key: string]: ITask;
   };
 }
 
 const initialState: ITasksState = {
-  loading: {},
-  loaded: {},
-  error: null,
   entities: {},
 };
 

@@ -62,8 +62,15 @@ export interface ISetTasksAction extends IAction {
   tasks: ITask[];
 }
 
-export interface IGetAllBoards extends IAction {
-  data: IBoard[];
+export interface ISetBoards extends IAction {
+  boards: IBoard[];
+}
+export interface IAddBoard extends IAction {
+  board: IBoard;
+}
+
+export interface IDeleteBoard extends IAction {
+  boardId: string;
 }
 
 export interface IGetBoardByIdAction extends IAction {

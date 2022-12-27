@@ -1,6 +1,6 @@
 import BoardTickets from './BoardTickets';
 import { connect } from 'react-redux';
-import { getBoards } from 'redux/actions/boards';
+import { loadBoards } from 'redux/actions/boards';
 import { RootState } from 'redux/reducer';
 import { boardIdsSelector } from 'redux/selectors/boards';
 import { useEffect } from 'react';
@@ -8,11 +8,12 @@ import BoardCreation from './BoardCreation';
 import styles from './index.module.scss';
 import { Route, Routes } from 'react-router';
 import BoardCreationTicket from './BoardCreationTicket';
-import { requestFetchingSelector } from 'redux/selectors/request';
+import { requestFetchingSelector } from 'redux/selectors/requests';
 import Loader from 'components/Loader';
+import { baseRoutes, routes } from 'utils/routes';
 
 interface DispatchProps {
-  getBoards: () => void;
+  loadBoards: () => void;
 }
 
 interface StateProps {
@@ -23,10 +24,10 @@ interface StateProps {
 
 type Props = DispatchProps & StateProps;
 
-const Boards = ({ getBoards, boardIds, isBoardsloading }: Props) => {
+const Boards = ({ loadBoards, boardIds, isBoardsloading }: Props) => {
   useEffect(() => {
-    getBoards();
-  }, [getBoards]);
+    loadBoards();
+  }, [loadBoards]);
   console.log('Boards');
   if (isBoardsloading) return <Loader />;
 
@@ -35,7 +36,7 @@ const Boards = ({ getBoards, boardIds, isBoardsloading }: Props) => {
       <BoardTickets boardIds={boardIds} />
       <div className={styles.create}>
         <Routes>
-          <Route path="create-board" element={<BoardCreation />} />
+          <Route path="create" element={<BoardCreation />} />
           <Route index element={<BoardCreationTicket />} />
         </Routes>
       </div>
@@ -44,13 +45,13 @@ const Boards = ({ getBoards, boardIds, isBoardsloading }: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  isBoardsloading: requestFetchingSelector(state, 'boards'),
+  isBoardsloading: requestFetchingSelector(state, baseRoutes.boards.base.relative),
   //isBoardsloaded: boardsLoadedSelector(state), */
   boardIds: boardIdsSelector(state),
 });
 
 const mapDispatchToProps = {
-  getBoards,
+  loadBoards,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Boards);

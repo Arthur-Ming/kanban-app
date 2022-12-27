@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from './index.module.scss';
 
 const BoardCreationTicket = () => (
-  <Link to="create-board" className={styles.label}>
+  <Link to="create" className={styles.label}>
     <CreaterLabel label="создать доску" />
   </Link>
 );

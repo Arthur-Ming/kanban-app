@@ -1,72 +1,78 @@
 import { join } from 'path-browserify';
 
-export const xRoutes = {
-  root: '/',
-  list: {
-    relative: 'list',
+export const baseRoutes = {
+  base: '',
+  boards: {
+    base: {
+      relative: 'boards',
+      absolute: () => join(baseRoutes.base, baseRoutes.boards.base.relative),
+    },
+    byId: {
+      relative: ':boardId',
+      absolute: (boardId = ':boardId') => join(baseRoutes.boards.base.absolute(), boardId),
+    },
     create: {
       relative: 'create',
-      absolute: () => xRoutes.root + xRoutes.list.relative + xRoutes.list.create.relative,
-    },
-    delete: {
-      relative: '',
-      absolute: (id = ':id') => xRoutes.root + '/list/delete' + id,
+      absolute: () => join(baseRoutes.boards.base.absolute(), baseRoutes.boards.create.relative),
     },
     update: {
-      relative: '',
-      absolute: (id = ':id') => join(xRoutes.root, 'update', id),
+      relative: 'update',
+      absolute: () => join(baseRoutes.boards.base.absolute(), baseRoutes.boards.update.relative),
+    },
+  },
+  columns: {
+    base: {
+      relative: 'columns',
+      absolute: () => join(baseRoutes.base, baseRoutes.columns.base.relative),
+    },
+    byId: {
+      relative: ':columnId',
+      absolute: (columnId = ':columnId') => join(baseRoutes.columns.base.absolute(), columnId),
+    },
+    create: {
+      relative: 'create',
+      absolute: () => join(baseRoutes.columns.base.absolute(), baseRoutes.columns.create.relative),
+    },
+    update: {
+      relative: 'update',
+      absolute: () => join(baseRoutes.columns.base.absolute(), baseRoutes.columns.update.relative),
+    },
+  },
+  tasks: {
+    base: {
+      relative: 'tasks',
+      absolute: () => join(baseRoutes.base, baseRoutes.tasks.base.relative),
+    },
+    byId: {
+      relative: ':taskId',
+      absolute: (taskId = ':taskId') => join(baseRoutes.tasks.base.absolute(), taskId),
+    },
+    create: {
+      relative: 'create',
+      absolute: () => join(baseRoutes.tasks.base.absolute(), baseRoutes.tasks.create.relative),
+    },
+    update: {
+      relative: 'update',
+      absolute: () => join(baseRoutes.tasks.base.absolute(), baseRoutes.tasks.update.relative),
+    },
+    content: {
+      relative: 'content',
+      absolute: (taskId = ':taskId') =>
+        join(baseRoutes.tasks.byId.absolute(taskId), baseRoutes.tasks.content.relative),
     },
   },
 };
 
-interface IGetById {
-  relative: string;
-  absolute: string;
-}
-
 export const routes = {
-  root: '/',
   boards: {
-    relative: 'boards',
-    id: (boardId = ':boardId') => `${boardId}`,
-    absolute: (boardId = ':boardId') =>
-      join(routes.root, routes.boards.relative, routes.boards.id(boardId)),
-  },
-  columns: {
-    relative: 'columns',
-    id: (columnId = ':columnId') => `${columnId}`,
-    absolute: (boardId = ':boardId', columnId = ':columnId') =>
-      join(routes.boards.absolute(boardId), routes.columns.relative, routes.columns.id(columnId)),
+    byId: (boardId = ':boardId') => baseRoutes.boards.byId.absolute(boardId),
   },
   tasks: {
-    relative: 'tasks',
-    id: (taskId = ':taskId') => `${taskId}`,
-    absolute: (boardId = ':boardId', columnId = ':columnId', taskId = ':taskId') =>
+    content: (columnId = ':columnId', taskId = ':taskId') =>
       join(
-        routes.columns.absolute(boardId, columnId),
-        routes.tasks.relative,
-        routes.tasks.id(taskId)
+        baseRoutes.columns.byId.absolute(columnId),
+        '/',
+        baseRoutes.tasks.content.absolute(taskId)
       ),
-    creat: {
-      relative: 'creat-task',
-      absolute: (columnId = ':columnId') =>
-        join(
-          routes.columns.relative,
-          routes.columns.id(columnId),
-          routes.tasks.relative,
-          routes.tasks.creat.relative
-        ),
-    },
-    content: {
-      relative: 'task-content',
-      absolute: (columnId = ':columnId', taskId = ':taskId') =>
-        join(
-          routes.columns.relative,
-          routes.columns.id(columnId),
-          routes.tasks.relative,
-          routes.tasks.id(taskId),
-          routes.tasks.content.relative
-        ),
-    },
   },
 };

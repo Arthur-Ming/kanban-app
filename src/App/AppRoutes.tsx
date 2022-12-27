@@ -10,15 +10,14 @@ import BoardCreation from 'pages/Boards/BoardCreation';
 
 const AppRoutes = () => (
   <Routes>
-    <Route path={'/boards/*'} element={<Boards />}>
-      <Route path="create-board" element={<BoardCreation />} />
+    <Route path={'boards/*'} element={<Boards />}>
+      <Route path="create" element={<BoardCreation />} />
     </Route>
-    <Route path={`/boards/:boardId/*`} element={<Board />}>
-      <Route path="creat-column" element={<ColumnCreation />} />
-      <Route path={routes.tasks.creat.absolute()} element={<TaskCreation />} />
-      <Route path={routes.tasks.content.absolute()} element={<Task />} />
+    <Route path={`${routes.boards.byId()}/*`} element={<Board />}>
+      <Route path="create" element={<ColumnCreation />} />
+      <Route path="columns/:columnId/tasks/creat" element={<TaskCreation />} />
+      <Route path={routes.tasks.content()} element={<Task />} />
     </Route>
-    <Route path="/boards/:boardId/*" element={<ErrorPage />} />
     <Route path="/errorPage/*" element={<ErrorPage />} />
     <Route path="/*" element={<Navigate to="/errorPage" replace />} />
   </Routes>
