@@ -17,6 +17,8 @@ export const apiRoutes = {
   columnById: (boardId: string, columnId: string) => `${apiRoutes.columns(boardId)}/${columnId}`,
   tasks: (boardId: string, columnId: string) =>
     `${apiRoutes.columnById(boardId, columnId)}/${resource.tasks}`,
+  tasksById: (boardId: string, columnId: string, taskId: string) =>
+    `${apiRoutes.tasks(boardId, columnId)}/${taskId}`,
 };
 
 export const api = {

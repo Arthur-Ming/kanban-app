@@ -83,6 +83,11 @@ export interface IAddBoard extends IAction {
 export interface IDeleteBoard extends IAction {
   boardId: string;
 }
+export interface IDeleteTask extends IAction {
+  taskId: string;
+  columnId: string;
+  boardId: string;
+}
 
 export interface IGetBoardByIdAction extends IAction {
   error: unknown | null;
