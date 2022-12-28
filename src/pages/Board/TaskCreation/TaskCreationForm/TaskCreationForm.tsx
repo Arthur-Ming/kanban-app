@@ -1,9 +1,9 @@
 import InputButton from 'components/Forms/InputButton';
 import InputText from 'components/Forms/InputText';
-import { ICreateColumnBody } from 'interfaces';
+import { ICreateColumnBody, ICreateTaskBody } from 'interfaces';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
-import { createColumn } from 'redux/actions/columns';
+import { createTask } from 'redux/actions/tasks';
 import { AppDispatch } from 'redux/store';
 import styles from './index.module.scss';
 
@@ -14,16 +14,17 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  create: (body: ICreateColumnBody) => void;
+  create: (body: ICreateTaskBody) => void;
 };
 
 interface OwnProps {
   boardId: string;
+  columnId: string;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-const ColumnCreaterForm = ({ create, isLoading }: Props) => {
+const TaskCreationForm = ({ create, isLoading }: Props) => {
   const {
     register,
     handleSubmit,
@@ -38,7 +39,7 @@ const ColumnCreaterForm = ({ create, isLoading }: Props) => {
         register={register}
         name="title"
         required="this field is required!"
-        placeholder="bdbdf"
+        placeholder="введите тайтл"
       />
 
       <div className={styles.buttons}>
@@ -58,8 +59,8 @@ const mapStateToProps = () => ({
   isLoading: false,
 });
 
-const mapDispatchToProps = (dispatch: AppDispatch, props: OwnProps) => ({
-  create: (body: ICreateColumnBody) => dispatch(createColumn(props.boardId, body)),
+const mapDispatchToProps = (dispatch: AppDispatch, { boardId, columnId }: OwnProps) => ({
+  create: (body: ICreateTaskBody) => dispatch(createTask(boardId, columnId, body)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ColumnCreaterForm);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskCreationForm);

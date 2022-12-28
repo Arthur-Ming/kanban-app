@@ -14,8 +14,8 @@ const AppRoutes = () => (
       <Route path="create" element={<BoardCreation />} />
     </Route>
     <Route path={`${routes.boards.byId()}/*`} element={<Board />}>
-      <Route path="create" element={<ColumnCreation />} />
-      <Route path="columns/:columnId/tasks/creat" element={<TaskCreation />} />
+      <Route path="columns/create" element={<ColumnCreation />} />
+      <Route path="columns/:columnId/tasks/create" element={<TaskCreation />} />
       <Route path={routes.tasks.content()} element={<Task />} />
     </Route>
     <Route path="/errorPage/*" element={<ErrorPage />} />

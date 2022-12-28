@@ -7,6 +7,7 @@ interface Props<T extends FieldValues> extends UseControllerProps<T> {
   register: UseFormRegister<T>;
   required?: string;
   label?: string;
+  placeholder?: string;
 }
 
 const InputText = <T extends FieldValues>({
@@ -15,6 +16,7 @@ const InputText = <T extends FieldValues>({
   error,
   required,
   label = '',
+  placeholder = '',
   defaultValue,
 }: Props<T>) => (
   <label className={styles.box}>
@@ -25,6 +27,7 @@ const InputText = <T extends FieldValues>({
       })}
       type="text"
       defaultValue={defaultValue}
+      placeholder={placeholder}
       {...register(name, { required })}
     />
     {error && <span className={styles.invalid_text}>{error.message}</span>}

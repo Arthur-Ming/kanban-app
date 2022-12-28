@@ -7,14 +7,14 @@ export const separateBoard = (populatedBoard: IPopulatedBoard) => {
     id,
     title,
     boardId,
-    taskIds: tasks.map(({ id }) => id),
+    tasks: tasks.map(({ id }) => id),
   }));
   const { id, title, description } = populatedBoard;
   const board: IBoard = {
     id,
     title,
     description,
-    columnIds: populatedBoard.columns.map(({ id }) => id),
+    columns: populatedBoard.columns.map(({ id }) => id),
   };
   return {
     tasks,

@@ -1,7 +1,8 @@
+import { ColumnId } from 'interfaces';
 import Column from './Column';
 
 type Props = {
-  columnIds: string[];
+  columnIds: ColumnId[];
 };
 
 const Columns = ({ columnIds }: Props) => (

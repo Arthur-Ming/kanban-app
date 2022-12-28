@@ -1,7 +1,7 @@
-import { IColumn, ISetColumnsAction } from 'interfaces';
+import { IAddColumnAction, IAddTaskAction, IColumn, ISetColumnsAction } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
 import { createReducer } from '@reduxjs/toolkit';
-import { SET_COLUMNS } from 'redux/action-types';
+import { ADD_COLUMN, ADD_TASK, SET_COLUMNS } from 'redux/action-types';
 
 export interface IColumnsState {
   entities: {
@@ -14,8 +14,17 @@ const initialState: IColumnsState = {
 };
 
 export default createReducer(initialState, (builder) => {
-  builder.addCase(SET_COLUMNS, (state, action) => {
-    const { columns } = <ISetColumnsAction>action;
-    columns && (state.entities = arrToMap(columns));
-  });
+  builder
+    .addCase(SET_COLUMNS, (state, action) => {
+      const { columns } = <ISetColumnsAction>action;
+      columns && (state.entities = arrToMap(columns));
+    })
+    .addCase(ADD_COLUMN, (state, action) => {
+      const { column } = <IAddColumnAction>action;
+      state.entities[column.id] = column;
+    })
+    .addCase(ADD_TASK, (state, action) => {
+      const { task } = <IAddTaskAction>action;
+      state.entities[task.columnId].tasks.push(task.id);
+    });
 });

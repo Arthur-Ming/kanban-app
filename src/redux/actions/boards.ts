@@ -90,9 +90,13 @@ export const getBoardById = (boardId: string) => async (dispatch: Dispatch<AnyAc
   try {
     const populatedBoard: IPopulatedBoard = await api.get(buildURL(route));
     const { tasks, columns, board } = separateBoard(populatedBoard);
-    dispatch(setTasks(tasks));
-    dispatch(setColumns(columns));
+    console.log(tasks);
+    console.log(columns);
+    console.log(board);
     dispatch(addBoard(board));
+    dispatch(setColumns(columns));
+    dispatch(setTasks(tasks));
+
     dispatch(requestSuccess(key));
   } catch (err: unknown) {
     if (err instanceof Error) {

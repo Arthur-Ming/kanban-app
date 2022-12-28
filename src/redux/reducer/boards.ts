@@ -1,5 +1,5 @@
-import { IAddBoard, IBoard, ISetBoards, IDeleteBoard } from 'interfaces';
-import { ADD_BOARD, SET_BOARDS, DELETE_BOARD } from '../action-types';
+import { IAddBoard, IBoard, ISetBoards, IDeleteBoard, IAddColumnAction } from 'interfaces';
+import { ADD_BOARD, SET_BOARDS, DELETE_BOARD, ADD_COLUMN } from '../action-types';
 import { arrToMap } from 'utils/arrToMap';
 import { createReducer } from '@reduxjs/toolkit';
 
@@ -22,5 +22,9 @@ export default createReducer(initialState, (builder) => {
     .addCase(DELETE_BOARD, (state, action) => {
       const { boardId } = <IDeleteBoard>action;
       delete state.entities[boardId];
+    })
+    .addCase(ADD_COLUMN, (state, action) => {
+      const { column } = <IAddColumnAction>action;
+      state.entities[column.boardId].columns.push(column.id);
     });
 });

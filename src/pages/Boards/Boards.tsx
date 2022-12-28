@@ -7,11 +7,10 @@ import { useEffect } from 'react';
 import BoardCreation from './BoardCreation';
 import styles from './index.module.scss';
 import { Route, Routes } from 'react-router';
-import BoardCreationTicket from './BoardCreationTicket';
 import { requestFetchingSelector } from 'redux/selectors/requests';
 import Loader from 'components/Loader';
-import { baseRoutes, routes } from 'utils/routes';
 import { apiRoutes } from 'utils/api';
+import CreationTicket from 'components/CreationTicket';
 
 interface DispatchProps {
   loadBoards: () => void;
@@ -38,7 +37,7 @@ const Boards = ({ loadBoards, boardIds, isBoardsloading }: Props) => {
       <div className={styles.create}>
         <Routes>
           <Route path="create" element={<BoardCreation />} />
-          <Route index element={<BoardCreationTicket />} />
+          <Route path="/*" element={<CreationTicket label="создать доску" path="create" />} />
         </Routes>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import TaskTicket from './TaskTicket';
 import styles from './index.module.scss';
+import { TaskId } from 'interfaces';
 
 type Props = {
-  taskIds: string[];
+  taskIds: TaskId[];
 };
 
 const TaskTicketList = ({ taskIds }: Props) => (

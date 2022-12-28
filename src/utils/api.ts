@@ -13,6 +13,10 @@ export const buildURL = (path: string) => `${BASE}/${path}`;
 export const apiRoutes = {
   boards: () => `${resource.boards}`,
   boardById: (boardId: string) => `${apiRoutes.boards()}/${boardId}`,
+  columns: (boardId: string) => `${apiRoutes.boardById(boardId)}/${resource.columns}`,
+  columnById: (boardId: string, columnId: string) => `${apiRoutes.columns(boardId)}/${columnId}`,
+  tasks: (boardId: string, columnId: string) =>
+    `${apiRoutes.columnById(boardId, columnId)}/${resource.tasks}`,
 };
 
 export const api = {

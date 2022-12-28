@@ -4,6 +4,9 @@ export interface IBoardBase {
   description: string;
 }
 
+export type ColumnId = string;
+export type TaskId = string;
+
 export interface IColumnBase {
   id: string;
   boardId: string;
@@ -14,11 +17,11 @@ export interface IPopulatedBoard extends IBoardBase {
   columns: IPopulatedColumn[];
 }
 export interface IBoard extends IBoardBase {
-  columnIds: string[];
+  columns: ColumnId[];
 }
 
 export interface IColumn extends IColumnBase {
-  taskIds: string[];
+  tasks: TaskId[];
 }
 
 export interface IPopulatedColumn extends IColumnBase {
@@ -58,6 +61,14 @@ export interface ISetColumnsAction extends IAction {
   columns: IColumn[];
 }
 
+export interface IAddColumnAction extends IAction {
+  column: IColumn;
+}
+
+export interface IAddTaskAction extends IAction {
+  task: ITask;
+}
+
 export interface ISetTasksAction extends IAction {
   tasks: ITask[];
 }
@@ -86,4 +97,11 @@ export interface ICreateBoard extends IAction {
 export interface ICreateBoardBody {
   title: string;
   description: string;
+}
+
+export interface ICreateColumnBody {
+  title: string;
+}
+export interface ICreateTaskBody {
+  title: string;
 }

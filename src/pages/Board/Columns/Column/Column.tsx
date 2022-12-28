@@ -1,29 +1,42 @@
 import TaskCreation from 'pages/Board/TaskCreation';
 import styles from './index.module.scss';
-import { IColumn } from 'interfaces';
+import { ColumnId, IColumn } from 'interfaces';
 import TaskTickets from '../../TaskTickets';
 import ColumnHeader from './ColumnHeader';
 import { connect } from 'react-redux';
 import { RootState } from 'redux/reducer';
 import { columnByIdSelector } from 'redux/selectors/columns';
+import { Route, Routes } from 'react-router';
+import CreationTicket from 'components/CreationTicket';
 
 type StateProps = {
-  column: IColumn;
+  column?: IColumn;
 };
 
 type OwnProps = {
-  columnId: string;
+  columnId: ColumnId;
 };
 
 type Props = StateProps & OwnProps;
 
-const Column = ({ column }: Props) => (
-  <div className={styles.box}>
-    {/*  <ColumnHeader column={column} /> */}
-    <TaskTickets taskIds={column.taskIds} />
-    <TaskCreation columnId={column.id} />
-  </div>
-);
+const Column = ({ column }: Props) => {
+  return (
+    <div className={styles.box}>
+      {column && <TaskTickets taskIds={column.tasks} />}
+      {column?.id && (
+        <Routes>
+          <Route path={`columns/${column.id}/tasks/create`} element={<TaskCreation />} />
+          <Route
+            path="/*"
+            element={
+              <CreationTicket path={`columns/${column.id}/tasks/create`} label="создать таск" />
+            }
+          />
+        </Routes>
+      )}
+    </div>
+  );
+};
 
 const mapStateToProps = (state: RootState, props: OwnProps) => ({
   column: columnByIdSelector(state, props),

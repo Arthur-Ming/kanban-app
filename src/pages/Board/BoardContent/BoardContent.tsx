@@ -9,10 +9,10 @@ import { useEffect } from 'react';
 import { boardByIdSelector } from 'redux/selectors/boards';
 import { AppDispatch } from 'redux/store';
 import { requestFetchingSelector } from 'redux/selectors/requests';
-import { baseRoutes, routes } from 'utils/routes';
+import { baseRoutes } from 'utils/routes';
 import Loader from 'components/Loader';
-import { Route, Routes, useParams } from 'react-router';
-import Task from '../Task';
+import { Route, Routes } from 'react-router';
+import CreationTicket from 'components/CreationTicket';
 
 type OwnProps = {
   boardId: string;
@@ -23,7 +23,7 @@ type DispatchProps = {
 };
 
 type StateProps = {
-  board: IBoard;
+  board?: IBoard;
   loading?: boolean;
 };
 
@@ -40,8 +40,14 @@ const BoardContent = ({ board, loadBoard, loading }: Props) => {
     <div className={styles.container}>
       <h4 className={styles.title}>{board?.title}</h4>
       <div className={styles.columns}>
-        {board?.columnIds && <Columns columnIds={board.columnIds} />}
-        <ColumnCreation />
+        {board?.columns && <Columns columnIds={board.columns} />}
+        <Routes>
+          <Route path="columns/create" element={<ColumnCreation />} />
+          <Route
+            path="/*"
+            element={<CreationTicket label="создать колонку" path="columns/create" />}
+          />
+        </Routes>
       </div>
     </div>
   );

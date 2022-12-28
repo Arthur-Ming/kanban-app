@@ -1,4 +1,4 @@
-import { ITask } from 'interfaces';
+import { ITask, TaskId } from 'interfaces';
 import { routes } from 'utils/routes';
 import RemoveTask from './RemoveTask';
 import styles from './index.module.scss';
@@ -12,7 +12,7 @@ type StateProps = {
 };
 
 type OwnProps = {
-  taskId: string;
+  taskId: TaskId;
 };
 
 type Props = StateProps & OwnProps;
