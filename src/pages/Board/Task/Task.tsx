@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 import Modal from 'components/Modal';
 import { useNavigate, useParams } from 'react-router';
 
-const TaskContent = () => {
+const Task = () => {
   const { boardId, columnId = '', taskId = '' } = useParams();
 
   console.log(boardId);
@@ -38,4 +38,4 @@ const mapStateToProps = (state: RootState, params: IProps) => ({
 export default connect(mapStateToProps, null)(TaskContent);
  */
 
-export default TaskContent;
+export default Task;

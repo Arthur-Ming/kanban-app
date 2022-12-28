@@ -50,7 +50,7 @@ export interface IActionCallApi extends IAction {
 }
 
 export interface IRequestAction extends IAction {
-  resource: string;
+  key: string;
   error: unknown | null;
 }
 

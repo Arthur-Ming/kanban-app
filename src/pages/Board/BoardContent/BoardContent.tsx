@@ -9,8 +9,10 @@ import { useEffect } from 'react';
 import { boardByIdSelector } from 'redux/selectors/boards';
 import { AppDispatch } from 'redux/store';
 import { requestFetchingSelector } from 'redux/selectors/requests';
-import { baseRoutes } from 'utils/routes';
+import { baseRoutes, routes } from 'utils/routes';
 import Loader from 'components/Loader';
+import { Route, Routes, useParams } from 'react-router';
+import Task from '../Task';
 
 type OwnProps = {
   boardId: string;

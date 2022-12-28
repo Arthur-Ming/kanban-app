@@ -23,13 +23,13 @@ const initialState: IRequestState = {
 export default createReducer(initialState, (builder) => {
   builder
     .addCase(FETCH + REQUEST, (state, action: IRequestAction) => {
-      const { resource } = action;
-      state.fetching[resource] = true;
-      state.loaded[resource] = false;
+      const { key } = action;
+      state.fetching[key] = true;
+      state.loaded[key] = false;
     })
     .addCase(FETCH + SUCCESS, (state, action: IRequestAction) => {
-      const { resource } = action;
-      state.fetching[resource] = false;
-      state.loaded[resource] = true;
+      const { key } = action;
+      state.fetching[key] = false;
+      state.loaded[key] = true;
     });
 });

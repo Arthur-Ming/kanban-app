@@ -5,10 +5,10 @@ interface IProps {
   label: string;
 }
 
-const CreaterLabel = ({ label }: IProps) => (
+const CreationLabel = ({ label }: IProps) => (
   <span className={styles.box}>
     <PlusIcon className={styles.icon} />
     <span className={styles.text}>{label}</span>
   </span>
 );
-export default CreaterLabel;
+export default CreationLabel;

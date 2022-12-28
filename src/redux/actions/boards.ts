@@ -1,31 +1,20 @@
-//import { apiRoutes } from '../../utils/apiRoutes';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import {
-  ADD_BOARD,
-  DELETE_BOARD,
-  FAILURE,
-  FETCH,
-  LOAD_BOARD,
-  REQUEST,
-  SET_BOARDS,
-  SUCCESS,
-} from '../action-types';
+import { ADD_BOARD, DELETE_BOARD, SET_BOARDS } from '../action-types';
 import {
   IBoard,
   ICreateBoardBody,
   ISetBoards,
-  IRequestAction,
   IAddBoard,
   IDeleteBoard,
   IPopulatedBoard,
-  ITask,
-  IColumn,
 } from 'interfaces';
-import { baseRoutes, routes } from 'utils/routes';
-import { apiRoutes } from 'utils/apiRoutes';
+
+import { apiRoutes, buildURL, api } from 'utils/api';
 import { setTasks } from './tasks';
 import { setColumns } from './columns';
+import { requestFailure, requestPending, requestSuccess } from './requests';
+import { separateBoard } from 'utils/separateBoard';
+import { requestKey } from 'utils/requestService';
 
 export const setBoards = (boards: IBoard[]): ISetBoards => ({
   type: SET_BOARDS,
@@ -42,97 +31,72 @@ export const deleteBoard = (boardId: string): IDeleteBoard => ({
   boardId,
 });
 
-export const loadBoards =
-  () => async (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-    const resource = baseRoutes.boards.base.relative;
+export const loadBoards = () => async (dispatch: Dispatch<AnyAction>) => {
+  const callAPI = apiRoutes.boards();
+  const key = requestKey.read(callAPI);
 
-    dispatch({ type: FETCH + REQUEST, resource });
+  dispatch(requestPending(key));
 
-    try {
-      console.log(apiRoutes.boards());
-      const data = await fetch(apiRoutes.boards());
-      const res = await data.json();
-      dispatch(setBoards(res));
-      dispatch({ type: FETCH + SUCCESS, resource });
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        dispatch({ type: FETCH + FAILURE, error: err.message });
-      }
+  try {
+    const boards = await api.get(buildURL(callAPI));
+    dispatch(setBoards(boards));
+    dispatch(requestSuccess(key));
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      dispatch(requestFailure(key, err.message));
     }
-  };
+  }
+};
 
-export const createBoard =
-  (body: ICreateBoardBody) => async (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-    const resource = baseRoutes.boards.create.absolute();
+export const createBoard = (body: ICreateBoardBody) => async (dispatch: Dispatch<AnyAction>) => {
+  const route = apiRoutes.boards();
+  const key = requestKey.create(route);
 
-    dispatch({ type: FETCH + REQUEST, resource });
-    try {
-      const data = await fetch(apiRoutes.boards(), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-        },
-        body: JSON.stringify(body),
-      });
-      const res = await data.json();
-      dispatch(addBoard(res));
-      dispatch({ type: FETCH + SUCCESS, resource });
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        dispatch({ type: ADD_BOARD, error: err.message });
-      }
+  dispatch(requestPending(key));
+
+  try {
+    const data = await api.post(buildURL(route), body);
+    dispatch(addBoard(data));
+    dispatch(requestSuccess(key));
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      dispatch(requestFailure(key, err.message));
     }
-  };
+  }
+};
 
-export const removeBoard =
-  (boardId: string) => async (dispatch: Dispatch<AnyAction>, getState: () => RootState) => {
-    await fetch(apiRoutes.boardById(boardId), {
-      method: 'DELETE',
-    });
+export const removeBoard = (boardId: string) => async (dispatch: Dispatch<AnyAction>) => {
+  const route = apiRoutes.boardById(boardId);
+  const key = requestKey.delete(route);
 
-    dispatch(deleteBoard(boardId));
-  };
-
-const separatePopulatedBoard = (populatedBoard: IPopulatedBoard) => {
-  const tasks: ITask[] = populatedBoard.columns.map(({ tasks }) => tasks).flat();
-
-  const columns: IColumn[] = populatedBoard.columns.map(({ id, title, boardId, tasks }) => ({
-    id,
-    title,
-    boardId,
-    taskIds: tasks.map(({ id }) => id),
-  }));
-  const { id, title, description } = populatedBoard;
-  const board: IBoard = {
-    id,
-    title,
-    description,
-    columnIds: populatedBoard.columns.map(({ id }) => id),
-  };
-  return {
-    tasks,
-    columns,
-    board,
-  };
+  dispatch(requestPending(key));
+  dispatch(deleteBoard(boardId));
+  try {
+    await api.delete(buildURL(route));
+    dispatch(requestSuccess(key));
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      dispatch(requestFailure(key, err.message));
+    }
+  }
 };
 
 export const getBoardById = (boardId: string) => async (dispatch: Dispatch<AnyAction>) => {
-  const resource = baseRoutes.boards.byId.absolute(boardId);
+  const route = apiRoutes.boardById(boardId);
+  const key = requestKey.read(route);
 
-  dispatch({ type: FETCH + REQUEST, resource });
+  dispatch(requestPending(key));
 
   try {
-    const data = await fetch(`http://localhost:8000/boards/${boardId}`);
-    const populatedBoard: IPopulatedBoard = await data.json();
-
-    const { tasks, columns, board } = separatePopulatedBoard(populatedBoard);
+    const populatedBoard: IPopulatedBoard = await api.get(buildURL(route));
+    const { tasks, columns, board } = separateBoard(populatedBoard);
     dispatch(setTasks(tasks));
     dispatch(setColumns(columns));
     dispatch(addBoard(board));
-    dispatch({ type: FETCH + SUCCESS, resource });
+    dispatch(requestSuccess(key));
   } catch (err: unknown) {
     if (err instanceof Error) {
-      dispatch({ type: LOAD_BOARD + FAILURE, error: err.message });
+      dispatch(requestFailure(key, err.message));
     }
   }
 };

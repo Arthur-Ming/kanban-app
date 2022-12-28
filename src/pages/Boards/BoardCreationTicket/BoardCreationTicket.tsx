@@ -1,10 +1,10 @@
-import CreaterLabel from 'components/CreationLabel';
+import CreationLabel from 'components/CreationLabel';
 import { Link } from 'react-router-dom';
 import styles from './index.module.scss';
 
 const BoardCreationTicket = () => (
   <Link to="create" className={styles.label}>
-    <CreaterLabel label="создать доску" />
+    <CreationLabel label="создать доску" />
   </Link>
 );
 

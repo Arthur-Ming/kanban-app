@@ -11,6 +11,7 @@ import BoardCreationTicket from './BoardCreationTicket';
 import { requestFetchingSelector } from 'redux/selectors/requests';
 import Loader from 'components/Loader';
 import { baseRoutes, routes } from 'utils/routes';
+import { apiRoutes } from 'utils/api';
 
 interface DispatchProps {
   loadBoards: () => void;
@@ -28,7 +29,7 @@ const Boards = ({ loadBoards, boardIds, isBoardsloading }: Props) => {
   useEffect(() => {
     loadBoards();
   }, [loadBoards]);
-  console.log('Boards');
+
   if (isBoardsloading) return <Loader />;
 
   return (
@@ -45,8 +46,7 @@ const Boards = ({ loadBoards, boardIds, isBoardsloading }: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  isBoardsloading: requestFetchingSelector(state, baseRoutes.boards.base.relative),
-  //isBoardsloaded: boardsLoadedSelector(state), */
+  isBoardsloading: requestFetchingSelector(state, apiRoutes.boards()),
   boardIds: boardIdsSelector(state),
 });
 

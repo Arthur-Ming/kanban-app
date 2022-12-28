@@ -5,17 +5,25 @@ import { ICreateBoardBody } from 'interfaces';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { createBoard } from 'redux/actions/boards';
+import { requestFetchingSelector } from 'redux/selectors/requests';
+import { RootState } from 'redux/store';
+import { apiRoutes } from 'utils/api';
+import { buildKey, CRUD } from 'utils/requestService';
 import styles from './index.module.scss';
 
 type Inputs = ICreateBoardBody;
+
+type StateProps = {
+  isLoading: boolean;
+};
 
 type DispatchProps = {
   createBoard: (body: ICreateBoardBody) => void;
 };
 
-type Props = DispatchProps;
+type Props = DispatchProps & StateProps;
 
-const BoardCreationForm = ({ createBoard }: Props) => {
+const BoardCreationForm = ({ createBoard, isLoading }: Props) => {
   const {
     register,
     handleSubmit,
@@ -40,19 +48,23 @@ const BoardCreationForm = ({ createBoard }: Props) => {
       />
       <div className={styles.buttons}>
         <InputButton
-          disabled={false}
+          disabled={isLoading}
           type="submit"
           value="Готово"
           onClick={handleSubmit(createBoard)}
         />
-        <InputButton disabled={false} type="button" value="Очистить" onClick={() => reset()} />
+        <InputButton disabled={isLoading} type="button" value="Очистить" onClick={() => reset()} />
       </div>
     </form>
   );
 };
 
+const mapStateToProps = (state: RootState) => ({
+  isLoading: requestFetchingSelector(state, buildKey(apiRoutes.boards(), CRUD.create)),
+});
+
 const mapDispatchToProps = {
   createBoard,
 };
 
-export default connect(null, mapDispatchToProps)(BoardCreationForm);
+export default connect(mapStateToProps, mapDispatchToProps)(BoardCreationForm);
