@@ -1,6 +1,6 @@
 import Removal from 'components/Removal';
 import { connect } from 'react-redux';
-import { deleteTask, removeTask } from 'redux/actions/tasks';
+import { removeTask } from 'redux/actions/tasks';
 import { AppDispatch } from 'redux/store';
 
 type OwnProps = {

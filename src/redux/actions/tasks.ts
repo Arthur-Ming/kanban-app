@@ -47,7 +47,6 @@ export const removeTask =
     const key = requestKey.delete(route);
 
     dispatch(requestPending(key));
-    console.log(route);
     try {
       dispatch(deleteTask(boardId, columnId, taskId));
       await api.delete(buildURL(route));
