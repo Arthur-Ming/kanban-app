@@ -25,7 +25,7 @@ const Column = ({ column }: Props) => {
     <div className={styles.box}>
       <div
         style={{
-          height: '50px',
+          height: '20px',
           position: 'relative',
         }}
       >

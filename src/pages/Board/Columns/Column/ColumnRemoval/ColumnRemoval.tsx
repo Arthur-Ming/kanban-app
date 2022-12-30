@@ -14,9 +14,7 @@ type DispatchProps = {
 
 type Props = OwnProps & DispatchProps;
 
-const ColumnRemoval = ({ remove }: Props) => {
-  return <Removal onConfirm={remove} />;
-};
+const ColumnRemoval = ({ remove }: Props) => <Removal onConfirm={remove} />;
 
 const mapDispatchToProps = (dispatch: AppDispatch, { boardId, columnId }: OwnProps) => ({
   remove: () => dispatch(removeColumn(boardId, columnId)),
