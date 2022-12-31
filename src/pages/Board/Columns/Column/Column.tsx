@@ -35,7 +35,10 @@ const Column = ({ column }: Props) => {
       {column && <TaskTickets taskIds={column.tasks} />}
       {column?.id && (
         <Routes>
-          <Route path={`columns/${column.id}/tasks/create`} element={<TaskCreation />} />
+          <Route
+            path={`columns/${column.id}/tasks/create`}
+            element={<TaskCreation boardId={column.boardId} columnId={column.id} />}
+          />
           <Route
             path="/*"
             element={

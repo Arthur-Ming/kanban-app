@@ -106,12 +106,16 @@ export interface ICreateBoard extends IAction {
 
 export interface ICreateBoardBody {
   title: string;
-  description: string;
+  description?: string;
 }
 
 export interface ICreateColumnBody {
   title: string;
 }
 export interface ICreateTaskBody {
+  title: string;
+}
+
+export interface ICreationInput {
   title: string;
 }

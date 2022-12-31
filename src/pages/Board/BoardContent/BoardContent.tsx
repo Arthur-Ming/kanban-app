@@ -42,7 +42,7 @@ const BoardContent = ({ board, loadBoard, loading }: Props) => {
       <div className={styles.columns}>
         {board?.columns && <Columns columnIds={board.columns} />}
         <Routes>
-          <Route path="columns/create" element={<ColumnCreation />} />
+          <Route path="columns/create" element={<ColumnCreation boardId={board?.id} />} />
           <Route
             path="/*"
             element={<CreationTicket label="создать колонку" path="columns/create" />}
