@@ -1,4 +1,4 @@
-import { IUserRegisterBody } from 'interfaces';
+import { IUserLoginBody, IUserRegisterBody } from 'interfaces';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { api, apiRoutes, buildURL } from 'utils/api';
@@ -13,7 +13,25 @@ export const addUser =
     dispatch(requestPending(key));
 
     try {
-      console.log(buildURL(callAPI));
+      const user = await api.post(buildURL(callAPI), userRegisterBody);
+      console.log(user);
+      dispatch(requestSuccess(key));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.log(err.message);
+        dispatch(requestFailure(key, err.message));
+      }
+    }
+  };
+
+export const loginUser =
+  (userRegisterBody: IUserLoginBody) => async (dispatch: Dispatch<AnyAction>) => {
+    const callAPI = apiRoutes.userLogin();
+    const key = requestKey.create(callAPI);
+
+    dispatch(requestPending(key));
+
+    try {
       const user = await api.post(buildURL(callAPI), userRegisterBody);
       console.log(user);
       dispatch(requestSuccess(key));

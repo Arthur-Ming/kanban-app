@@ -54,6 +54,11 @@ export interface IUserRegisterBody {
   password: string;
 }
 
+export interface IUserLoginBody {
+  email: string;
+  password: string;
+}
+
 export interface IActionCallApi extends IAction {
   CallAPI: string;
 }

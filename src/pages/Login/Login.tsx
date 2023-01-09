@@ -1,28 +1,23 @@
 import classNames from 'classnames';
-import { IUserRegisterBody } from 'interfaces';
+import { IUserLoginBody, IUserRegisterBody } from 'interfaces';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { addUser } from 'redux/actions/users';
+import { addUser, loginUser } from 'redux/actions/users';
 import styles from './index.module.scss';
 
-type Inputs = {
-  email: string;
-  name: string;
-  password: string;
-};
-
+type Inputs = IUserLoginBody;
 type StateProps = {
   isLoading: boolean;
 };
 
 type DispatchProps = {
-  onSubmit: (userRegisterBody: IUserRegisterBody) => void;
+  onSubmit: (userRegisterBody: IUserLoginBody) => void;
 };
 
 type Props = StateProps & DispatchProps;
 
-const Register = ({ onSubmit }: Props) => {
+const Login = ({ onSubmit }: Props) => {
   const {
     register,
     handleSubmit,
@@ -47,20 +42,6 @@ const Register = ({ onSubmit }: Props) => {
             })}
           />
           {errors.email && <span className={styles.invalid_text}>{errors.email.message}</span>}
-        </label>
-        <label className={styles.label}>
-          <span>Имя</span>
-          <input
-            type="text"
-            placeholder="name"
-            className={classNames(styles.input, {
-              [styles.invalid]: errors.name,
-            })}
-            {...register('name', {
-              required: 'this field is required!',
-            })}
-          />
-          {errors.name && <span className={styles.invalid_text}>{errors.name.message}</span>}
         </label>
         <label className={styles.label}>
           <span>Пароль</span>
@@ -91,7 +72,7 @@ const Register = ({ onSubmit }: Props) => {
       </form>
       <div className={styles.text}>
         <span>Уже есть аккаунт?</span>
-        <NavLink className={styles.link} to="/login">
+        <NavLink className={styles.link} to="/register">
           Войдите
         </NavLink>
       </div>
@@ -104,7 +85,7 @@ const mapStateToProps = () => ({
 });
 
 const mapDispatchToProps = {
-  onSubmit: addUser,
+  onSubmit: loginUser,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

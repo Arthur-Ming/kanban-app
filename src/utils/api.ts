@@ -22,6 +22,7 @@ export const apiRoutes = {
     `${apiRoutes.tasks(boardId, columnId)}/${taskId}`,
   users: () => `${resource.users}`,
   userRegister: () => `${resource.users}/register`,
+  userLogin: () => `${resource.users}/login`,
 };
 
 export const api = {
