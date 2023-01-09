@@ -12,6 +12,10 @@ export const SET_TASKS = 'SET_TASKS';
 export const ADD_TASK = 'ADD_TASK';
 export const DELETE_TASK = 'DELETE_TASK';
 
+export const USER_SAVE = 'USER_SAVE';
+
+export const SESSION_SET = 'SESSION_SET';
+
 export const FETCH = 'FETCH';
 
 export const REQUEST = '_REQUEST';

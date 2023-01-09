@@ -48,6 +48,12 @@ export interface IAction {
   type: string;
 }
 
+export interface IUser {
+  name: string;
+  id: string;
+  token: string;
+}
+
 export interface IUserRegisterBody {
   email: string;
   name: string;
@@ -129,4 +135,12 @@ export interface ICreateTaskBody {
 
 export interface ICreationInput {
   title: string;
+}
+
+export interface ISaveUserAction extends IAction {
+  user: IUser;
+}
+
+export interface ISetSessionAction extends IAction {
+  isAuth: boolean;
 }
