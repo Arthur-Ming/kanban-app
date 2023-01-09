@@ -48,6 +48,12 @@ export interface IAction {
   type: string;
 }
 
+export interface IUserRegisterBody {
+  email: string;
+  name: string;
+  password: string;
+}
+
 export interface IActionCallApi extends IAction {
   CallAPI: string;
 }

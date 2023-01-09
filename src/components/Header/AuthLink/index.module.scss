@@ -1,0 +1,19 @@
+.box {
+  display: flex;
+  column-gap: 20px;
+  align-items: center;
+  cursor: pointer;
+  color: wheat;
+  &:hover {
+    color: blue;
+  }
+}
+.text {
+  margin: 0;
+  font-size: 18px;
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+}

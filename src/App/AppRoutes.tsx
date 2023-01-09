@@ -7,6 +7,7 @@ import { routes } from 'utils/routes';
 import ColumnCreation from 'pages/Board/ColumnCreation';
 import Boards from 'pages/Boards';
 import BoardCreation from 'pages/Boards/BoardCreation';
+import Register from 'pages/Register';
 
 const AppRoutes = () => (
   <Routes>
@@ -18,6 +19,7 @@ const AppRoutes = () => (
       <Route path="columns/:columnId/tasks/create" element={<TaskCreation />} />
       <Route path={routes.tasks.content()} element={<Task />} />
     </Route>
+    <Route path="register" element={<Register />} />
     <Route path="/errorPage/*" element={<ErrorPage />} />
     <Route path="/*" element={<Navigate to="/errorPage" replace />} />
   </Routes>

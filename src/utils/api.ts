@@ -4,6 +4,7 @@ const resource = {
   boards: 'boards',
   columns: 'columns',
   tasks: 'tasks',
+  users: 'users',
 };
 
 const BASE = 'http://localhost:8000';
@@ -19,6 +20,8 @@ export const apiRoutes = {
     `${apiRoutes.columnById(boardId, columnId)}/${resource.tasks}`,
   tasksById: (boardId: string, columnId: string, taskId: string) =>
     `${apiRoutes.tasks(boardId, columnId)}/${taskId}`,
+  users: () => `${resource.users}`,
+  userRegister: () => `${resource.users}/register`,
 };
 
 export const api = {
