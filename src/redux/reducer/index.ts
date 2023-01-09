@@ -4,6 +4,7 @@ import columns from './columns';
 import tasks from './tasks';
 import requests from './requests';
 import users from './users';
+import session from './session';
 
 const rootReducer = combineReducers({
   boards,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   tasks,
   requests,
   users,
+  session,
 });
 
 export default rootReducer;

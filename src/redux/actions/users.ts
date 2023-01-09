@@ -1,13 +1,16 @@
-import { ISaveUserAction, IUser, IUserLoginBody, IUserRegisterBody } from 'interfaces';
-import Cookies from 'js-cookie';
+import { IUser, IUserLoginBody, IUserRegisterBody } from 'interfaces';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { USER_SAVE } from 'redux/action-types';
 import { api, apiRoutes, buildURL } from 'utils/api';
 import { requestKey } from 'utils/requestService';
 import { requestFailure, requestPending, requestSuccess } from './requests';
+import { setSession } from './session';
 
-const tokenExpire = 0.5;
+export const saveUser = (user: IUser) => ({
+  type: USER_SAVE,
+  user,
+});
 
 export const addUser =
   (userRegisterBody: IUserRegisterBody) => async (dispatch: Dispatch<AnyAction>) => {
@@ -28,17 +31,6 @@ export const addUser =
     }
   };
 
-export const saveUser = (user: IUser) => {
-  Cookies.set('token', user.token, {
-    expires: tokenExpire,
-  });
-
-  return {
-    type: USER_SAVE,
-    user,
-  };
-};
-
 export const loginUser =
   (userRegisterBody: IUserLoginBody) => async (dispatch: Dispatch<AnyAction>) => {
     const callAPI = apiRoutes.userLogin();
@@ -48,12 +40,11 @@ export const loginUser =
 
     try {
       const user: IUser = await api.post(buildURL(callAPI), userRegisterBody);
-      console.log(user);
       dispatch(requestSuccess(key));
       dispatch(saveUser(user));
+      dispatch(setSession(user.token));
     } catch (err: unknown) {
       if (err instanceof Error) {
-        console.log(err.message);
         dispatch(requestFailure(key, err.message));
       }
     }

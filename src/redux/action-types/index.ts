@@ -14,7 +14,7 @@ export const DELETE_TASK = 'DELETE_TASK';
 
 export const USER_SAVE = 'USER_SAVE';
 
-export const SESSION_SET = 'SESSION_SET';
+export const SET_SESSION = 'SET_SESSION';
 
 export const FETCH = 'FETCH';
 

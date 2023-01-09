@@ -1,5 +1,5 @@
 import { ISetSessionAction } from 'interfaces';
-import { SESSION_SET } from '../action-types';
+import { SET_SESSION } from '../action-types';
 import { createReducer } from '@reduxjs/toolkit';
 
 export interface ISessionState {
@@ -11,7 +11,7 @@ const initialState: ISessionState = {
 };
 
 export default createReducer(initialState, (builder) => {
-  builder.addCase(SESSION_SET, (state, action) => {
+  builder.addCase(SET_SESSION, (state, action) => {
     const { isAuth } = <ISetSessionAction>action;
     state.isUserAuth = isAuth;
   });
