@@ -44,6 +44,10 @@ export interface ITEXT {
   [key: string]: ILANG;
 }
 
+export type MapType<T> = {
+  [key: string]: T;
+};
+
 export interface IAction {
   type: string;
 }
@@ -83,7 +87,8 @@ export interface IAddColumnAction extends IAction {
 }
 
 export interface IAddTaskAction extends IAction {
-  task: ITask;
+  column: IColumn;
+  task?: ITask;
 }
 
 export interface ISetTasksAction extends IAction {
@@ -93,22 +98,30 @@ export interface ISetTasksAction extends IAction {
 export interface ISetBoards extends IAction {
   boards: IBoard[];
 }
+
+export interface ILoadBoards extends IAction {
+  boards: IBoard[];
+  error: unknown | null;
+}
+
+export interface ILoadBoard extends IAction {
+  board: IBoard;
+  error: unknown | null;
+}
+
 export interface IAddBoard extends IAction {
   board: IBoard;
 }
 
 export interface IDeleteBoard extends IAction {
-  boardId: string;
+  board: IBoard;
 }
 
 export interface IDeleteColumn extends IAction {
-  columnId: string;
-  boardId: string;
+  column: IColumn;
 }
 export interface IDeleteTask extends IAction {
-  taskId: string;
-  columnId: string;
-  boardId: string;
+  task: ITask;
 }
 
 export interface IGetBoardByIdAction extends IAction {

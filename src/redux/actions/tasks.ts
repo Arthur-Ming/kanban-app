@@ -1,59 +1,34 @@
-import { IAddTaskAction, ICreateTaskBody, IDeleteTask, ISetTasksAction, ITask } from 'interfaces';
-import { ADD_TASK, SET_TASKS, DELETE_TASK } from 'redux/action-types';
+import { IColumn, ICreateTaskBody, ISetTasksAction, ITask } from 'interfaces';
+import { ADD_TASK, SET_TASKS, DELETE_TASK, REQUEST, SUCCESS } from 'redux/action-types';
 import { AnyAction, Dispatch } from 'redux';
-import { api, apiRoutes, buildURL } from 'utils/api';
-import { requestKey } from 'utils/requestService';
-import { requestFailure, requestPending, requestSuccess } from './requests';
+import { api, apiRoutes } from 'utils/api';
 
 export const setTasks = (tasks: ITask[]): ISetTasksAction => ({
   type: SET_TASKS,
   tasks,
 });
 
-export const addTask = (task: ITask): IAddTaskAction => ({
-  type: ADD_TASK,
-  task,
-});
-export const deleteTask = (boardId: string, columnId: string, taskId: string): IDeleteTask => ({
-  type: DELETE_TASK,
-  boardId,
-  columnId,
-  taskId,
-});
-
 export const createTask =
-  (boardId: string, columnId: string, body: ICreateTaskBody) =>
-  async (dispatch: Dispatch<AnyAction>) => {
-    const route = apiRoutes.tasks(boardId, columnId);
-    const key = requestKey.create(route);
-
-    dispatch(requestPending(key));
-
+  (column: IColumn, body: ICreateTaskBody) => async (dispatch: Dispatch<AnyAction>) => {
+    dispatch({ type: ADD_TASK + REQUEST, column });
     try {
-      const data = await api.post(buildURL(route), body);
-
-      dispatch(addTask(data));
-      dispatch(requestSuccess(key));
+      const task = await api.post(apiRoutes.tasks(column.boardId, column.id), body);
+      dispatch({ type: ADD_TASK + SUCCESS, task, column });
     } catch (err: unknown) {
       if (err instanceof Error) {
-        dispatch(requestFailure(key, err.message));
+        console.log(err);
       }
     }
   };
 
-export const removeTask =
-  (boardId: string, columnId: string, taskId: string) => async (dispatch: Dispatch<AnyAction>) => {
-    const route = apiRoutes.tasksById(boardId, columnId, taskId);
-    const key = requestKey.delete(route);
-
-    dispatch(requestPending(key));
-    try {
-      dispatch(deleteTask(boardId, columnId, taskId));
-      await api.delete(buildURL(route));
-      dispatch(requestSuccess(key));
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        dispatch(requestFailure(key, err.message));
-      }
+export const removeTask = (task: ITask) => async (dispatch: Dispatch<AnyAction>) => {
+  dispatch({ type: DELETE_TASK + REQUEST, task });
+  try {
+    await api.delete(apiRoutes.tasksById(task.boardId, task.columnId, task.id));
+    dispatch({ type: DELETE_TASK + SUCCESS, task });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.log(err);
     }
-  };
+  }
+};

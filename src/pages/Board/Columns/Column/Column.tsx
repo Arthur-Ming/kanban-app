@@ -5,13 +5,14 @@ import TaskTickets from '../../TaskTickets';
 import ColumnHeader from './ColumnHeader';
 import { connect } from 'react-redux';
 import { RootState } from 'redux/reducer';
-import { columnByIdSelector } from 'redux/selectors/columns';
+import { columnByIdSelector, columnsDeletingSelector } from 'redux/selectors/columns';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
 import ColumnRemoval from './ColumnRemoval';
 
 type StateProps = {
   column?: IColumn;
+  isDeleting: boolean;
 };
 
 type OwnProps = {
@@ -20,39 +21,32 @@ type OwnProps = {
 
 type Props = StateProps & OwnProps;
 
-const Column = ({ column }: Props) => {
+const Column = ({ column, isDeleting }: Props) => {
+  if (isDeleting) return <div>deleting</div>;
+  if (!column) return <div>No data</div>;
   return (
     <div className={styles.box}>
-      <div
-        style={{
-          height: '20px',
-          position: 'relative',
-        }}
-      >
-        {column && <ColumnRemoval boardId={column.boardId} columnId={column.id} />}
-      </div>
-
-      {column && <TaskTickets taskIds={column.tasks} />}
-      {column?.id && (
-        <Routes>
-          <Route
-            path={`columns/${column.id}/tasks/create`}
-            element={<TaskCreation boardId={column.boardId} columnId={column.id} />}
-          />
-          <Route
-            path="/*"
-            element={
-              <CreationTicket path={`columns/${column.id}/tasks/create`} label="создать таск" />
-            }
-          />
-        </Routes>
-      )}
+      <div className={styles.header}>{column && <ColumnRemoval column={column} />}</div>
+      <TaskTickets tasks={column.tasks} />
+      <Routes>
+        <Route
+          path={`columns/${column.id}/tasks/create`}
+          element={<TaskCreation column={column} />}
+        />
+        <Route
+          path="/*"
+          element={
+            <CreationTicket path={`columns/${column.id}/tasks/create`} label="создать таск" />
+          }
+        />
+      </Routes>
     </div>
   );
 };
 
 const mapStateToProps = (state: RootState, props: OwnProps) => ({
   column: columnByIdSelector(state, props),
+  isDeleting: columnsDeletingSelector(state, props),
 });
 
 export default connect(mapStateToProps)(Column);

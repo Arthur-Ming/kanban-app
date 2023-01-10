@@ -7,12 +7,10 @@ const resource = {
   users: 'users',
 };
 
-const BASE = 'http://localhost:8000';
-
-export const buildURL = (path: string) => `${BASE}/${path}`;
+const BASE_URL = 'http://localhost:8000';
 
 export const apiRoutes = {
-  boards: () => `${resource.boards}`,
+  boards: () => `${BASE_URL}/${resource.boards}`,
   boardById: (boardId: string) => `${apiRoutes.boards()}/${boardId}`,
   columns: (boardId: string) => `${apiRoutes.boardById(boardId)}/${resource.columns}`,
   columnById: (boardId: string, columnId: string) => `${apiRoutes.columns(boardId)}/${columnId}`,
@@ -20,7 +18,7 @@ export const apiRoutes = {
     `${apiRoutes.columnById(boardId, columnId)}/${resource.tasks}`,
   tasksById: (boardId: string, columnId: string, taskId: string) =>
     `${apiRoutes.tasks(boardId, columnId)}/${taskId}`,
-  users: () => `${resource.users}`,
+  users: () => `${BASE_URL}/${resource.users}`,
   userRegister: () => `${resource.users}/register`,
   userLogin: () => `${resource.users}/login`,
 };

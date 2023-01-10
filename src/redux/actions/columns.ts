@@ -1,64 +1,36 @@
-import {
-  IAddColumnAction,
-  IColumn,
-  ICreateColumnBody,
-  IDeleteColumn,
-  ISetColumnsAction,
-} from 'interfaces';
+import { IColumn, ICreateColumnBody, ISetColumnsAction } from 'interfaces';
 import { AnyAction, Dispatch } from 'redux';
-import { SET_COLUMNS, ADD_COLUMN, DELETE_COLUMN } from 'redux/action-types';
-import { api, apiRoutes, buildURL } from 'utils/api';
-import { requestKey } from 'utils/requestService';
-import { requestFailure, requestPending, requestSuccess } from './requests';
+import { SET_COLUMNS, ADD_COLUMN, DELETE_COLUMN, REQUEST, SUCCESS } from 'redux/action-types';
+import { api, apiRoutes } from 'utils/api';
 
 export const setColumns = (columns: IColumn[]): ISetColumnsAction => ({
   type: SET_COLUMNS,
   columns,
 });
 
-export const addColumn = (column: IColumn): IAddColumnAction => ({
-  type: ADD_COLUMN,
-  column,
-});
-
-export const deleteColumn = (boardId: string, columnId: string): IDeleteColumn => ({
-  type: DELETE_COLUMN,
-  boardId,
-  columnId,
-});
-
 export const createColumn =
   (boardId: string, body: ICreateColumnBody) => async (dispatch: Dispatch<AnyAction>) => {
-    const route = apiRoutes.columns(boardId);
-    const key = requestKey.create(route);
-
-    dispatch(requestPending(key));
+    dispatch({ type: ADD_COLUMN + REQUEST });
 
     try {
-      const data = await api.post(buildURL(route), body);
-      console.log(data);
-      dispatch(addColumn(data));
-      dispatch(requestSuccess(key));
+      const column = await api.post(apiRoutes.columns(boardId), body);
+
+      dispatch({ type: ADD_COLUMN + SUCCESS, column });
     } catch (err: unknown) {
       if (err instanceof Error) {
-        dispatch(requestFailure(key, err.message));
+        console.log(err);
       }
     }
   };
 
-export const removeColumn =
-  (boardId: string, columnId: string) => async (dispatch: Dispatch<AnyAction>) => {
-    const route = apiRoutes.columnById(boardId, columnId);
-    const key = requestKey.delete(route);
-
-    dispatch(requestPending(key));
-    try {
-      dispatch(deleteColumn(boardId, columnId));
-      await api.delete(buildURL(route));
-      dispatch(requestSuccess(key));
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        dispatch(requestFailure(key, err.message));
-      }
+export const removeColumn = (column: IColumn) => async (dispatch: Dispatch<AnyAction>) => {
+  dispatch({ type: DELETE_COLUMN + REQUEST, column });
+  try {
+    await api.delete(apiRoutes.columnById(column.boardId, column.id));
+    dispatch({ type: DELETE_COLUMN + SUCCESS, column });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.log(err);
     }
-  };
+  }
+};

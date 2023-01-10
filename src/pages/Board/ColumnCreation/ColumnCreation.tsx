@@ -3,11 +3,13 @@ import { ICreateColumnBody, ICreationInput } from 'interfaces';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { createColumn } from 'redux/actions/columns';
+import { RootState } from 'redux/reducer';
+import { columnsAddingSelector } from 'redux/selectors/columns';
 import { AppDispatch } from 'redux/store';
 import styles from './index.module.scss';
 
 type StateProps = {
-  isLoading: boolean;
+  isAdding: boolean;
 };
 
 type DispatchProps = {
@@ -20,7 +22,7 @@ interface OwnProps {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-const ColumnCreation = ({ boardId, create, isLoading }: Props) => {
+const ColumnCreation = ({ boardId, create, isAdding }: Props) => {
   const navigate = useNavigate();
   const onCancel = () => {
     boardId && navigate(`/boards/${boardId}`);
@@ -31,15 +33,15 @@ const ColumnCreation = ({ boardId, create, isLoading }: Props) => {
       <CreationForm
         onSubmit={create}
         onCancel={onCancel}
-        isLoading={isLoading}
+        isLoading={isAdding}
         placeholder="dbfdbdfnfngf"
       />
     </div>
   );
 };
 
-const mapStateToProps = () => ({
-  isLoading: false,
+const mapStateToProps = (state: RootState) => ({
+  isAdding: columnsAddingSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch, { boardId }: OwnProps) => ({

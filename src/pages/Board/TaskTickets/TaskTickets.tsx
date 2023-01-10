@@ -3,12 +3,12 @@ import styles from './index.module.scss';
 import { TaskId } from 'interfaces';
 
 type Props = {
-  taskIds: TaskId[];
+  tasks: TaskId[];
 };
 
-const TaskTicketList = ({ taskIds }: Props) => (
+const TaskTicketList = ({ tasks }: Props) => (
   <ul className={styles.list}>
-    {taskIds.map((taskId: string) => (
+    {tasks.map((taskId: string) => (
       <TaskTicket key={taskId} taskId={taskId} />
     ))}
   </ul>

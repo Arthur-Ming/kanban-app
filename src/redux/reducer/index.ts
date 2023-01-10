@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux';
 import boards from './boards';
+import board from './board';
 import columns from './columns';
 import tasks from './tasks';
-import requests from './requests';
 import users from './users';
 import session from './session';
 
 const rootReducer = combineReducers({
   boards,
+  board,
   columns,
   tasks,
-  requests,
   users,
   session,
 });

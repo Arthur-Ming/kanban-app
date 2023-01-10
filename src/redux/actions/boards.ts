@@ -1,106 +1,43 @@
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
-import { ADD_BOARD, DELETE_BOARD, SET_BOARDS } from '../action-types';
-import {
-  IBoard,
-  ICreateBoardBody,
-  ISetBoards,
-  IAddBoard,
-  IDeleteBoard,
-  IPopulatedBoard,
-} from 'interfaces';
-
-import { apiRoutes, buildURL, api } from 'utils/api';
-import { setTasks } from './tasks';
-import { setColumns } from './columns';
-import { requestFailure, requestPending, requestSuccess } from './requests';
-import { separateBoard } from 'utils/separateBoard';
-import { requestKey } from 'utils/requestService';
-
-export const setBoards = (boards: IBoard[]): ISetBoards => ({
-  type: SET_BOARDS,
-  boards,
-});
-
-export const addBoard = (board: IBoard): IAddBoard => ({
-  type: ADD_BOARD,
-  board,
-});
-
-export const deleteBoard = (boardId: string): IDeleteBoard => ({
-  type: DELETE_BOARD,
-  boardId,
-});
+import { ADD_BOARD, DELETE_BOARD, LOAD_BOARDS, REQUEST, SUCCESS } from '../action-types';
+import { IBoard, ICreateBoardBody } from 'interfaces';
+import { apiRoutes, api } from 'utils/api';
 
 export const loadBoards = () => async (dispatch: Dispatch<AnyAction>) => {
-  const callAPI = apiRoutes.boards();
-  const key = requestKey.read(callAPI);
-
-  dispatch(requestPending(key));
+  dispatch({ type: LOAD_BOARDS + REQUEST });
 
   try {
-    const boards = await api.get(buildURL(callAPI));
-    dispatch(setBoards(boards));
-    dispatch(requestSuccess(key));
+    const boards = await api.get(apiRoutes.boards());
+    dispatch({ type: LOAD_BOARDS + SUCCESS, boards });
   } catch (err: unknown) {
     if (err instanceof Error) {
-      dispatch(requestFailure(key, err.message));
+      console.log(err);
     }
   }
 };
 
 export const createBoard = (body: ICreateBoardBody) => async (dispatch: Dispatch<AnyAction>) => {
-  const route = apiRoutes.boards();
-  const key = requestKey.create(route);
-
-  dispatch(requestPending(key));
+  dispatch({ type: ADD_BOARD + REQUEST });
 
   try {
-    const data = await api.post(buildURL(route), body);
-    dispatch(addBoard(data));
-    dispatch(requestSuccess(key));
+    const board = await api.post(apiRoutes.boards(), body);
+    dispatch({ type: ADD_BOARD + SUCCESS, board });
   } catch (err: unknown) {
     if (err instanceof Error) {
-      dispatch(requestFailure(key, err.message));
+      console.log(err);
     }
   }
 };
 
-export const removeBoard = (boardId: string) => async (dispatch: Dispatch<AnyAction>) => {
-  const route = apiRoutes.boardById(boardId);
-  const key = requestKey.delete(route);
-
-  dispatch(requestPending(key));
-  dispatch(deleteBoard(boardId));
-  try {
-    await api.delete(buildURL(route));
-    dispatch(requestSuccess(key));
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      dispatch(requestFailure(key, err.message));
-    }
-  }
-};
-
-export const getBoardById = (boardId: string) => async (dispatch: Dispatch<AnyAction>) => {
-  const route = apiRoutes.boardById(boardId);
-  const key = requestKey.read(route);
-
-  dispatch(requestPending(key));
+export const removeBoard = (board: IBoard) => async (dispatch: Dispatch<AnyAction>) => {
+  dispatch({ type: DELETE_BOARD + REQUEST, board });
 
   try {
-    const populatedBoard: IPopulatedBoard = await api.get(buildURL(route));
-    const { tasks, columns, board } = separateBoard(populatedBoard);
-    console.log(tasks);
-    console.log(columns);
-    console.log(board);
-    dispatch(addBoard(board));
-    dispatch(setColumns(columns));
-    dispatch(setTasks(tasks));
-
-    dispatch(requestSuccess(key));
+    await api.delete(apiRoutes.boards());
+    dispatch({ type: DELETE_BOARD + SUCCESS, board });
   } catch (err: unknown) {
     if (err instanceof Error) {
-      dispatch(requestFailure(key, err.message));
+      console.log(err);
     }
   }
 };

@@ -1,10 +1,11 @@
 import Removal from 'components/Removal';
+import { IBoard } from 'interfaces';
 import { connect } from 'react-redux';
 import { removeBoard } from 'redux/actions/boards';
 import { AppDispatch } from 'redux/store';
 
 type OwnProps = {
-  boardId: string;
+  board: IBoard;
 };
 
 type DispatchProps = {
@@ -15,8 +16,8 @@ type Props = OwnProps & DispatchProps;
 
 const BoardRemoval = ({ remove }: Props) => <Removal onConfirm={remove} />;
 
-const mapDispatchToProps = (dispatch: AppDispatch, ownProps: OwnProps) => ({
-  remove: () => dispatch(removeBoard(ownProps.boardId)),
+const mapDispatchToProps = (dispatch: AppDispatch, { board }: OwnProps) => ({
+  remove: () => dispatch(removeBoard(board)),
 });
 
 export default connect(null, mapDispatchToProps)(BoardRemoval);

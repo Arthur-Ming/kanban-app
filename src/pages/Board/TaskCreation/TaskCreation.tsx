@@ -1,12 +1,13 @@
 import CreationForm from 'components/CreationForm';
-import { ICreationInput } from 'interfaces';
+import { IColumn, ICreationInput } from 'interfaces';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createTask } from 'redux/actions/tasks';
-import { AppDispatch } from 'redux/store';
+import { tasksAddingSelector } from 'redux/selectors/tasks';
+import { AppDispatch, RootState } from 'redux/store';
 
 type StateProps = {
-  isLoading: boolean;
+  isAdding: boolean;
 };
 
 type DispatchProps = {
@@ -14,30 +15,29 @@ type DispatchProps = {
 };
 
 interface OwnProps {
-  boardId?: string;
-  columnId?: string;
+  column?: IColumn;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-const TaskCreation = ({ boardId, create, isLoading }: Props) => {
+const TaskCreation = ({ column, create, isAdding }: Props) => {
   const navigate = useNavigate();
   const onCancel = () => {
-    boardId && navigate(`/boards/${boardId}`);
+    column && navigate(`/boards/${column.boardId}`);
   };
 
   return (
-    <CreationForm onSubmit={create} onCancel={onCancel} isLoading={isLoading} placeholder="bdbdb" />
+    <CreationForm onSubmit={create} onCancel={onCancel} isLoading={isAdding} placeholder="bdbdb" />
   );
 };
 
-const mapStateToProps = () => ({
-  isLoading: false,
+const mapStateToProps = (state: RootState, { column }: OwnProps) => ({
+  isAdding: column ? tasksAddingSelector(state, { column }) : false,
 });
 
-const mapDispatchToProps = (dispatch: AppDispatch, { boardId, columnId }: OwnProps) => ({
+const mapDispatchToProps = (dispatch: AppDispatch, { column }: OwnProps) => ({
   create: (body: ICreationInput) => {
-    boardId && columnId && dispatch(createTask(boardId, columnId, body));
+    column && dispatch(createTask(column, body));
   },
 });
 

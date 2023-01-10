@@ -4,15 +4,13 @@ import { IBoard } from 'interfaces';
 import ColumnCreation from '../ColumnCreation';
 import { connect } from 'react-redux';
 import { RootState } from 'redux/reducer';
-import { getBoardById } from 'redux/actions/boards';
+import { getBoardById } from 'redux/actions/board';
 import { useEffect } from 'react';
-import { boardByIdSelector } from 'redux/selectors/boards';
 import { AppDispatch } from 'redux/store';
-import { requestFetchingSelector } from 'redux/selectors/requests';
-import { baseRoutes } from 'utils/routes';
 import Loader from 'components/Loader';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
+import { boardLoadingSelector, boardSelector } from 'redux/selectors/board';
 
 type OwnProps = {
   boardId: string;
@@ -23,8 +21,8 @@ type DispatchProps = {
 };
 
 type StateProps = {
-  board?: IBoard;
-  loading?: boolean;
+  board: IBoard | null;
+  loading: boolean;
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -53,9 +51,9 @@ const BoardContent = ({ board, loadBoard, loading }: Props) => {
   );
 };
 
-const mapStateToProps = (state: RootState, props: OwnProps) => ({
-  board: boardByIdSelector(state, props),
-  loading: requestFetchingSelector(state, baseRoutes.boards.byId.absolute(props.boardId)),
+const mapStateToProps = (state: RootState) => ({
+  board: boardSelector(state),
+  loading: boardLoadingSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch, props: OwnProps) => ({

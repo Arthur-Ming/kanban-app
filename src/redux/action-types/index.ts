@@ -1,4 +1,5 @@
 export const LOAD_BOARD = 'LOAD_BOARD';
+export const LOAD_BOARDS = 'LOAD_BOARDS';
 
 export const SET_BOARDS = 'SET_BOARDS';
 export const ADD_BOARD = 'ADD_BOARD';

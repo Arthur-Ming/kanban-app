@@ -2,14 +2,12 @@ import BoardTickets from './BoardTickets';
 import { connect } from 'react-redux';
 import { loadBoards } from 'redux/actions/boards';
 import { RootState } from 'redux/reducer';
-import { boardIdsSelector } from 'redux/selectors/boards';
+import { boardIdsSelector, boardsLoadingSelector } from 'redux/selectors/boards';
 import { useEffect } from 'react';
 import BoardCreation from './BoardCreation';
 import styles from './index.module.scss';
 import { Route, Routes } from 'react-router';
-import { requestFetchingSelector } from 'redux/selectors/requests';
 import Loader from 'components/Loader';
-import { apiRoutes } from 'utils/api';
 import CreationTicket from 'components/CreationTicket';
 
 interface DispatchProps {
@@ -18,7 +16,6 @@ interface DispatchProps {
 
 interface StateProps {
   isBoardsloading: boolean;
-  /*   isBoardsloaded: boolean; */
   boardIds: string[];
 }
 
@@ -45,7 +42,7 @@ const Boards = ({ loadBoards, boardIds, isBoardsloading }: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  isBoardsloading: requestFetchingSelector(state, apiRoutes.boards()),
+  isBoardsloading: boardsLoadingSelector(state),
   boardIds: boardIdsSelector(state),
 });
 

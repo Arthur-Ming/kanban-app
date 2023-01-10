@@ -1,15 +1,19 @@
-import { IAddTaskAction, IDeleteTask, ISetTasksAction, ITask } from 'interfaces';
+import { IAddTaskAction, IDeleteTask, ISetTasksAction, ITask, MapType } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
 import { createReducer } from '@reduxjs/toolkit';
-import { ADD_TASK, DELETE_TASK, SET_TASKS } from 'redux/action-types';
+import { ADD_TASK, DELETE_TASK, REQUEST, SET_TASKS, SUCCESS } from 'redux/action-types';
 
 export interface ITasksState {
-  entities: {
-    [key: string]: ITask;
-  };
+  adding: MapType<boolean>;
+  updating: MapType<boolean>;
+  deleting: MapType<boolean>;
+  entities: MapType<ITask>;
 }
 
 const initialState: ITasksState = {
+  adding: {},
+  updating: {},
+  deleting: {},
   entities: {},
 };
 
@@ -19,12 +23,24 @@ export default createReducer(initialState, (builder) => {
       const { tasks } = <ISetTasksAction>action;
       tasks && (state.entities = arrToMap(tasks));
     })
-    .addCase(ADD_TASK, (state, action) => {
-      const { task } = <IAddTaskAction>action;
-      state.entities[task.id] = task;
+    .addCase(ADD_TASK + REQUEST, (state, action) => {
+      const { column } = <IAddTaskAction>action;
+      state.adding[column.id] = true;
     })
-    .addCase(DELETE_TASK, (state, action) => {
-      const { taskId } = <IDeleteTask>action;
-      delete state.entities[taskId];
+    .addCase(ADD_TASK + SUCCESS, (state, action) => {
+      const { task } = <IAddTaskAction>action;
+      if (task) {
+        state.adding[task.columnId] = false;
+        state.entities[task.id] = task;
+      }
+    })
+    .addCase(DELETE_TASK + REQUEST, (state, action) => {
+      const { task } = <IDeleteTask>action;
+      state.deleting[task.id] = true;
+    })
+    .addCase(DELETE_TASK + SUCCESS, (state, action) => {
+      const { task } = <IDeleteTask>action;
+      state.deleting[task.id] = false;
+      delete state.entities[task.id];
     });
 });
