@@ -11,6 +11,7 @@ import Loader from 'components/Loader';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
 import { boardLoadingSelector, boardSelector } from 'redux/selectors/board';
+import BoardHeader from './BoardHeader';
 
 type OwnProps = {
   boardId: string;
@@ -36,7 +37,7 @@ const BoardContent = ({ board, loadBoard, loading }: Props) => {
 
   return (
     <div className={styles.container}>
-      <h4 className={styles.title}>{board?.title}</h4>
+      {board && <BoardHeader board={board} />}
       <div className={styles.columns}>
         {board?.columns && <Columns columnIds={board.columns} />}
         <Routes>

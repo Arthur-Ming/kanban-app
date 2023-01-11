@@ -139,6 +139,11 @@ export interface ICreateBoardBody {
   description?: string;
 }
 
+export interface IUpdateBoard {
+  title: string;
+  description?: string;
+}
+
 export interface ICreateColumnBody {
   title: string;
 }

@@ -1,5 +1,12 @@
-import { IAddColumnAction, IBoard, IDeleteColumn, ILoadBoard } from 'interfaces';
-import { ADD_COLUMN, DELETE_COLUMN, LOAD_BOARD, REQUEST, SUCCESS } from '../action-types';
+import { IAddBoard, IAddColumnAction, IBoard, IDeleteColumn, ILoadBoard } from 'interfaces';
+import {
+  ADD_COLUMN,
+  DELETE_COLUMN,
+  LOAD_BOARD,
+  REQUEST,
+  SUCCESS,
+  UPDATE_BOARD,
+} from '../action-types';
 
 import { createReducer } from '@reduxjs/toolkit';
 
@@ -23,6 +30,14 @@ export default createReducer(initialState, (builder) => {
     .addCase(LOAD_BOARD + SUCCESS, (state, action) => {
       const { board } = <ILoadBoard>action;
       state.loading = false;
+      state.entities = board;
+    })
+    .addCase(UPDATE_BOARD + REQUEST, (state) => {
+      state.updating = true;
+    })
+    .addCase(UPDATE_BOARD + SUCCESS, (state, action) => {
+      const { board } = <IAddBoard>action;
+      state.updating = false;
       state.entities = board;
     })
     .addCase(ADD_COLUMN + SUCCESS, (state, action) => {

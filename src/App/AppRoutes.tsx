@@ -9,6 +9,7 @@ import Boards from 'pages/Boards';
 import BoardCreation from 'pages/Boards/BoardCreation';
 import Register from 'pages/Register';
 import Login from 'pages/Login';
+import BoardUpdate from 'pages/Board/BoardContent/BoardUpdate';
 
 const AppRoutes = () => (
   <Routes>
@@ -16,6 +17,7 @@ const AppRoutes = () => (
       <Route path="create" element={<BoardCreation />} />
     </Route>
     <Route path={`${routes.boards.byId()}/*`} element={<Board />}>
+      <Route path="update" element={<BoardUpdate />} />
       <Route path="columns/create" element={<ColumnCreation />} />
       <Route path="columns/:columnId/tasks/create" element={<TaskCreation />} />
       <Route path={routes.tasks.content()} element={<Task />} />

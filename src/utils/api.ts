@@ -33,6 +33,14 @@ export const api = {
       },
       body: JSON.stringify(body),
     }),
+  put: async <T>(route: string, body: T) =>
+    await fetchJson(route, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify(body),
+    }),
   delete: (route: string) =>
     fetch(route, {
       method: 'DELETE',
