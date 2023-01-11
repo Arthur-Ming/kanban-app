@@ -13,7 +13,8 @@ export const SET_TASKS = 'SET_TASKS';
 export const ADD_TASK = 'ADD_TASK';
 export const DELETE_TASK = 'DELETE_TASK';
 
-export const USER_SAVE = 'USER_SAVE';
+export const LOGIN = 'LOGIN';
+export const USER_REGISTRATION = 'USER_REGISTRATION';
 
 export const SET_SESSION = 'SET_SESSION';
 

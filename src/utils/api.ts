@@ -19,8 +19,8 @@ export const apiRoutes = {
   tasksById: (boardId: string, columnId: string, taskId: string) =>
     `${apiRoutes.tasks(boardId, columnId)}/${taskId}`,
   users: () => `${BASE_URL}/${resource.users}`,
-  userRegister: () => `${resource.users}/register`,
-  userLogin: () => `${resource.users}/login`,
+  userRegister: () => `${apiRoutes.users()}/register`,
+  userLogin: () => `${apiRoutes.users()}/login`,
 };
 
 export const api = {
