@@ -1,6 +1,13 @@
 import { IColumn, ICreateColumnBody, ISetColumnsAction } from 'interfaces';
 import { AnyAction, Dispatch } from 'redux';
-import { SET_COLUMNS, ADD_COLUMN, DELETE_COLUMN, REQUEST, SUCCESS } from 'redux/action-types';
+import {
+  SET_COLUMNS,
+  ADD_COLUMN,
+  DELETE_COLUMN,
+  REQUEST,
+  SUCCESS,
+  UPDATE_COLUMN,
+} from 'redux/action-types';
 import { api, apiRoutes } from 'utils/api';
 
 export const setColumns = (columns: IColumn[]): ISetColumnsAction => ({
@@ -34,3 +41,17 @@ export const removeColumn = (column: IColumn) => async (dispatch: Dispatch<AnyAc
     }
   }
 };
+
+export const updateColumn =
+  (column: IColumn, body: ICreateColumnBody) => async (dispatch: Dispatch<AnyAction>) => {
+    dispatch({ type: UPDATE_COLUMN + REQUEST, column });
+    const { boardId, id } = column;
+    try {
+      const updatedColumn = await api.put(apiRoutes.columnById(boardId, id), body);
+      dispatch({ type: UPDATE_COLUMN + SUCCESS, column: updatedColumn });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.log(err);
+      }
+    }
+  };

@@ -1,10 +1,11 @@
+import { IBoard, IColumn, ICreationInput } from 'interfaces';
 import InputText from 'components/Forms/InputText';
-import { IBoard, ICreationInput } from 'interfaces';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { updateBoard } from 'redux/actions/board';
 import { AppDispatch } from 'redux/store';
 import styles from './index.module.scss';
+import { updateColumn } from 'redux/actions/columns';
 
 type Inputs = ICreationInput;
 
@@ -13,12 +14,12 @@ type DispatchProps = {
 };
 
 type OwnProps = {
-  board?: IBoard;
+  column: IColumn;
 };
 
 type Props = OwnProps & DispatchProps;
 
-const BoardUpdate = ({ board, update }: Props) => {
+const ColumnUpdate = ({ column, update }: Props) => {
   const {
     register,
     handleSubmit,
@@ -32,18 +33,17 @@ const BoardUpdate = ({ board, update }: Props) => {
         register={register}
         name="title"
         required="this field is required!"
-        defaultValue={board?.title}
+        defaultValue={column.title}
         extraClass={styles.input}
       />
     </form>
   );
 };
 
-const mapDispatchToProps = (dispatch: AppDispatch, { board }: OwnProps) => ({
+const mapDispatchToProps = (dispatch: AppDispatch, { column }: OwnProps) => ({
   update: (data: ICreationInput) => {
-    if (!board) return;
-    dispatch(updateBoard(board, data));
+    dispatch(updateColumn(column, data));
   },
 });
 
-export default connect(null, mapDispatchToProps)(BoardUpdate);
+export default connect(null, mapDispatchToProps)(ColumnUpdate);

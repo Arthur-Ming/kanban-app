@@ -16,6 +16,7 @@ import {
   DELETE_TASK,
   REQUEST,
   SET_COLUMNS,
+  UPDATE_COLUMN,
   SUCCESS,
 } from 'redux/action-types';
 
@@ -46,6 +47,15 @@ export default createReducer(initialState, (builder) => {
       const { column } = <IAddColumnAction>action;
       state.entities[column.id] = column;
       state.adding = false;
+    })
+    .addCase(UPDATE_COLUMN + REQUEST, (state, action) => {
+      const { column } = <IAddColumnAction>action;
+      state.updating[column.id] = true;
+    })
+    .addCase(UPDATE_COLUMN + SUCCESS, (state, action) => {
+      const { column } = <IAddColumnAction>action;
+      state.updating[column.id] = false;
+      state.entities[column.id] = column;
     })
     .addCase(DELETE_COLUMN + REQUEST, (state, action) => {
       const { column } = <IDeleteColumn>action;

@@ -26,7 +26,7 @@ const Column = ({ column, isDeleting }: Props) => {
   if (!column) return <div>No data</div>;
   return (
     <div className={styles.box}>
-      <div className={styles.header}>{column && <ColumnRemoval column={column} />}</div>
+      <ColumnHeader column={column} />
       <TaskTickets tasks={column.tasks} />
       <Routes>
         <Route

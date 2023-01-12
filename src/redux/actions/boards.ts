@@ -33,7 +33,7 @@ export const removeBoard = (board: IBoard) => async (dispatch: Dispatch<AnyActio
   dispatch({ type: DELETE_BOARD + REQUEST, board });
 
   try {
-    await api.delete(apiRoutes.boards());
+    await api.delete(apiRoutes.boardById(board.id));
     dispatch({ type: DELETE_BOARD + SUCCESS, board });
   } catch (err: unknown) {
     if (err instanceof Error) {

@@ -29,14 +29,13 @@ export const getBoardById = (boardId: string) => async (dispatch: Dispatch<AnyAc
 };
 
 export const updateBoard =
-  (body: IUpdateBoard, board?: IBoard) => async (dispatch: Dispatch<AnyAction>) => {
+  (board: IBoard, body: IUpdateBoard) => async (dispatch: Dispatch<AnyAction>) => {
     if (!board) return;
 
     dispatch({ type: UPDATE_BOARD + REQUEST });
 
     try {
       const updatedBoard = await api.put(apiRoutes.boardById(board.id), body);
-      console.log(updatedBoard);
       dispatch({ type: UPDATE_BOARD + SUCCESS, board: updatedBoard });
     } catch (err: unknown) {
       if (err instanceof Error) {

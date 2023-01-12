@@ -1,31 +1,34 @@
 import { IColumn } from 'interfaces';
-import ColumnTitle from '../ColumnTitle';
+import ColumnRemoval from '../ColumnRemoval';
 import styles from './index.module.scss';
-
-interface DispatchProps {
-  onColumnTitleEdit: (boardId: string, columnId: string, title: string, order: number) => void;
-}
+import { Route, Routes } from 'react-router';
+import { Link } from 'react-router-dom';
+import { AiFillEdit as UpdateIcon } from 'react-icons/ai';
+import ColumnUpdate from '../ColumnUpdate';
 
 interface OwnProps {
   column: IColumn;
 }
 
-type TProps = OwnProps & DispatchProps;
+type Props = OwnProps;
 
-const ColumnHeader = ({ column, onColumnTitleEdit }: TProps) => {
+const ColumnHeader = ({ column }: Props) => {
   return (
-    <div className={styles.container}>
-      !!!
-      {/*  <ColumnTitle
-        title={title}
-        isTitleEdit={isTitleEdit}
-        onChange={onChange}
-        onSubmit={onSubmit}
-        onKeyDown={onKeyDown}
-        onCancel={onCancel}
-        onClick={onClick}
-      /> */}
-      {/*   <ColumnRemove boardId={column.boardId} columnId={column.id} /> */}
+    <div className={styles.header}>
+      <Routes>
+        <Route path={`columns/${column.id}/update`} element={<ColumnUpdate column={column} />} />
+        <Route
+          path="/*"
+          element={
+            <div className={styles.update}>
+              <h4 className={styles.title}>{column.title}</h4>
+              <Link to={`columns/${column.id}/update`}>
+                <UpdateIcon />
+              </Link>
+            </div>
+          }
+        />
+      </Routes>
     </div>
   );
 };

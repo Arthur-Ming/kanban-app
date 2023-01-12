@@ -33,8 +33,8 @@ const Boards = ({ loadBoards, boardIds, isBoardsloading }: Props) => {
       <BoardTickets boardIds={boardIds} />
       <div className={styles.create}>
         <Routes>
-          <Route path="create" element={<BoardCreation />} />
           <Route path="/*" element={<CreationTicket label="создать доску" path="create" />} />
+          <Route path="create" element={<BoardCreation />} />
         </Routes>
       </div>
     </div>
