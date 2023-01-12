@@ -22,6 +22,7 @@ const ColumnHeader = ({ column }: Props) => {
           element={
             <div className={styles.update}>
               <h4 className={styles.title}>{column.title}</h4>
+              <ColumnRemoval column={column} />
               <Link to={`columns/${column.id}/update`}>
                 <UpdateIcon />
               </Link>

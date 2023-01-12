@@ -1,7 +1,7 @@
 import Removal from 'components/Removal';
 import { ITask } from 'interfaces';
 import { connect } from 'react-redux';
-import { removeTask } from 'redux/actions/tasks';
+import { deleteTask } from 'redux/actions/tasks';
 import { AppDispatch } from 'redux/store';
 
 type OwnProps = {
@@ -19,7 +19,7 @@ const TaskRemoval = ({ remove }: Props) => {
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch, { task }: OwnProps) => ({
-  remove: () => dispatch(removeTask(task)),
+  remove: () => dispatch(deleteTask(task)),
 });
 
 export default connect(null, mapDispatchToProps)(TaskRemoval);

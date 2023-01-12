@@ -1,6 +1,6 @@
 import CreationForm from 'components/CreationForm';
 import useOutside from 'hooks/useOutside';
-import { ICreateColumnBody, ICreationInput } from 'interfaces';
+import { IBoard, ICreateColumnBody, ICreationInput } from 'interfaces';
 import { RefObject, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -19,18 +19,18 @@ type DispatchProps = {
 };
 
 interface OwnProps {
-  boardId?: string;
+  board?: IBoard;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-const ColumnCreation = ({ boardId, create, isAdding }: Props) => {
+const ColumnCreation = ({ board, create, isAdding }: Props) => {
   const navigate = useNavigate();
   const wrapperRef: RefObject<HTMLDivElement> = useRef(null);
-  useOutside<HTMLDivElement>(wrapperRef, `/boards/${boardId}`);
+  useOutside<HTMLDivElement>(wrapperRef, `/boards/${board?.id}`);
 
   const onCancel = () => {
-    boardId && navigate(`/boards/${boardId}`);
+    navigate(`/boards/${board?.id}`);
   };
 
   return (
@@ -49,9 +49,9 @@ const mapStateToProps = (state: RootState) => ({
   isAdding: columnsAddingSelector(state),
 });
 
-const mapDispatchToProps = (dispatch: AppDispatch, { boardId }: OwnProps) => ({
+const mapDispatchToProps = (dispatch: AppDispatch, { board }: OwnProps) => ({
   create: (body: ICreateColumnBody) => {
-    boardId && dispatch(createColumn(boardId, body));
+    board && dispatch(createColumn({ board, body }));
   },
 });
 

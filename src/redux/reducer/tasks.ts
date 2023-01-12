@@ -1,10 +1,12 @@
-import { IAddTaskAction, IDeleteTask, ISetTasksAction, ITask, MapType } from 'interfaces';
+import { ITask, MapType } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
-import { createReducer } from '@reduxjs/toolkit';
-import { ADD_TASK, DELETE_TASK, REQUEST, SET_TASKS, SUCCESS } from 'redux/action-types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createTask, deleteTask } from 'redux/actions/tasks';
 
 export interface ITasksState {
-  adding: MapType<boolean>;
+  adding: {
+    [columnId: string]: boolean;
+  };
   updating: MapType<boolean>;
   deleting: MapType<boolean>;
   entities: MapType<ITask>;
@@ -17,6 +19,38 @@ const initialState: ITasksState = {
   entities: {},
 };
 
+const tasksSlice = createSlice({
+  name: 'tasks',
+  initialState,
+  reducers: {
+    setTasks(state, action: PayloadAction<ITask[]>) {
+      action.payload && (state.entities = arrToMap(action.payload));
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createTask.pending, (state, action) => {
+        state.adding[action.meta.arg.column.id] = true;
+      })
+      .addCase(createTask.fulfilled, (state, action) => {
+        const { payload: task } = action;
+        state.entities[task.id] = task;
+        state.adding[action.meta.arg.column.id] = false;
+      })
+      .addCase(deleteTask.pending, (state, action) => {
+        state.deleting[action.meta.arg.id] = true;
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.deleting[action.payload.id] = false;
+        delete state.entities[action.payload.id];
+      });
+  },
+});
+
+export const { setTasks } = tasksSlice.actions;
+export default tasksSlice.reducer;
+
+/* 
 export default createReducer(initialState, (builder) => {
   builder
     .addCase(SET_TASKS, (state, action) => {
@@ -44,3 +78,4 @@ export default createReducer(initialState, (builder) => {
       delete state.entities[task.id];
     });
 });
+ */

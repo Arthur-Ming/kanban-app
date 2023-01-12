@@ -1,7 +1,7 @@
-import { createSelector } from 'reselect';
 import { RootState } from '../store';
 import { IBoardsState } from '../reducer/boards';
 import { selector, Selector } from '.';
+import { createSelector } from '@reduxjs/toolkit';
 
 const boardsStateSelector: Selector<IBoardsState> = (state, field) =>
   selector(state, 'boards')[field];

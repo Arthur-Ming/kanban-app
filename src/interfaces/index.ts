@@ -78,10 +78,6 @@ export interface IRequestAction extends IAction {
   error: unknown | null;
 }
 
-export interface ISetColumnsAction extends IAction {
-  columns: IColumn[];
-}
-
 export interface IAddColumnAction extends IAction {
   column: IColumn;
 }

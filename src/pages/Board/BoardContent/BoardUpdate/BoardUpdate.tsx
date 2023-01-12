@@ -40,9 +40,9 @@ const BoardUpdate = ({ board, update }: Props) => {
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch, { board }: OwnProps) => ({
-  update: (data: ICreationInput) => {
+  update: (body: ICreationInput) => {
     if (!board) return;
-    dispatch(updateBoard(board, data));
+    dispatch(updateBoard({ board, body }));
   },
 });
 

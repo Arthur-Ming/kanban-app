@@ -1,24 +1,8 @@
-import {
-  IAddColumnAction,
-  IAddTaskAction,
-  IColumn,
-  IDeleteColumn,
-  IDeleteTask,
-  ISetColumnsAction,
-  MapType,
-} from 'interfaces';
+import { IColumn, MapType } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
-import { createReducer } from '@reduxjs/toolkit';
-import {
-  ADD_COLUMN,
-  ADD_TASK,
-  DELETE_COLUMN,
-  DELETE_TASK,
-  REQUEST,
-  SET_COLUMNS,
-  UPDATE_COLUMN,
-  SUCCESS,
-} from 'redux/action-types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createColumn, deleteColumn, updateColumn } from 'redux/actions/columns';
+import { createTask, deleteTask } from 'redux/actions/tasks';
 
 export interface IColumnsState {
   adding: boolean;
@@ -34,6 +18,55 @@ const initialState: IColumnsState = {
   entities: {},
 };
 
+const columnsSlice = createSlice({
+  name: 'columns',
+  initialState,
+  reducers: {
+    setColumns(state, action: PayloadAction<IColumn[]>) {
+      action.payload && (state.entities = arrToMap(action.payload));
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createColumn.pending, (state) => {
+        state.adding = true;
+      })
+      .addCase(createColumn.fulfilled, (state, action) => {
+        const { payload: column } = action;
+        state.entities[column.id] = column;
+        state.adding = false;
+      })
+      .addCase(deleteColumn.pending, (state, action) => {
+        state.deleting[action.meta.arg.id] = true;
+      })
+      .addCase(deleteColumn.fulfilled, (state, action) => {
+        state.deleting[action.payload.id] = false;
+        delete state.entities[action.payload.id];
+      })
+      .addCase(updateColumn.pending, (state, action) => {
+        state.updating[action.meta.arg.column.id] = true;
+      })
+      .addCase(updateColumn.fulfilled, (state, action) => {
+        const { payload: column } = action;
+        state.entities[column.id] = column;
+        state.updating[action.meta.arg.column.id] = false;
+      })
+      .addCase(createTask.fulfilled, (state, action) => {
+        const { payload: task } = action;
+        task && state.entities[task.columnId].tasks.push(task.id);
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.entities[action.payload.columnId].tasks = state.entities[
+          action.payload.columnId
+        ].tasks.filter((taskId) => taskId !== action.payload.id);
+      });
+  },
+});
+
+export const { setColumns } = columnsSlice.actions;
+export default columnsSlice.reducer;
+
+/* 
 export default createReducer(initialState, (builder) => {
   builder
     .addCase(SET_COLUMNS, (state, action) => {
@@ -77,3 +110,4 @@ export default createReducer(initialState, (builder) => {
       );
     });
 });
+ */

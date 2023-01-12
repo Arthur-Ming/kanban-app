@@ -41,8 +41,8 @@ const ColumnUpdate = ({ column, update }: Props) => {
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch, { column }: OwnProps) => ({
-  update: (data: ICreationInput) => {
-    dispatch(updateColumn(column, data));
+  update: (body: ICreationInput) => {
+    dispatch(updateColumn({ column, body }));
   },
 });
 

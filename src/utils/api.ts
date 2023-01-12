@@ -42,7 +42,7 @@ export const api = {
       body: JSON.stringify(body),
     }),
   delete: (route: string) =>
-    fetch(route, {
+    fetchJson(route, {
       method: 'DELETE',
     }),
 };

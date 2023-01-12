@@ -37,7 +37,7 @@ const mapStateToProps = (state: RootState, { column }: OwnProps) => ({
 
 const mapDispatchToProps = (dispatch: AppDispatch, { column }: OwnProps) => ({
   create: (body: ICreationInput) => {
-    column && dispatch(createTask(column, body));
+    column && dispatch(createTask({ column, body }));
   },
 });
 

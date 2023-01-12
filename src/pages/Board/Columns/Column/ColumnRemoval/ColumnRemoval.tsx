@@ -1,7 +1,7 @@
 import Removal from 'components/Removal';
 import { IColumn } from 'interfaces';
 import { connect } from 'react-redux';
-import { removeColumn } from 'redux/actions/columns';
+import { deleteColumn } from 'redux/actions/columns';
 import { AppDispatch } from 'redux/store';
 
 type OwnProps = {
@@ -17,7 +17,7 @@ type Props = OwnProps & DispatchProps;
 const ColumnRemoval = ({ remove }: Props) => <Removal onConfirm={remove} />;
 
 const mapDispatchToProps = (dispatch: AppDispatch, { column }: OwnProps) => ({
-  remove: () => dispatch(removeColumn(column)),
+  remove: () => dispatch(deleteColumn(column)),
 });
 
 export default connect(null, mapDispatchToProps)(ColumnRemoval);

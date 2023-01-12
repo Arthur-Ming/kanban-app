@@ -1,13 +1,13 @@
-import { IAddBoard, IBoard, IDeleteBoard, ILoadBoards } from 'interfaces';
-import { REQUEST, SUCCESS, ADD_BOARD, LOAD_BOARDS, DELETE_BOARD } from '../action-types';
+import { IBoard } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
 import { createReducer } from '@reduxjs/toolkit';
+import { createBoard, loadBoards, removeBoard } from 'redux/actions/boards';
 
 export interface IBoardsState {
   loading: boolean;
   adding: boolean;
-  deleting: { [key: string]: boolean };
-  entities: { [key: string]: IBoard };
+  deleting: { [boardId: string]: boolean };
+  entities: { [boardId: string]: IBoard };
 }
 
 const initialState: IBoardsState = {
@@ -19,29 +19,26 @@ const initialState: IBoardsState = {
 
 export default createReducer(initialState, (builder) => {
   builder
-    .addCase(LOAD_BOARDS + REQUEST, (state) => {
+    .addCase(loadBoards.pending, (state) => {
       state.loading = true;
     })
-    .addCase(LOAD_BOARDS + SUCCESS, (state, action) => {
-      const { boards } = <ILoadBoards>action;
+    .addCase(loadBoards.fulfilled, (state, action) => {
       state.loading = false;
-      state.entities = arrToMap(boards);
+      state.entities = arrToMap(action.payload);
     })
-    .addCase(ADD_BOARD + REQUEST, (state) => {
+    .addCase(createBoard.pending, (state) => {
       state.adding = true;
     })
-    .addCase(ADD_BOARD + SUCCESS, (state, action) => {
-      const { board } = <IAddBoard>action;
+    .addCase(createBoard.fulfilled, (state, action) => {
+      const { payload: board } = action;
       state.entities[board.id] = board;
       state.adding = false;
     })
-    .addCase(DELETE_BOARD + REQUEST, (state, action) => {
-      const { board } = <IDeleteBoard>action;
-      state.deleting[board.id] = true;
+    .addCase(removeBoard.pending, (state, action) => {
+      state.deleting[action.meta.arg.id] = true;
     })
-    .addCase(DELETE_BOARD + SUCCESS, (state, action) => {
-      const { board } = <IDeleteBoard>action;
-      delete state.entities[board.id];
-      state.deleting[board.id] = false;
+    .addCase(removeBoard.fulfilled, (state, action) => {
+      state.deleting[action.meta.arg.id] = false;
+      delete state.entities[action.meta.arg.id];
     });
 });
