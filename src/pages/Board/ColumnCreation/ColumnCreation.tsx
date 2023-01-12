@@ -1,5 +1,7 @@
 import CreationForm from 'components/CreationForm';
+import useOutside from 'hooks/useOutside';
 import { ICreateColumnBody, ICreationInput } from 'interfaces';
+import { RefObject, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { createColumn } from 'redux/actions/columns';
@@ -24,12 +26,15 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 const ColumnCreation = ({ boardId, create, isAdding }: Props) => {
   const navigate = useNavigate();
+  const wrapperRef: RefObject<HTMLDivElement> = useRef(null);
+  useOutside<HTMLDivElement>(wrapperRef, `/boards/${boardId}`);
+
   const onCancel = () => {
     boardId && navigate(`/boards/${boardId}`);
   };
 
   return (
-    <div className={styles.box}>
+    <div className={styles.box} ref={wrapperRef}>
       <CreationForm
         onSubmit={create}
         onCancel={onCancel}
