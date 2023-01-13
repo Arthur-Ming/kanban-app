@@ -44,14 +44,6 @@ export interface ITEXT {
   [key: string]: ILANG;
 }
 
-export type MapType<T> = {
-  [key: string]: T;
-};
-
-export interface IAction {
-  type: string;
-}
-
 export interface IUser {
   name: string;
   id: string;
@@ -67,67 +59,6 @@ export interface IUserRegisterBody {
 export interface IUserLoginBody {
   email: string;
   password: string;
-}
-
-export interface IActionCallApi extends IAction {
-  CallAPI: string;
-}
-
-export interface IRequestAction extends IAction {
-  key: string;
-  error: unknown | null;
-}
-
-export interface IAddColumnAction extends IAction {
-  column: IColumn;
-}
-
-export interface IAddTaskAction extends IAction {
-  column: IColumn;
-  task?: ITask;
-}
-
-export interface ISetTasksAction extends IAction {
-  tasks: ITask[];
-}
-
-export interface ISetBoards extends IAction {
-  boards: IBoard[];
-}
-
-export interface ILoadBoards extends IAction {
-  boards: IBoard[];
-  error: unknown | null;
-}
-
-export interface ILoadBoard extends IAction {
-  board: IBoard;
-  error: unknown | null;
-}
-
-export interface IAddBoard extends IAction {
-  board: IBoard;
-}
-
-export interface IDeleteBoard extends IAction {
-  board: IBoard;
-}
-
-export interface IDeleteColumn extends IAction {
-  column: IColumn;
-}
-export interface IDeleteTask extends IAction {
-  task: ITask;
-}
-
-export interface IGetBoardByIdAction extends IAction {
-  error: unknown | null;
-  data: IBoard | null;
-}
-
-export interface ICreateBoard extends IAction {
-  error: unknown | null;
-  data: IBoard | null;
 }
 
 export interface ICreateBoardBody {
@@ -151,8 +82,8 @@ export interface ICreationInput {
   title: string;
 }
 
-export interface ISaveUserAction extends IAction {
-  user: IUser;
+export interface IAction {
+  type: string;
 }
 
 export interface ISetSessionAction extends IAction {

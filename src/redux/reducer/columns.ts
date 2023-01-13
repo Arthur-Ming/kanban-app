@@ -1,4 +1,4 @@
-import { IColumn, MapType } from 'interfaces';
+import { IColumn } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createColumn, deleteColumn, updateColumn } from 'redux/actions/columns';
@@ -6,9 +6,9 @@ import { createTask, deleteTask } from 'redux/actions/tasks';
 
 export interface IColumnsState {
   adding: boolean;
-  updating: MapType<boolean>;
-  deleting: MapType<boolean>;
-  entities: MapType<IColumn>;
+  updating: { [columnId: string]: boolean };
+  deleting: { [columnId: string]: boolean };
+  entities: { [columnId: string]: IColumn };
 }
 
 const initialState: IColumnsState = {

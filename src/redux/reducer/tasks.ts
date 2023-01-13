@@ -1,15 +1,13 @@
-import { ITask, MapType } from 'interfaces';
+import { ITask } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTask, deleteTask } from 'redux/actions/tasks';
 
 export interface ITasksState {
-  adding: {
-    [columnId: string]: boolean;
-  };
-  updating: MapType<boolean>;
-  deleting: MapType<boolean>;
-  entities: MapType<ITask>;
+  adding: { [columnId: string]: boolean };
+  updating: { [taskId: string]: boolean };
+  deleting: { [taskId: string]: boolean };
+  entities: { [taskId: string]: ITask };
 }
 
 const initialState: ITasksState = {
