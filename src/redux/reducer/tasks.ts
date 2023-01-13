@@ -49,33 +49,3 @@ const tasksSlice = createSlice({
 
 export const { setTasks } = tasksSlice.actions;
 export default tasksSlice.reducer;
-
-/* 
-export default createReducer(initialState, (builder) => {
-  builder
-    .addCase(SET_TASKS, (state, action) => {
-      const { tasks } = <ISetTasksAction>action;
-      tasks && (state.entities = arrToMap(tasks));
-    })
-    .addCase(ADD_TASK + REQUEST, (state, action) => {
-      const { column } = <IAddTaskAction>action;
-      state.adding[column.id] = true;
-    })
-    .addCase(ADD_TASK + SUCCESS, (state, action) => {
-      const { task } = <IAddTaskAction>action;
-      if (task) {
-        state.adding[task.columnId] = false;
-        state.entities[task.id] = task;
-      }
-    })
-    .addCase(DELETE_TASK + REQUEST, (state, action) => {
-      const { task } = <IDeleteTask>action;
-      state.deleting[task.id] = true;
-    })
-    .addCase(DELETE_TASK + SUCCESS, (state, action) => {
-      const { task } = <IDeleteTask>action;
-      state.deleting[task.id] = false;
-      delete state.entities[task.id];
-    });
-});
- */

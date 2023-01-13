@@ -1,6 +1,6 @@
-import { ISaveUserAction, IUser } from 'interfaces';
-import { LOGIN, REQUEST, SUCCESS, USER_REGISTRATION } from '../action-types';
-import { createReducer } from '@reduxjs/toolkit';
+import { IUser } from 'interfaces';
+import { createSlice } from '@reduxjs/toolkit';
+import { addUser, loginUser } from 'redux/actions/users';
 
 export interface IUsersState {
   current: IUser;
@@ -22,22 +22,28 @@ const initialState: IUsersState = {
   registred: false,
 };
 
-export default createReducer(initialState, (builder) => {
-  builder
-    .addCase(LOGIN + REQUEST, (state) => {
-      state.loading = true;
-    })
-    .addCase(LOGIN + SUCCESS, (state, action) => {
-      const { user } = <ISaveUserAction>action;
-      state.loading = false;
-      state.current = user;
-    })
-    .addCase(USER_REGISTRATION + REQUEST, (state) => {
-      state.registering = true;
-      state.registred = false;
-    })
-    .addCase(USER_REGISTRATION + SUCCESS, (state) => {
-      state.registering = false;
-      state.registred = true;
-    });
+const usersSlice = createSlice({
+  name: 'users',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.current = action.payload;
+      })
+      .addCase(addUser.pending, (state) => {
+        state.registering = true;
+        state.registred = false;
+      })
+      .addCase(addUser.fulfilled, (state) => {
+        state.registering = false;
+        state.registred = true;
+      });
+  },
 });
+
+export default usersSlice.reducer;

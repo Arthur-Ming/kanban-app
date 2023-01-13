@@ -1,5 +1,5 @@
 import { IBoard } from 'interfaces';
-import { createReducer } from '@reduxjs/toolkit';
+import { createReducer, createSlice } from '@reduxjs/toolkit';
 import { getBoardById, updateBoard } from 'redux/actions/board';
 import { createColumn, deleteColumn } from 'redux/actions/columns';
 
@@ -15,28 +15,37 @@ const initialState: IBoardState = {
   updating: false,
 };
 
-export default createReducer(initialState, (builder) => {
-  builder
-    .addCase(getBoardById.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(getBoardById.fulfilled, (state, action) => {
-      state.loading = false;
-      state.entities = action.payload;
-    })
-    .addCase(updateBoard.pending, (state) => {
-      state.updating = true;
-    })
-    .addCase(updateBoard.fulfilled, (state, action) => {
-      state.updating = false;
-      state.entities = action.payload;
-    })
-    .addCase(createColumn.fulfilled, (state, action) => {
-      const { payload: column } = action;
-      state.entities && state.entities.columns.push(column.id);
-    })
-    .addCase(deleteColumn.fulfilled, (state, action) => {
-      state.entities &&
-        (state.entities.columns = state.entities.columns.filter((id) => id !== action.payload.id));
-    });
+const boardSlice = createSlice({
+  name: 'board',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getBoardById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getBoardById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.entities = action.payload;
+      })
+      .addCase(updateBoard.pending, (state) => {
+        state.updating = true;
+      })
+      .addCase(updateBoard.fulfilled, (state, action) => {
+        state.updating = false;
+        state.entities = action.payload;
+      })
+      .addCase(createColumn.fulfilled, (state, action) => {
+        const { payload: column } = action;
+        state.entities && state.entities.columns.push(column.id);
+      })
+      .addCase(deleteColumn.fulfilled, (state, action) => {
+        state.entities &&
+          (state.entities.columns = state.entities.columns.filter(
+            (id) => id !== action.payload.id
+          ));
+      });
+  },
 });
+
+export default boardSlice.reducer;
