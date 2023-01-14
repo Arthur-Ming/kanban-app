@@ -6,6 +6,9 @@ import { updateBoard } from 'redux/actions/board';
 import { AppDispatch } from 'redux/store';
 import styles from './index.module.scss';
 import { updateColumn } from 'redux/actions/columns';
+import { useNavigate } from 'react-router';
+import { RefObject, useRef } from 'react';
+import useOutside from 'hooks/useOutside';
 
 type Inputs = ICreationInput;
 
@@ -26,8 +29,11 @@ const ColumnUpdate = ({ column, update }: Props) => {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const wrapperRef: RefObject<HTMLFormElement> = useRef(null);
+  useOutside<HTMLFormElement>(wrapperRef, `/boards/${column.boardId}`);
+
   return (
-    <form className={styles.box} onSubmit={handleSubmit(update)}>
+    <form className={styles.box} onSubmit={handleSubmit(update)} ref={wrapperRef}>
       <InputText<Inputs>
         error={errors.title}
         register={register}

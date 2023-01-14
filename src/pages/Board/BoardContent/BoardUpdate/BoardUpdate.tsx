@@ -1,5 +1,7 @@
 import InputText from 'components/Forms/InputText';
+import useOutside from 'hooks/useOutside';
 import { IBoard, ICreationInput } from 'interfaces';
+import { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { updateBoard } from 'redux/actions/board';
@@ -25,8 +27,11 @@ const BoardUpdate = ({ board, update }: Props) => {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const wrapperRef: RefObject<HTMLFormElement> = useRef(null);
+  useOutside<HTMLFormElement>(wrapperRef, `/boards/${board?.id}`);
+
   return (
-    <form className={styles.box} onSubmit={handleSubmit(update)}>
+    <form className={styles.box} onSubmit={handleSubmit(update)} ref={wrapperRef}>
       <InputText<Inputs>
         error={errors.title}
         register={register}

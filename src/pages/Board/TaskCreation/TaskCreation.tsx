@@ -1,5 +1,7 @@
 import CreationForm from 'components/CreationForm';
+import useOutside from 'hooks/useOutside';
 import { IColumn, ICreationInput } from 'interfaces';
+import { RefObject, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createTask } from 'redux/actions/tasks';
@@ -26,8 +28,18 @@ const TaskCreation = ({ column, create, isAdding }: Props) => {
     column && navigate(`/boards/${column.boardId}`);
   };
 
+  const wrapperRef: RefObject<HTMLDivElement> = useRef(null);
+  useOutside<HTMLDivElement>(wrapperRef, `/boards/${column?.boardId}`);
+
   return (
-    <CreationForm onSubmit={create} onCancel={onCancel} isLoading={isAdding} placeholder="bdbdb" />
+    <div ref={wrapperRef}>
+      <CreationForm
+        onSubmit={create}
+        onCancel={onCancel}
+        isLoading={isAdding}
+        placeholder="bdbdb"
+      />
+    </div>
   );
 };
 
