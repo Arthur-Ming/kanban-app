@@ -1,19 +1,20 @@
 import { createSelector } from 'reselect';
 import { RootState } from '../store';
 import { IColumnsState } from '../reducer/columns';
-import { selector, Selector } from '.';
+import { createRequestStates, selector, Selector } from '.';
 
 const columnsStateSelector: Selector<IColumnsState> = (state, field) =>
   selector(state, 'columns')[field];
 
 const columnsSelector = (state: RootState) => columnsStateSelector(state, 'entities');
 
-export const columnsAddingSelector = (state: RootState) => columnsStateSelector(state, 'adding');
+const columnsAddingSelector = (state: RootState) => columnsStateSelector(state, 'adding');
 
-export const columnsDeletingSelector = (state: RootState, { columnId }: { columnId: string }) =>
+const columnsDeletingSelector = (state: RootState, { columnId }: { columnId: string }) =>
   columnsStateSelector(state, 'deleting')[columnId];
 
-export const columnsListSelector = createSelector(columnsSelector, Object.values);
+export const columnsAddingState = createSelector(columnsAddingSelector, createRequestStates);
+export const columnsDeletingState = createSelector(columnsDeletingSelector, createRequestStates);
 
 export const columnByIdSelector = (state: RootState, { columnId }: { columnId: string }) =>
   columnsSelector(state)[columnId];

@@ -1,18 +1,18 @@
-import { IBoard } from 'interfaces';
-import { createReducer, createSlice } from '@reduxjs/toolkit';
+import { IBoard, RequestState } from 'interfaces';
+import { createSlice } from '@reduxjs/toolkit';
 import { getBoardById, updateBoard } from 'redux/actions/board';
 import { createColumn, deleteColumn } from 'redux/actions/columns';
 
 export interface IBoardState {
-  loading: boolean;
-  updating: boolean;
+  loading: RequestState;
+  updating: RequestState;
   entities: IBoard | null;
 }
 
 const initialState: IBoardState = {
   entities: null,
-  loading: false,
-  updating: false,
+  loading: RequestState.idle,
+  updating: RequestState.idle,
 };
 
 const boardSlice = createSlice({
@@ -22,17 +22,17 @@ const boardSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getBoardById.pending, (state) => {
-        state.loading = true;
+        state.loading = RequestState.loading;
       })
       .addCase(getBoardById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading = RequestState.loaded;
         state.entities = action.payload;
       })
       .addCase(updateBoard.pending, (state) => {
-        state.updating = true;
+        state.updating = RequestState.loading;
       })
       .addCase(updateBoard.fulfilled, (state, action) => {
-        state.updating = false;
+        state.updating = RequestState.loaded;
         state.entities = action.payload;
       })
       .addCase(createColumn.fulfilled, (state, action) => {

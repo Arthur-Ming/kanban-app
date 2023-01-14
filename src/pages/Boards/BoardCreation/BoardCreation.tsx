@@ -1,15 +1,15 @@
 import CreationForm from 'components/CreationForm';
-import { ICreationInput } from 'interfaces';
+import { ICreationInput, IRequestState } from 'interfaces';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { createBoard } from 'redux/actions/boards';
 import { RootState } from 'redux/reducer';
-import { boardsAddingSelector } from 'redux/selectors/boards';
+import { boardsAddingState } from 'redux/selectors/boards';
 import { AppDispatch } from 'redux/store';
 import styles from './index.module.scss';
 
 type StateProps = {
-  isLoading: boolean;
+  boardsAdding: IRequestState;
 };
 
 type DispatchProps = {
@@ -18,8 +18,9 @@ type DispatchProps = {
 
 type Props = StateProps & DispatchProps;
 
-const BoardCreation = ({ create, isLoading }: Props) => {
+const BoardCreation = ({ create, boardsAdding }: Props) => {
   const navigate = useNavigate();
+
   const onCancel = () => {
     navigate(`/boards`);
   };
@@ -29,7 +30,7 @@ const BoardCreation = ({ create, isLoading }: Props) => {
       <CreationForm
         onSubmit={create}
         onCancel={onCancel}
-        isLoading={isLoading}
+        isLoading={boardsAdding.loading}
         placeholder="bdbdb"
       />
     </div>
@@ -37,7 +38,7 @@ const BoardCreation = ({ create, isLoading }: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  isLoading: boardsAddingSelector(state),
+  boardsAdding: boardsAddingState(state),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({

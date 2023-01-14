@@ -1,6 +1,6 @@
 import styles from './index.module.scss';
 import Columns from '../Columns';
-import { IBoard } from 'interfaces';
+import { IBoard, IRequestState } from 'interfaces';
 import ColumnCreation from '../ColumnCreation';
 import { connect } from 'react-redux';
 import { RootState } from 'redux/reducer';
@@ -10,7 +10,7 @@ import { AppDispatch } from 'redux/store';
 import Loader from 'components/Loader';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
-import { boardLoadingSelector, boardSelector } from 'redux/selectors/board';
+import { boardLoadingState, boardSelector } from 'redux/selectors/board';
 import BoardHeader from './BoardHeader';
 
 type OwnProps = {
@@ -23,17 +23,18 @@ type DispatchProps = {
 
 type StateProps = {
   board: IBoard | null;
-  loading: boolean;
+  loadingState: IRequestState;
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-const BoardContent = ({ board, loadBoard, loading }: Props) => {
+const BoardContent = ({ board, loadBoard, loadingState }: Props) => {
   useEffect(() => {
     loadBoard();
   }, [loadBoard]);
 
-  if (loading) return <Loader />;
+  if (loadingState.failed) return <div>!!!</div>;
+  if (loadingState.idle || loadingState.loading) return <Loader />;
 
   return (
     <div className={styles.container}>
@@ -54,7 +55,7 @@ const BoardContent = ({ board, loadBoard, loading }: Props) => {
 
 const mapStateToProps = (state: RootState) => ({
   board: boardSelector(state),
-  loading: boardLoadingSelector(state),
+  loadingState: boardLoadingState(state),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch, props: OwnProps) => ({

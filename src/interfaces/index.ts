@@ -89,3 +89,17 @@ export interface IAction {
 export interface ISetSessionAction extends IAction {
   isAuth: boolean;
 }
+
+export enum RequestState {
+  idle = 'idle',
+  loading = 'loading',
+  loaded = 'loaded',
+  failed = 'failed',
+}
+
+export interface IRequestState {
+  idle: boolean;
+  loading: boolean;
+  loaded: boolean;
+  failed: boolean;
+}
