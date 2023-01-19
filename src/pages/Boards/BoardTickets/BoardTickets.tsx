@@ -1,22 +1,23 @@
+import { IBoard } from 'interfaces';
 import { connect } from 'react-redux';
 import { RootState } from 'redux/reducer';
-import { boardIdsSelector } from 'redux/selectors/boards';
+import { boardsListSelector } from 'redux/selectors/boards';
 import BoardTicket from './BoardTicket';
 
 interface Props {
-  boardIds: string[];
+  boards: IBoard[];
 }
 
-const BoardsList = ({ boardIds }: Props) => (
+const BoardsList = ({ boards }: Props) => (
   <>
-    {boardIds.map((boardId) => (
-      <BoardTicket boardId={boardId} key={boardId} />
+    {boards.map((board) => (
+      <BoardTicket board={board} key={board.id} />
     ))}
   </>
 );
 
 const mapStateToProps = (state: RootState) => ({
-  boardIds: boardIdsSelector(state),
+  boards: boardsListSelector(state),
 });
 
 export default connect(mapStateToProps)(BoardsList);

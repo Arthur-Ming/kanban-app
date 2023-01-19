@@ -5,6 +5,7 @@ import columns from './columns';
 import tasks from './tasks';
 import users from './users';
 import session from './session';
+import { api } from '../api';
 
 const rootReducer = combineReducers({
   boards,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   tasks,
   users,
   session,
+  [api.reducerPath]: api.reducer,
 });
 
 export default rootReducer;

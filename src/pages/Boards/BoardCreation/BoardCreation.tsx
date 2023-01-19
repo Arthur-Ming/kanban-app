@@ -3,23 +3,15 @@ import { ICreationInput, IRequestState } from 'interfaces';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { createBoard } from 'redux/actions/boards';
+import { useCreateBoardMutation } from 'redux/api';
 import { RootState } from 'redux/reducer';
 import { boardsAddingState } from 'redux/selectors/boards';
 import { AppDispatch } from 'redux/store';
 import styles from './index.module.scss';
 
-type StateProps = {
-  boardsAdding: IRequestState;
-};
-
-type DispatchProps = {
-  create: (body: ICreationInput) => void;
-};
-
-type Props = StateProps & DispatchProps;
-
-const BoardCreation = ({ create, boardsAdding }: Props) => {
+const BoardCreation = () => {
   const navigate = useNavigate();
+  const [create, { isLoading }] = useCreateBoardMutation();
 
   const onCancel = () => {
     navigate(`/boards`);
@@ -30,19 +22,11 @@ const BoardCreation = ({ create, boardsAdding }: Props) => {
       <CreationForm
         onSubmit={create}
         onCancel={onCancel}
-        isLoading={boardsAdding.loading}
+        isLoading={isLoading}
         placeholder="bdbdb"
       />
     </div>
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
-  boardsAdding: boardsAddingState(state),
-});
-
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  create: (body: ICreationInput) => dispatch(createBoard(body)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BoardCreation);
+export default BoardCreation;

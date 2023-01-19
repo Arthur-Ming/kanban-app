@@ -1,33 +1,15 @@
 import BoardTickets from './BoardTickets';
-import { connect } from 'react-redux';
-import { loadBoards } from 'redux/actions/boards';
-import { RootState } from 'redux/reducer';
-import { boardsFetchingState } from 'redux/selectors/boards';
-import { useEffect } from 'react';
 import BoardCreation from './BoardCreation';
 import styles from './index.module.scss';
 import { Route, Routes } from 'react-router';
 import Loader from 'components/Loader';
 import CreationTicket from 'components/CreationTicket';
-import { IRequestState } from 'interfaces';
+import { useLoadBoardsQuery } from 'redux/api';
 
-interface DispatchProps {
-  loadBoards: () => void;
-}
+const Boards = () => {
+  const { isLoading, data: boards } = useLoadBoardsQuery();
 
-interface StateProps {
-  loadingState: IRequestState;
-}
-
-type Props = DispatchProps & StateProps;
-
-const Boards = ({ loadBoards, loadingState }: Props) => {
-  useEffect(() => {
-    loadBoards();
-  }, [loadBoards]);
-
-  if (loadingState.failed) return <div>!!!!</div>;
-  if (loadingState.idle || loadingState.loading) return <Loader />;
+  if (isLoading) return <Loader />;
 
   return (
     <div className={styles.box}>
@@ -42,12 +24,4 @@ const Boards = ({ loadBoards, loadingState }: Props) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
-  loadingState: boardsFetchingState(state),
-});
-
-const mapDispatchToProps = {
-  loadBoards,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Boards);
+export default Boards;
