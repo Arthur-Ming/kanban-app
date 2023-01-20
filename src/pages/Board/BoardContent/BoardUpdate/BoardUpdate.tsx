@@ -3,24 +3,18 @@ import useOutside from 'hooks/useOutside';
 import { IBoard, ICreationInput } from 'interfaces';
 import { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
-import { updateBoard } from 'redux/actions/board';
-import { AppDispatch } from 'redux/store';
+import { useUpdateBoardMutation } from 'redux/api';
 import styles from './index.module.scss';
 
 type Inputs = ICreationInput;
-
-type DispatchProps = {
-  update: (data: ICreationInput) => void;
-};
 
 type OwnProps = {
   board?: IBoard;
 };
 
-type Props = OwnProps & DispatchProps;
+type Props = OwnProps;
 
-const BoardUpdate = ({ board, update }: Props) => {
+const BoardUpdate = ({ board }: Props) => {
   const {
     register,
     handleSubmit,
@@ -29,9 +23,14 @@ const BoardUpdate = ({ board, update }: Props) => {
 
   const wrapperRef: RefObject<HTMLFormElement> = useRef(null);
   useOutside<HTMLFormElement>(wrapperRef, `/boards/${board?.id}`);
+  const [update, rest] = useUpdateBoardMutation();
 
   return (
-    <form className={styles.box} onSubmit={handleSubmit(update)} ref={wrapperRef}>
+    <form
+      className={styles.box}
+      onSubmit={handleSubmit((body) => update({ board, body }))}
+      ref={wrapperRef}
+    >
       <InputText<Inputs>
         error={errors.title}
         register={register}
@@ -44,11 +43,4 @@ const BoardUpdate = ({ board, update }: Props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: AppDispatch, { board }: OwnProps) => ({
-  update: (body: ICreationInput) => {
-    if (!board) return;
-    dispatch(updateBoard({ board, body }));
-  },
-});
-
-export default connect(null, mapDispatchToProps)(BoardUpdate);
+export default BoardUpdate;

@@ -11,12 +11,7 @@ type Props = {
 const Removal = ({ onConfirm }: Props) => {
   const [isRemoveMode, setRemoveMode] = useState(false);
   return (
-    <div
-      className={styles.remove}
-      onClick={() => {
-        console.log('removeMode');
-      }}
-    >
+    <div className={styles.remove}>
       <RemoveIcon className={styles.remove_icon} onClick={() => setRemoveMode(true)} />
       {isRemoveMode && (
         <Modal

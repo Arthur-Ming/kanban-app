@@ -5,7 +5,6 @@ import { RefObject, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createTask } from 'redux/actions/tasks';
-import { tasksAddingSelector } from 'redux/selectors/tasks';
 import { AppDispatch, RootState } from 'redux/store';
 
 type StateProps = {
@@ -44,7 +43,7 @@ const TaskCreation = ({ column, create, isAdding }: Props) => {
 };
 
 const mapStateToProps = (state: RootState, { column }: OwnProps) => ({
-  isAdding: column ? tasksAddingSelector(state, { column }) : false,
+  isAdding: false,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch, { column }: OwnProps) => ({

@@ -1,18 +1,16 @@
 import TaskCreation from 'pages/Board/TaskCreation';
 import styles from './index.module.scss';
-import { ColumnId, IColumn, IRequestState } from 'interfaces';
+import { ColumnId, IColumn } from 'interfaces';
 import TaskTickets from '../../TaskTickets';
 import ColumnHeader from './ColumnHeader';
 import { connect } from 'react-redux';
 import { RootState } from 'redux/reducer';
-import { columnByIdSelector, columnsDeletingState } from 'redux/selectors/columns';
+import { columnByIdSelector } from 'redux/selectors/columns';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
-import ColumnRemoval from './ColumnRemoval';
 
 type StateProps = {
   column?: IColumn;
-  deletingState: IRequestState;
 };
 
 type OwnProps = {
@@ -21,8 +19,7 @@ type OwnProps = {
 
 type Props = StateProps & OwnProps;
 
-const Column = ({ column, deletingState }: Props) => {
-  if (deletingState.loading) return <div>deleting</div>;
+const Column = ({ column }: Props) => {
   if (!column) return <div>No data</div>;
   return (
     <div className={styles.box}>
@@ -46,7 +43,6 @@ const Column = ({ column, deletingState }: Props) => {
 
 const mapStateToProps = (state: RootState, props: OwnProps) => ({
   column: columnByIdSelector(state, props),
-  deletingState: columnsDeletingState(state, props),
 });
 
 export default connect(mapStateToProps)(Column);

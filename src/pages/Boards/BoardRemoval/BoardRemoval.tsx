@@ -10,7 +10,6 @@ type Props = OwnProps;
 
 const BoardRemoval = ({ board }: Props) => {
   const [deleteBoard, response] = useDeleteBoardMutation();
-  console.log(response);
 
   return <Removal onConfirm={() => deleteBoard(board)} />;
 };
