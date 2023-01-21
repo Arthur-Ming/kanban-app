@@ -1,6 +1,6 @@
 import Removal from 'components/Removal';
 import { IBoard } from 'interfaces';
-import { useDeleteBoardMutation } from 'redux/api';
+import { useDeleteBoardMutation } from 'redux/api/boards';
 
 type OwnProps = {
   board: IBoard;

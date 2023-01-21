@@ -3,7 +3,7 @@ import useOutside from 'hooks/useOutside';
 import { IBoard, ICreationInput } from 'interfaces';
 import { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { useUpdateBoardMutation } from 'redux/api';
+import { useUpdateBoardMutation } from 'redux/api/boards';
 import styles from './index.module.scss';
 
 type Inputs = ICreationInput;

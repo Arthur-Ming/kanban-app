@@ -1,27 +1,17 @@
 import CreationForm from 'components/CreationForm';
 import useOutside from 'hooks/useOutside';
-import { IColumn, ICreationInput } from 'interfaces';
+import { IColumn } from 'interfaces';
 import { RefObject, useRef } from 'react';
-import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createTask } from 'redux/actions/tasks';
-import { AppDispatch, RootState } from 'redux/store';
-
-type StateProps = {
-  isAdding: boolean;
-};
-
-type DispatchProps = {
-  create: (body: ICreationInput) => void;
-};
+import { useCreateTaskMutation } from 'redux/api/tasks';
 
 interface OwnProps {
   column?: IColumn;
 }
 
-type Props = OwnProps & StateProps & DispatchProps;
+type Props = OwnProps;
 
-const TaskCreation = ({ column, create, isAdding }: Props) => {
+const TaskCreation = ({ column }: Props) => {
   const navigate = useNavigate();
   const onCancel = () => {
     column && navigate(`/boards/${column.boardId}`);
@@ -29,27 +19,18 @@ const TaskCreation = ({ column, create, isAdding }: Props) => {
 
   const wrapperRef: RefObject<HTMLDivElement> = useRef(null);
   useOutside<HTMLDivElement>(wrapperRef, `/boards/${column?.boardId}`);
+  const [createTask, { isLoading }] = useCreateTaskMutation();
 
   return (
     <div ref={wrapperRef}>
       <CreationForm
-        onSubmit={create}
+        onSubmit={(body) => createTask({ column, body })}
         onCancel={onCancel}
-        isLoading={isAdding}
+        isLoading={isLoading}
         placeholder="bdbdb"
       />
     </div>
   );
 };
 
-const mapStateToProps = (state: RootState, { column }: OwnProps) => ({
-  isAdding: false,
-});
-
-const mapDispatchToProps = (dispatch: AppDispatch, { column }: OwnProps) => ({
-  create: (body: ICreationInput) => {
-    column && dispatch(createTask({ column, body }));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TaskCreation);
+export default TaskCreation;

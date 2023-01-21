@@ -1,13 +1,10 @@
 import { IColumn, ICreationInput } from 'interfaces';
 import InputText from 'components/Forms/InputText';
 import { useForm } from 'react-hook-form';
-import { connect } from 'react-redux';
-import { AppDispatch } from 'redux/store';
 import styles from './index.module.scss';
-import { updateColumn } from 'redux/actions/columns';
 import { RefObject, useRef } from 'react';
 import useOutside from 'hooks/useOutside';
-import { useUpdateColumnMutation } from 'redux/api';
+import { useUpdateColumnMutation } from 'redux/api/columns';
 
 type Inputs = ICreationInput;
 

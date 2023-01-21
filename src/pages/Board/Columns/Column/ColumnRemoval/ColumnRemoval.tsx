@@ -1,6 +1,6 @@
 import Removal from 'components/Removal';
 import { IColumn } from 'interfaces';
-import { useDeleteColumnMutation } from 'redux/api';
+import { useDeleteColumnMutation } from 'redux/api/columns';
 
 type OwnProps = {
   column: IColumn;

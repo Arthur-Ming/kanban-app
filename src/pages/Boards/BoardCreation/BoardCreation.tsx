@@ -1,6 +1,6 @@
 import CreationForm from 'components/CreationForm';
 import { useNavigate } from 'react-router';
-import { useCreateBoardMutation } from 'redux/api';
+import { useCreateBoardMutation } from 'redux/api/boards';
 import styles from './index.module.scss';
 
 const BoardCreation = () => {

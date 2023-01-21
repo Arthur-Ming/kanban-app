@@ -3,7 +3,7 @@ import useOutside from 'hooks/useOutside';
 import { IBoard, ICreateColumnBody } from 'interfaces';
 import { RefObject, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { useCreateColumnMutation } from 'redux/api';
+import { useCreateColumnMutation } from 'redux/api/columns';
 import styles from './index.module.scss';
 
 interface OwnProps {

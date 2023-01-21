@@ -1,4 +1,4 @@
-import { IColumn } from 'interfaces';
+import { IColumn, ITask } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -29,8 +29,19 @@ const columnsSlice = createSlice({
       const { payload: column } = action;
       delete state.entities[column.id];
     },
+    addRefToTask(state, action: PayloadAction<ITask>) {
+      const { payload: task } = action;
+      state.entities && state.entities[task.columnId].tasks.push(task.id);
+    },
+    deleteRefToTask(state, action: PayloadAction<ITask>) {
+      const { payload: task } = action;
+      state.entities[task.columnId].tasks = state.entities[task.columnId].tasks.filter(
+        (taskId) => taskId !== task.id
+      );
+    },
   },
 });
 
-export const { addColumns, addColumn, deleteColumn, updateColumn } = columnsSlice.actions;
+export const { addColumns, addColumn, deleteColumn, updateColumn, addRefToTask, deleteRefToTask } =
+  columnsSlice.actions;
 export default columnsSlice.reducer;

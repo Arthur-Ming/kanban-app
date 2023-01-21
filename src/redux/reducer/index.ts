@@ -4,7 +4,7 @@ import columns from './columns';
 import tasks from './tasks';
 import users from './users';
 import session from './session';
-import { api } from '../api';
+import { api } from '../api/api';
 
 const rootReducer = combineReducers({
   boards,
