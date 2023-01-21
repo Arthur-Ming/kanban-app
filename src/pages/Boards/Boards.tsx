@@ -7,7 +7,7 @@ import CreationTicket from 'components/CreationTicket';
 import { useLoadBoardsQuery } from 'redux/api/boards';
 
 const Boards = () => {
-  const { isLoading } = useLoadBoardsQuery();
+  const { isLoading } = useLoadBoardsQuery(null);
 
   if (isLoading) return <Loader />;
 

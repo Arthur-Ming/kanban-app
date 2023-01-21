@@ -3,6 +3,7 @@ import useOutside from 'hooks/useOutside';
 import { IBoard, ICreationInput } from 'interfaces';
 import { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 import { useUpdateBoardMutation } from 'redux/api/boards';
 import styles from './index.module.scss';
 
@@ -23,12 +24,21 @@ const BoardUpdate = ({ board }: Props) => {
 
   const wrapperRef: RefObject<HTMLFormElement> = useRef(null);
   useOutside<HTMLFormElement>(wrapperRef, `/boards/${board?.id}`);
-  const [update, rest] = useUpdateBoardMutation();
+  const [update] = useUpdateBoardMutation();
+  const navigate = useNavigate();
 
   return (
     <form
       className={styles.box}
-      onSubmit={handleSubmit((body) => update({ board, body }))}
+      onSubmit={handleSubmit((body) => {
+        update({ board, body });
+        navigate(`/boards/${board?.id}`);
+      })}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          navigate(`/boards/${board?.id}`);
+        }
+      }}
       ref={wrapperRef}
     >
       <InputText<Inputs>

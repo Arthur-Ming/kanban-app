@@ -7,16 +7,16 @@ import { IBoard, IColumn, ICreateBoardBody, IPopulatedBoard, ITask } from '../..
 
 const boardsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    loadBoards: builder.query<IBoard[], void>({
+    loadBoards: builder.query<IBoard[], null>({
       query: () => apiRoutes.boards(),
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(addBoards(data));
       },
     }),
     loadBoardById: builder.query<{ tasks: ITask[]; columns: IColumn[]; board: IBoard }, string>({
       query: (boardId) => apiRoutes.boardById(boardId),
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data: populatedBoard } = await queryFulfilled;
         const { tasks, columns, board } = populatedBoard;
         dispatch(addTasks(tasks));
@@ -28,7 +28,7 @@ const boardsApi = api.injectEndpoints({
     }),
     createBoard: builder.mutation<IBoard, ICreateBoardBody>({
       query: (body) => apiParams.post(apiRoutes.boards(), body),
-      async onQueryStarted(body, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(addBoard(data));
       },
