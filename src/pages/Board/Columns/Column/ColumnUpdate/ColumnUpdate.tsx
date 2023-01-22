@@ -5,6 +5,7 @@ import styles from './index.module.scss';
 import { RefObject, useRef } from 'react';
 import useOutside from 'hooks/useOutside';
 import { useUpdateColumnMutation } from 'redux/api/columns';
+import { useNavigate } from 'react-router';
 
 type Inputs = ICreationInput;
 
@@ -24,11 +25,17 @@ const ColumnUpdate = ({ column }: Props) => {
   const wrapperRef: RefObject<HTMLFormElement> = useRef(null);
   useOutside<HTMLFormElement>(wrapperRef, `/boards/${column.boardId}`);
   const [update, rest] = useUpdateColumnMutation();
+  const navigate = useNavigate();
 
   return (
     <form
       className={styles.box}
       onSubmit={handleSubmit((body) => update({ column, body }))}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          navigate(`/boards/${column.boardId}`);
+        }
+      }}
       ref={wrapperRef}
     >
       <InputText<Inputs>

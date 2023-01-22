@@ -9,6 +9,7 @@
   overflow: auto;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin: 0;
 
   &::-webkit-scrollbar {
     width: 5px;

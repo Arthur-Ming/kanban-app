@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import ConfirmPopup from 'components/ConfirmPopup';
 import Modal from 'components/Modal';
 import { useState } from 'react';
@@ -6,13 +7,17 @@ import styles from './index.module.scss';
 
 type Props = {
   onConfirm: () => void;
+  iconClass?: string;
 };
 
-const Removal = ({ onConfirm }: Props) => {
+const Removal = ({ onConfirm, iconClass }: Props) => {
   const [isRemoveMode, setRemoveMode] = useState(false);
   return (
     <div className={styles.remove}>
-      <RemoveIcon className={styles.remove_icon} onClick={() => setRemoveMode(true)} />
+      <RemoveIcon
+        className={classNames(styles.remove_icon, iconClass)}
+        onClick={() => setRemoveMode(true)}
+      />
       {isRemoveMode && (
         <Modal
           handleClickOutside={() => {

@@ -8,6 +8,7 @@ import { RootState } from 'redux/reducer';
 import { columnByIdSelector } from 'redux/selectors/columns';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
+import ColumnRemoval from './ColumnRemoval';
 
 type StateProps = {
   column?: IColumn;
@@ -23,7 +24,11 @@ const Column = ({ column }: Props) => {
   if (!column) return <div>No data</div>;
   return (
     <div className={styles.box}>
-      <ColumnHeader column={column} />
+      <div className={styles.header}>
+        <ColumnHeader column={column} />
+        <ColumnRemoval column={column} />
+      </div>
+
       <TaskTickets tasks={column.tasks} />
       <Routes>
         <Route
