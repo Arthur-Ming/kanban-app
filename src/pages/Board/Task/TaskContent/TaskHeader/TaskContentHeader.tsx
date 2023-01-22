@@ -2,7 +2,7 @@ import { useLanguage } from 'hooks/useLanguage';
 import { ITask, ITEXT } from 'interfaces';
 import { AiFillCreditCard as TitleIcon } from 'react-icons/ai';
 import { IoMdClose as CloseIcon } from 'react-icons/io';
-import styles from '../styles.module.scss';
+import styles from '../index.module.scss';
 import TaskTitleEdit from './TaskTitleEdit';
 
 const TEXT_TASK_CONTENT_HEADER: ITEXT = {
@@ -40,9 +40,6 @@ const TaskContentHeader = ({ task, columnTitle, onCloseClick }: IProps) => {
       <p className={styles.subtext}>
         {TEXT_TASK_CONTENT_HEADER.inList[lang]} <span className={styles.column}>{columnTitle}</span>{' '}
       </p>
-      <span className={styles.close} onClick={onCloseClick}>
-        <CloseIcon className={styles['close-icon']} />
-      </span>
     </header>
   );
 };

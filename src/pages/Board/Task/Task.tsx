@@ -1,16 +1,11 @@
-import TaskHeader from './TaskHeader';
-import TaskSidebar from './TaskSidebar';
-import TaskDescription from './TaskDescription';
-import styles from './styles.module.scss';
 import Modal from 'components/Modal';
 import { useNavigate, useParams } from 'react-router';
+import TaskContent from './TaskContent';
+import styles from './index.module.scss';
+import { IoMdClose as CloseIcon } from 'react-icons/io';
 
 const Task = () => {
-  const { boardId, columnId = '', taskId = '' } = useParams();
-
-  console.log(boardId);
-  console.log(columnId);
-  console.log(taskId);
+  const { boardId = '', taskId = '' } = useParams();
 
   const navigate = useNavigate();
 
@@ -18,24 +13,14 @@ const Task = () => {
 
   return (
     <Modal handleClickOutside={onCloseClick}>
-      <div className={`${styles.wrapper} ${styles.open}`}>
-        {/*  <TaskContentHeader columnId={columnId} taskId={taskId} onCloseClick={onCloseClick} /> */}
-        <div className={styles.main}>
-          <div className={styles.body}>
-            <TaskDescription taskId={taskId} />
-          </div>
-          <TaskSidebar />
+      <div className={styles.wrapper}>
+        <div className={styles.close} onClick={onCloseClick}>
+          <CloseIcon className={styles['close-icon']} />
         </div>
+        <TaskContent taskId={taskId} />
       </div>
     </Modal>
   );
 };
-/* 
-const mapStateToProps = (state: RootState, params: IProps) => ({
-  column: columnSelector(state, params),
-});
-
-export default connect(mapStateToProps, null)(TaskContent);
- */
 
 export default Task;

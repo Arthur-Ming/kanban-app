@@ -1,7 +1,7 @@
 import { useLanguage } from 'hooks/useLanguage';
 import { ITask, ITEXT } from 'interfaces';
 import { IoMdList as DescriptionIcon } from 'react-icons/io';
-import styles from '../styles.module.scss';
+import styles from '../index.module.scss';
 import TaskContentDescriptionEdit from './TaskContentDescriptionEdit';
 import { taskByIdSelector } from 'redux/selectors/tasks';
 import { RootState } from 'redux/reducer';
@@ -19,8 +19,7 @@ const TEXT_TASK_CONTENT_DESCRIPTION: ITEXT = {
 };
 
 interface IProps {
-  task?: ITask;
-  taskId: string;
+  task: ITask;
 }
 
 const TaskContentDescription = ({ task }: IProps) => {
@@ -50,8 +49,4 @@ const TaskContentDescription = ({ task }: IProps) => {
   );
 };
 
-const mapStateToProps = (state: RootState, params: IProps) => ({
-  task: taskByIdSelector(state, params),
-});
-
-export default connect(mapStateToProps, null)(TaskContentDescription);
+export default TaskContentDescription;
