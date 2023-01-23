@@ -20,12 +20,7 @@ const TaskContent = ({ task }: Props) => {
   if (!task) return <div>No data!</div>;
   return (
     <div className={styles.box}>
-      <TaskContentHeader
-        task={task}
-        onCloseClick={() => {
-          console.log('!!!');
-        }}
-      />
+      <TaskContentHeader task={task} />
       <div className={styles.main}>
         <div className={styles.body}>
           <TaskDescription task={task} />

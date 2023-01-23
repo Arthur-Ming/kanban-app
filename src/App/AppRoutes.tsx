@@ -10,6 +10,7 @@ import BoardCreation from 'pages/Boards/BoardCreation';
 import Register from 'pages/Register';
 import Login from 'pages/Login';
 import BoardUpdate from 'pages/Board/BoardContent/BoardUpdate';
+import TaskUpdate from 'pages/Board/Task/TaskContent/TaskUpdate';
 
 const AppRoutes = () => (
   <Routes>
@@ -20,7 +21,9 @@ const AppRoutes = () => (
       <Route path="update" element={<BoardUpdate />} />
       <Route path="columns/create" element={<ColumnCreation />} />
       <Route path="columns/:columnId/tasks/create" element={<TaskCreation />} />
-      <Route path={routes.tasks.content()} element={<Task />} />
+      <Route path="columns/:columnId/tasks/:taskId/*" element={<Task />}>
+        <Route path="update" element={<TaskUpdate />} />
+      </Route>
     </Route>
     <Route path="register" element={<Register />} />
     <Route path="login" element={<Login />} />

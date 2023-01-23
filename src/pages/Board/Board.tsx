@@ -17,7 +17,9 @@ const Board = () => {
   return (
     <>
       <BoardContent boardId={boardId} />
-      <Routes>{taskId && <Route path={routes.tasks.content()} element={<Task />} />}</Routes>
+      <Routes>
+        {taskId && <Route path="columns/:columnId/tasks/:taskId/*" element={<Task />} />}
+      </Routes>
     </>
   );
 };

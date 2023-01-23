@@ -1,1 +1,1 @@
-export { default } from './TaskContentHeader';
+export { default } from './TaskHeader';

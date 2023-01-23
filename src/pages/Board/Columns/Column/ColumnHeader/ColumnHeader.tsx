@@ -1,6 +1,4 @@
 import { IColumn } from 'interfaces';
-import ColumnRemoval from '../ColumnRemoval';
-import styles from './index.module.scss';
 import { Route, Routes } from 'react-router';
 import ColumnUpdate from '../ColumnUpdate';
 import ColumnUpdateLink from '../ColumnUpdateLink';
