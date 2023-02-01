@@ -1,10 +1,9 @@
-import { useLanguage } from 'hooks/useLanguage';
 import { IColumn, ITask, ITEXT } from 'interfaces';
-import { AiFillCreditCard as TitleIcon } from 'react-icons/ai';
-import { Route, Routes } from 'react-router';
+import { connect } from 'react-redux';
+import { columnByIdSelector } from 'redux/selectors/columns';
+import { RootState } from 'redux/store';
 import styles from '../index.module.scss';
-import TaskUpdate from '../TaskUpdate';
-import TaskUpdateLink from '../TaskUpdateLink';
+import TaskTitle from '../TaskTitle';
 
 const TEXT_TASK_CONTENT_HEADER: ITEXT = {
   inList: {
@@ -13,23 +12,30 @@ const TEXT_TASK_CONTENT_HEADER: ITEXT = {
   },
 };
 
-type Props = {
+type StateProps = {
+  column: IColumn;
+};
+
+type OwnProps = {
   task: ITask;
 };
 
-const TaskHeader = ({ task }: Props) => {
+type Props = OwnProps & StateProps;
+
+const TaskHeader = ({ column, task }: Props) => {
   return (
     <header className={styles.header}>
-      <Routes>
-        <Route path={`update`} element={<TaskUpdate task={task} />} />
-        <Route path="/*" element={<TaskUpdateLink task={task} />} />
-      </Routes>
+      <TaskTitle task={task} />
       <p className={styles.subtitle}>
         <span>{TEXT_TASK_CONTENT_HEADER.inList['ru']}</span>
-        <span className={styles.column}>{'column.title'}</span>
+        <span className={styles.column}>{column?.title}</span>
       </p>
     </header>
   );
 };
 
-export default TaskHeader;
+const mapStateToProps = (state: RootState, props: OwnProps) => ({
+  column: columnByIdSelector(state, props.task),
+});
+
+export default connect(mapStateToProps)(TaskHeader);

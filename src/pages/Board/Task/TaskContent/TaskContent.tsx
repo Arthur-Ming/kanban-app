@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { taskByIdSelector } from 'redux/selectors/tasks';
 import { RootState } from 'redux/store';
 import styles from './index.module.scss';
-import TaskDescription from './TaskDescription';
-import TaskContentHeader from './TaskHeader';
+import TaskDescription from './TaskDescription/TaskDescription';
+import TaskHeader from './TaskHeader';
 import TaskSidebar from './TaskSidebar';
 
 type OwnProps = {
@@ -20,9 +20,9 @@ const TaskContent = ({ task }: Props) => {
   if (!task) return <div>No data!</div>;
   return (
     <div className={styles.box}>
-      <TaskContentHeader task={task} />
+      <TaskHeader task={task} />
       <div className={styles.main}>
-        <div className={styles.body}>
+        <div className={styles.description}>
           <TaskDescription task={task} />
         </div>
         <TaskSidebar />

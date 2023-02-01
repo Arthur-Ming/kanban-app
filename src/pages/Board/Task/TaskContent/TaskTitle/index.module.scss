@@ -1,0 +1,16 @@
+.box {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.title {
+  font-size: 18px;
+  line-height: 36px;
+  font-weight: 500;
+  padding-left: 10px;
+  margin: 0;
+}
+.icon {
+  height: 24px;
+  width: 24px;
+}

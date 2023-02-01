@@ -2,7 +2,6 @@ import Loader from 'components/Loader';
 import NotFound from 'pages/NotFound';
 import { Route, Routes, useParams } from 'react-router';
 import { useLoadBoardByIdQuery } from 'redux/api/boards';
-import { routes } from 'utils/routes';
 import BoardContent from './BoardContent';
 import Task from './Task';
 
