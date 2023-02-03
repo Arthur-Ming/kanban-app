@@ -7,6 +7,8 @@ interface Props<T extends FieldValues> extends UseControllerProps<T> {
   register: UseFormRegister<T>;
   required?: string;
   label?: string;
+  extraClass?: string;
+  placeholder?: string;
 }
 
 const Textarea = <T extends FieldValues>({
@@ -16,14 +18,17 @@ const Textarea = <T extends FieldValues>({
   required,
   label = '',
   defaultValue,
+  extraClass,
+  placeholder,
 }: Props<T>) => (
-  <label className={styles.box}>
+  <label className={classNames(styles.box, extraClass)}>
     <span className={styles.label}>{label}</span>
     <textarea
       className={classNames(styles.textarea, {
         [styles.invalid]: error,
       })}
       defaultValue={defaultValue}
+      placeholder={placeholder}
       {...register(name, { required })}
     />
     {error && <span className={styles.invalid_text}>{error.message}</span>}
