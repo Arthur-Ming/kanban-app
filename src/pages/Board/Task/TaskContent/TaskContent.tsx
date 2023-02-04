@@ -8,10 +8,9 @@ import { RootState } from 'redux/store';
 import { IoMdList as DescriptionIcon } from 'react-icons/io';
 import styles from './index.module.scss';
 import { AiFillCreditCard as TitleIcon } from 'react-icons/ai';
-
-import TaskSidebar from './TaskSidebar';
 import Textarea from 'components/Forms/Textarea';
 import TaskUpdateLink from './TaskUpdateLink';
+import { useUpdateTaskMutation } from 'redux/api/tasks';
 
 const TEXT_TASK_CONTENT_DESCRIPTION: ITEXT = {
   title: {
@@ -42,24 +41,24 @@ const TaskContent = ({ task }: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
   const navigate = useNavigate();
+  const [update] = useUpdateTaskMutation();
+
   if (!task) return <div>No data!</div>;
 
+  const onSubmit = (body: Inputs) => update({ task, body });
   return (
     <form
       onKeyDown={(e) => {
-        console.log(e.key);
         if (e.key === 'Escape') {
+          reset();
           navigate(`/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task?.id}`);
         }
       }}
-      onSubmit={handleSubmit((body) => {
-        console.log(body);
-        /*  update({ task, body });
-        navigate(`/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task?.id}`); */
-      })}
+      onSubmit={handleSubmit(onSubmit)}
       className={styles.box}
     >
       <div className={styles.titleBox}>
@@ -86,13 +85,47 @@ const TaskContent = ({ task }: Props) => {
             error={errors.description}
             register={register}
             name="description"
-            required="this field is required!"
+            defaultValue={task?.description}
             placeholder={
               task?.description || TEXT_TASK_CONTENT_DESCRIPTION.defaultDescription['en']
             }
             extraClass={styles.textarea}
           />
         </TaskUpdateLink>
+      </div>
+      <div className={styles.buttons}>
+        <Routes>
+          <Route
+            path="/*"
+            element={
+              <input
+                type="button"
+                className={styles.button}
+                value="Edit"
+                onClick={() => navigate(`update`)}
+              />
+            }
+          />
+          <Route
+            path={`update`}
+            element={
+              <>
+                <input
+                  type="button"
+                  className={styles.buttonCancel}
+                  value="Cancel"
+                  onClick={() => {
+                    reset();
+                    navigate(
+                      `/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task?.id}`
+                    );
+                  }}
+                />
+                <input type="submit" className={styles.button} value="Submit" />
+              </>
+            }
+          />
+        </Routes>
       </div>
     </form>
   );
