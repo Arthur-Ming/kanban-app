@@ -24,6 +24,11 @@ export const apiRoutes = {
 };
 
 export const apiParams = {
+  fileUpload: <T>(url: string, body: T) => ({
+    url,
+    method: 'POST',
+    body,
+  }),
   post: <T>(url: string, body: T) => ({
     url,
     method: 'POST',

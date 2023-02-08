@@ -3,7 +3,8 @@ import { addBoard, addBoards, deleteBoard, updateBoard } from 'redux/reducer/boa
 import { addColumns } from 'redux/reducer/columns';
 import { addTasks } from 'redux/reducer/tasks';
 import { separateBoard } from 'utils/separateBoard';
-import { IBoard, IColumn, ICreateBoardBody, IPopulatedBoard, ITask } from '../../interfaces';
+import { IBoard, IColumn, ICreateBoardBody, IFile, IPopulatedBoard, ITask } from '../../interfaces';
+import { addFiles } from 'redux/reducer/files';
 
 const boardsApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,11 +15,15 @@ const boardsApi = api.injectEndpoints({
         dispatch(addBoards(data));
       },
     }),
-    loadBoardById: builder.query<{ tasks: ITask[]; columns: IColumn[]; board: IBoard }, string>({
+    loadBoardById: builder.query<
+      { files: IFile[]; tasks: ITask[]; columns: IColumn[]; board: IBoard },
+      string
+    >({
       query: (boardId) => apiRoutes.boardById(boardId),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data: populatedBoard } = await queryFulfilled;
-        const { tasks, columns, board } = populatedBoard;
+        const { tasks, columns, board, files } = populatedBoard;
+        dispatch(addFiles(files));
         dispatch(addTasks(tasks));
         dispatch(addColumns(columns));
         dispatch(addBoard(board));

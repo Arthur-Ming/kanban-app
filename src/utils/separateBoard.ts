@@ -1,7 +1,13 @@
-import { IBoard, IColumn, IPopulatedBoard, ITask } from 'interfaces';
+import { IBoard, IColumn, IFile, IPopulatedBoard, IPopulatedTask, ITask } from 'interfaces';
 
 export const separateBoard = (populatedBoard: IPopulatedBoard) => {
-  const tasks: ITask[] = populatedBoard.columns.map(({ tasks }) => tasks).flat();
+  const populatedTasks: IPopulatedTask[] = populatedBoard.columns.map(({ tasks }) => tasks).flat();
+
+  const tasks: ITask[] = populatedTasks.map((task) => ({
+    ...task,
+    files: task.files.map(({ id }) => id),
+  }));
+  const files: IFile[] = populatedTasks.map((task) => task.files).flat();
 
   const columns: IColumn[] = populatedBoard.columns.map(({ id, title, boardId, tasks }) => ({
     id,
@@ -20,5 +26,6 @@ export const separateBoard = (populatedBoard: IPopulatedBoard) => {
     tasks,
     columns,
     board,
+    files,
   };
 };

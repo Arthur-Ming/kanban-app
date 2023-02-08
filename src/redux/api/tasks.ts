@@ -29,8 +29,20 @@ const columnsApi = api.injectEndpoints({
         dispatch(deleteTask(task));
       },
     }),
+    filesUpload: builder.mutation({
+      query: ({ task, file }) =>
+        apiParams.fileUpload(
+          apiRoutes.tasksById(task.boardId, task.columnId, task.id) + '/files-upload',
+          file
+        ),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useCreateTaskMutation, useDeleteTaskMutation, useUpdateTaskMutation } = columnsApi;
+export const {
+  useCreateTaskMutation,
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+  useFilesUploadMutation,
+} = columnsApi;

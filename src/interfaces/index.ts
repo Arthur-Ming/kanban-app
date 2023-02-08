@@ -6,6 +6,7 @@ export interface IBoardBase {
 
 export type ColumnId = string;
 export type TaskId = string;
+export type FileId = string;
 
 export interface IColumnBase {
   id: string;
@@ -25,15 +26,30 @@ export interface IColumn extends IColumnBase {
 }
 
 export interface IPopulatedColumn extends IColumnBase {
-  tasks: ITask[];
+  tasks: IPopulatedTask[];
 }
 
-export interface ITask {
+export interface IFile {
+  id: string;
+  filename: string;
+  taskId: TaskId;
+  extension: string;
+}
+
+export interface ITaskBase {
   id: string;
   title: string;
   description: string;
   boardId: string;
   columnId: string;
+}
+
+export interface IPopulatedTask extends ITaskBase {
+  files: IFile[];
+}
+
+export interface ITask extends ITaskBase {
+  files: FileId[];
 }
 
 interface ILANG {

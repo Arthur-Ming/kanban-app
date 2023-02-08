@@ -5,11 +5,13 @@ import tasks from './tasks';
 import users from './users';
 import session from './session';
 import { api } from '../api/api';
+import files from './files';
 
 const rootReducer = combineReducers({
   boards,
   columns,
   tasks,
+  files,
   users,
   session,
   [api.reducerPath]: api.reducer,
