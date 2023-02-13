@@ -1,0 +1,138 @@
+.titleBox {
+  display: flex;
+  column-gap: 10px;
+  height: 28px;
+}
+
+.descriptionBox {
+  display: flex;
+  column-gap: 10px;
+  height: 80px;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0px 9px;
+  background-color: rgb(212, 202, 202);
+  border-radius: 5px;
+  flex: 1 0 auto;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0px;
+  column-gap: 20px;
+}
+.icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+}
+.title {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0px 9px;
+}
+
+.body {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  row-gap: 25px;
+}
+
+.header,
+.activity {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  height: 100%;
+  display: block;
+  input {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    height: 100%;
+    padding: 0px 8px;
+    border-radius: 5px;
+  }
+}
+.textarea {
+  height: 100%;
+  display: block;
+  textarea {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px;
+    height: 100%;
+    padding: 0px 8px;
+    border-radius: 5px;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 40px;
+}
+
+.button {
+  box-sizing: border-box;
+  width: 120px;
+  border-radius: 6px;
+  height: 32px;
+  background-color: var(--main-color);
+  border: 1px solid var(--text-color-title);
+  color: var(--text-color-title);
+  cursor: pointer;
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 5px 0px;
+  margin-top: 20px;
+  transition: all 0.3s ease 0s;
+  outline: none;
+  &:hover {
+    border-color: var(--main-color);
+    color: var(--text-color-title);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.buttonCancel {
+  box-sizing: border-box;
+  width: 120px;
+  border-radius: 6px;
+  height: 32px;
+  background-color: var(--text-color-title);
+  border: 1px solid var(--text-color-title);
+  color: var(--text-color-gray);
+  cursor: pointer;
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 5px 0px;
+  margin-top: 20px;
+  transition: all 0.3s ease 0s;
+  outline: none;
+  &:hover {
+    border-color: var(--text-color-title);
+    color: var(--text-color-gray);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}

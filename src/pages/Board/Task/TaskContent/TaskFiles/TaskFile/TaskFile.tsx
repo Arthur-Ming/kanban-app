@@ -1,5 +1,6 @@
 import { FileId, IFile } from 'interfaces';
 import { connect } from 'react-redux';
+import { useDeleteFileMutation } from 'redux/api/files';
 import { RootState } from 'redux/reducer';
 import { fileByIdSelector } from 'redux/selectors/files';
 import buildPathToFile from 'utils/buildPathToFile';
@@ -16,9 +17,9 @@ type StateProps = {
 type Props = OwnProps & StateProps;
 
 const TaskFile = ({ file }: Props) => {
+  const [remove] = useDeleteFileMutation();
   return (
     <div>
-      {file.filename}
       <a
         href={buildPathToFile(file)}
         target="_blank"
@@ -26,6 +27,7 @@ const TaskFile = ({ file }: Props) => {
         style={{ backgroundImage: `url(${buildPathToFile(file)})` }}
         rel="noreferrer"
       ></a>
+      <button onClick={() => remove(file)}>delete</button>
     </div>
   );
 };

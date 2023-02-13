@@ -9,7 +9,7 @@ import {
 
 import { ITask } from 'interfaces';
 import { apiRoutes } from 'redux/api/api';
-import { useFilesUploadMutation } from 'redux/api/files';
+import { useUploadFileMutation } from 'redux/api/files';
 
 type Inputs = {
   image: string;
@@ -27,59 +27,27 @@ const ImageUploader = ({ task }: Props) => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const [upload, { data }] = useFilesUploadMutation();
-
-  console.log(data);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (file: any) => {
-    console.log('!!!!');
-    console.log(file.image[0]);
-    const data = new FormData();
-    data.append('image', file.image[0]);
-
-    upload({ task, file: data });
-  };
+  const [upload] = useUploadFileMutation();
 
   return (
-    <form
-      method="post"
-      encType="multipart/form-data"
-      action="/upload"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <label
-        className={styles.file_preview}
-        style={{ backgroundImage: `url()` }}
-        /*  onClick={(e) => {
-            if (image) {
-              e.preventDefault();
-              onDeleteFile();
-              console.log('!!!');
-            }
-          }} */
-      >
+    <form method="post" encType="multipart/form-data" action="/upload">
+      <label className={styles.file_preview} style={{ backgroundImage: `url()` }}>
         <input
           className={styles.file_input}
           type="file"
           accept="image/*"
           {...register('image')}
           onChange={(e) => {
-            //  const [file] = e.target.files;
-            console.log(e.target.files);
-            console.log(e.target.files && e.target.files[0]);
             if (e.target.files) {
+              const file = e.target.files[0];
               const data = new FormData();
-              data.append('image', e.target.files[0]);
-              console.log(data);
-
-              /* upload({ task, file: data }); */
+              data.append('image', file);
+              upload({ task, file: data });
             }
           }}
           disabled={false}
         />
       </label>
-      <input type="submit" className={styles.button} value="Submit" />
     </form>
   );
 };

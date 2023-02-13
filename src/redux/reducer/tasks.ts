@@ -33,8 +33,15 @@ const tasksSlice = createSlice({
       const { payload: file } = action;
       state.entities && state.entities[file.taskId].files.push(file.id);
     },
+    deleteRefToFile(state, action: PayloadAction<IFile>) {
+      const { payload: file } = action;
+      state.entities[file.taskId].files = state.entities[file.taskId].files.filter(
+        (fileId) => fileId !== file.id
+      );
+    },
   },
 });
 
-export const { addTasks, addTask, updateTask, deleteTask, addRefToFile } = tasksSlice.actions;
+export const { addTasks, addTask, updateTask, deleteTask, addRefToFile, deleteRefToFile } =
+  tasksSlice.actions;
 export default tasksSlice.reducer;

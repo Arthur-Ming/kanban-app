@@ -1,0 +1,22 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.clip {
+  width: 24px;
+  height: 24px;
+}
+
+.title {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0px 9px;
+}
+
+.titleBox {
+  display: flex;
+}
