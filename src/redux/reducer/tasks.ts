@@ -1,4 +1,4 @@
-import { ITask } from 'interfaces';
+import { IFile, ITask } from 'interfaces';
 import { arrToMap } from 'utils/arrToMap';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -29,8 +29,12 @@ const tasksSlice = createSlice({
       const { payload: task } = action;
       delete state.entities[task.id];
     },
+    addRefToFile(state, action: PayloadAction<IFile>) {
+      const { payload: file } = action;
+      state.entities && state.entities[file.taskId].files.push(file.id);
+    },
   },
 });
 
-export const { addTasks, addTask, updateTask, deleteTask } = tasksSlice.actions;
+export const { addTasks, addTask, updateTask, deleteTask, addRefToFile } = tasksSlice.actions;
 export default tasksSlice.reducer;

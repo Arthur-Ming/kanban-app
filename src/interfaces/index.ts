@@ -33,7 +33,6 @@ export interface IFile {
   id: string;
   filename: string;
   taskId: TaskId;
-  extension: string;
 }
 
 export interface ITaskBase {

@@ -21,7 +21,6 @@ const filesSlice = createSlice({
       const { payload: file } = action;
       state.entities[file.id] = file;
     },
-
     deleteFile(state, action: PayloadAction<IFile>) {
       const { payload: file } = action;
       delete state.entities[file.id];

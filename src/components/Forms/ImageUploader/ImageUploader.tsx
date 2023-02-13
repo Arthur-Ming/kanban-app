@@ -6,9 +6,10 @@ import {
   useForm,
   UseFormRegister,
 } from 'react-hook-form';
-import { useFilesUploadMutation } from 'redux/api/tasks';
+
 import { ITask } from 'interfaces';
 import { apiRoutes } from 'redux/api/api';
+import { useFilesUploadMutation } from 'redux/api/files';
 
 type Inputs = {
   image: string;
@@ -26,7 +27,9 @@ const ImageUploader = ({ task }: Props) => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const [upload] = useFilesUploadMutation();
+  const [upload, { data }] = useFilesUploadMutation();
+
+  console.log(data);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (file: any) => {
@@ -34,15 +37,8 @@ const ImageUploader = ({ task }: Props) => {
     console.log(file.image[0]);
     const data = new FormData();
     data.append('image', file.image[0]);
-    /*   upload({ task, file: data }); */
-    fetch('http://localhost:8000' + `/files/${task.id}/upload`, {
-      method: 'POST',
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-    /*  console.log(data);
-    upload({ task, file: data }); */
+
+    upload({ task, file: data });
   };
 
   return (

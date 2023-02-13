@@ -2,7 +2,7 @@ import { api, apiParams, apiRoutes } from './api';
 import { addRefToTask, deleteRefToTask } from 'redux/reducer/columns';
 import { addTask, updateTask, deleteTask } from 'redux/reducer/tasks';
 
-const columnsApi = api.injectEndpoints({
+const tasksApi = api.injectEndpoints({
   endpoints: (builder) => ({
     createTask: builder.mutation({
       query: ({ column, body }) => apiParams.post(apiRoutes.tasks(column.boardId, column.id), body),
@@ -29,20 +29,8 @@ const columnsApi = api.injectEndpoints({
         dispatch(deleteTask(task));
       },
     }),
-    filesUpload: builder.mutation({
-      query: ({ task, file }) =>
-        apiParams.fileUpload(
-          apiRoutes.tasksById(task.boardId, task.columnId, task.id) + '/files-upload',
-          file
-        ),
-    }),
   }),
   overrideExisting: false,
 });
 
-export const {
-  useCreateTaskMutation,
-  useDeleteTaskMutation,
-  useUpdateTaskMutation,
-  useFilesUploadMutation,
-} = columnsApi;
+export const { useCreateTaskMutation, useDeleteTaskMutation, useUpdateTaskMutation } = tasksApi;

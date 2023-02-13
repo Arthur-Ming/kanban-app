@@ -10,8 +10,10 @@ import styles from './index.module.scss';
 import { AiFillCreditCard as TitleIcon } from 'react-icons/ai';
 import Textarea from 'components/Forms/Textarea';
 import TaskUpdateLink from './TaskUpdateLink';
-import { useFilesUploadMutation, useUpdateTaskMutation } from 'redux/api/tasks';
+import { useUpdateTaskMutation } from 'redux/api/tasks';
 import ImageUploader from 'components/Forms/ImageUploader';
+import { useFilesUploadMutation } from 'redux/api/files';
+import TaskFiles from './TaskFiles';
 
 const TEXT_TASK_CONTENT_DESCRIPTION: ITEXT = {
   title: {
@@ -132,6 +134,7 @@ const TaskContent = ({ task }: Props) => {
         </div>
       </form>
       <ImageUploader task={task} />
+      <TaskFiles fileIds={task.files} />
     </>
   );
 };
