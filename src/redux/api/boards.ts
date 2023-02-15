@@ -1,5 +1,11 @@
 import { api, apiParams, apiRoutes } from './api';
-import { addBoard, addBoards, deleteBoard, updateBoard } from 'redux/reducer/boards';
+import {
+  addBoard,
+  addBoards,
+  columnsOrderChange,
+  deleteBoard,
+  updateBoard,
+} from 'redux/reducer/boards';
 import { addColumns } from 'redux/reducer/columns';
 import { addTasks } from 'redux/reducer/tasks';
 import { separateBoard } from 'utils/separateBoard';
@@ -57,9 +63,33 @@ const boardsApi = api.injectEndpoints({
         dispatch(deleteBoard(board));
       },
     }),
+    columnsOrder: builder.mutation({
+      query: ({ board, body }) => apiParams.put(apiRoutes.boardById(board.id), body),
+      async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
+        const newColumns = [...board.columns];
+        newColumns.splice(body.sourceIndex, 1);
+        newColumns.splice(body.destinationIndex, 0, body.draggableId);
+
+        dispatch(
+          columnsOrderChange({
+            boardId: board.id,
+            newOrderedColumns: newColumns,
+          })
+        );
+
+        await queryFulfilled;
+      },
+    }),
   }),
   overrideExisting: false,
 });
+
+/*
+ board: IBoard;
+        sourceIndex: number;
+        destinationIndex: number;
+        draggableId: string;
+*/
 
 export const {
   useLoadBoardsQuery,
@@ -67,4 +97,5 @@ export const {
   useCreateBoardMutation,
   useUpdateBoardMutation,
   useLoadBoardByIdQuery,
+  useColumnsOrderMutation,
 } = boardsApi;

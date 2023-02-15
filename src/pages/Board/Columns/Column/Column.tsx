@@ -9,6 +9,12 @@ import { columnByIdSelector } from 'redux/selectors/columns';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
 import ColumnRemoval from './ColumnRemoval';
+import { Droppable, DragDropContext, DropResult } from 'react-beautiful-dnd';
+
+export const DragItemsType = {
+  TASKS: 'tasks',
+  COLUMN: 'column',
+};
 
 type StateProps = {
   column?: IColumn;
@@ -22,6 +28,9 @@ type Props = StateProps & OwnProps;
 
 const Column = ({ column }: Props) => {
   if (!column) return <div>No data</div>;
+  const onDragEnd = (result: DropResult) => {
+    console.log(result);
+  };
   return (
     <div className={styles.box}>
       <div className={styles.header}>
@@ -29,7 +38,17 @@ const Column = ({ column }: Props) => {
         <ColumnRemoval column={column} />
       </div>
 
-      <TaskTickets tasks={column.tasks} />
+      <Droppable droppableId={column.id} type={DragItemsType.TASKS}>
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <ul className={styles.list}>
+              <TaskTickets tasks={column.tasks} />
+              {provided.placeholder}
+            </ul>
+          </div>
+        )}
+      </Droppable>
+
       <Routes>
         <Route
           path={`columns/${column.id}/tasks/create`}

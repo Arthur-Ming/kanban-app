@@ -12,7 +12,7 @@ type Props = OwnProps;
 const ColumnUpdateLink = ({ column }: Props) => {
   const navigate = useNavigate();
   return (
-    <div className={styles.box} onClick={() => navigate(`columns/${column.id}/update`)}>
+    <div className={styles.box} onMouseUp={() => navigate(`columns/${column.id}/update`)}>
       <h4 className={styles.title}>{column.title}</h4>
       <UpdateIcon className={styles.icon} />
     </div>
