@@ -9,7 +9,7 @@ import { columnByIdSelector } from 'redux/selectors/columns';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
 import ColumnRemoval from './ColumnRemoval';
-import { Droppable, DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { Droppable } from 'react-beautiful-dnd';
 
 export const DragItemsType = {
   TASKS: 'tasks',
@@ -28,9 +28,7 @@ type Props = StateProps & OwnProps;
 
 const Column = ({ column }: Props) => {
   if (!column) return <div>No data</div>;
-  const onDragEnd = (result: DropResult) => {
-    console.log(result);
-  };
+
   return (
     <div className={styles.box}>
       <div className={styles.header}>

@@ -2,7 +2,7 @@ import { api, apiParams, apiRoutes } from './api';
 import {
   addBoard,
   addBoards,
-  columnsOrderChange,
+  updateColumnsOrder,
   deleteBoard,
   updateBoard,
 } from 'redux/reducer/boards';
@@ -71,7 +71,7 @@ const boardsApi = api.injectEndpoints({
         newColumns.splice(body.destinationIndex, 0, body.draggableId);
 
         dispatch(
-          columnsOrderChange({
+          updateColumnsOrder({
             boardId: board.id,
             newOrderedColumns: newColumns,
           })
@@ -83,13 +83,6 @@ const boardsApi = api.injectEndpoints({
   }),
   overrideExisting: false,
 });
-
-/*
- board: IBoard;
-        sourceIndex: number;
-        destinationIndex: number;
-        draggableId: string;
-*/
 
 export const {
   useLoadBoardsQuery,

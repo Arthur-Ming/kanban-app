@@ -39,29 +39,16 @@ const boardsSlice = createSlice({
         (columnId) => columnId !== column.id
       );
     },
-    columnsOrderChange(
+    updateColumnsOrder(
       state,
       action: PayloadAction<{
         newOrderedColumns: string[];
         boardId: string;
-      } /* {
-        boardId: string;
-        sourceIndex: number;
-        destinationIndex: number;
-        draggableId: string;
-      } */>
+      }>
     ) {
       const { payload } = action;
 
       state.entities[payload.boardId].columns = payload.newOrderedColumns;
-
-      /* const newColumns = [...state.entities[payload.boardId].columns];
-      newColumns.splice(payloadsource.index, 1);
-      newColumns.splice(destination.index, 0, draggableId); */
-
-      /*  state.entities[boardId].columns = state.entities[column.boardId].columns.filter(
-        (columnId) => columnId !== column.id
-      ); */
     },
   },
 });
@@ -73,7 +60,7 @@ export const {
   updateBoard,
   addRefToColumn,
   deleteRefToColumn,
-  columnsOrderChange,
+  updateColumnsOrder,
 } = boardsSlice.actions;
 
 export default boardsSlice.reducer;

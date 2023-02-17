@@ -1,26 +1,17 @@
 import { ColumnId } from 'interfaces';
 import Column from './Column';
-
-import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { useState } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 
 type Props = {
   columnIds: ColumnId[];
 };
 
 const Columns = ({ columnIds }: Props) => {
-  const [isInteractiveElementsDisabled, setIsInteractiveElementsDisabled] = useState(true);
-
   return (
     <>
       {columnIds.map((columnId: string, index) => (
-        <Draggable
-          key={columnId}
-          draggableId={columnId}
-          index={index}
-          /* disableInteractiveElementBlocking={isInteractiveElementsDisabled} */
-        >
-          {(provided, snapshot) => {
+        <Draggable key={columnId} draggableId={columnId} index={index}>
+          {(provided) => {
             return (
               <li
                 ref={provided.innerRef}
@@ -32,7 +23,6 @@ const Columns = ({ columnIds }: Props) => {
             );
           }}
         </Draggable>
-        /* <Column key={columnId} columnId={columnId} /> */
       ))}
     </>
   );

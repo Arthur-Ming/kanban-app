@@ -39,9 +39,27 @@ const columnsSlice = createSlice({
         (taskId) => taskId !== task.id
       );
     },
+    updateTasksOrder(
+      state,
+      action: PayloadAction<{
+        newOrderedTasks: string[];
+        columnId: string;
+      }>
+    ) {
+      const { payload } = action;
+
+      state.entities[payload.columnId].tasks = payload.newOrderedTasks;
+    },
   },
 });
 
-export const { addColumns, addColumn, deleteColumn, updateColumn, addRefToTask, deleteRefToTask } =
-  columnsSlice.actions;
+export const {
+  addColumns,
+  addColumn,
+  deleteColumn,
+  updateColumn,
+  addRefToTask,
+  deleteRefToTask,
+  updateTasksOrder,
+} = columnsSlice.actions;
 export default columnsSlice.reducer;
