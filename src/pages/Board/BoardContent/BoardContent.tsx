@@ -56,16 +56,34 @@ const BoardContent = ({ board }: Props) => {
     if (type === 'tasks') {
       tasksOrderChange({
         boardId: board.id,
-        from: source.droppableId,
-        to: destination.droppableId,
-        body: { sourceIndex: source.index, destinationIndex: destination.index, draggableId },
+        columnId: source.droppableId,
+        body: {
+          source: {
+            index: source.index,
+          },
+          destination: {
+            index: destination.index,
+            columnId: destination.droppableId,
+          },
+          taskId: draggableId,
+        },
       });
     }
 
     if (type === 'columns') {
-      columnsOrderChange({
+      /*   columnsOrderChange({
         board,
         body: { sourceIndex: source.index, destinationIndex: destination.index, draggableId },
+      }); */
+      columnsOrderChange({
+        board,
+        body: {
+          source: {
+            index: source.index,
+          },
+          destination: { index: destination.index },
+          columnId: draggableId,
+        },
       });
     }
   };
@@ -86,13 +104,15 @@ const BoardContent = ({ board }: Props) => {
             )}
           </Droppable>
         </DragDropContext>
-        <Routes>
-          {board && <Route path="columns/create" element={<ColumnCreation board={board} />} />}
-          <Route
-            path="/*"
-            element={<CreationTicket label="создать колонку" path="columns/create" />}
-          />
-        </Routes>
+        <div className={styles.wrap}>
+          <Routes>
+            {board && <Route path="columns/create" element={<ColumnCreation board={board} />} />}
+            <Route
+              path="/*"
+              element={<CreationTicket label="создать колонку" path="columns/create" />}
+            />
+          </Routes>
+        </div>
       </div>
     </div>
   );

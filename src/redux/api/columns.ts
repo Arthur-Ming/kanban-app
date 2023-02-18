@@ -34,52 +34,54 @@ const columnsApi = api.injectEndpoints({
       },
     }),
     tasksOrder: builder.mutation({
-      query: ({ boardId, from, to, body }) => apiParams.put(apiRoutes.boardById(boardId), body),
-      async onQueryStarted({ boardId, from, to, body }, { dispatch, getState, queryFulfilled }) {
+      query: ({ boardId, columnId, body }) =>
+        apiParams.put(apiRoutes.columnById(boardId, columnId) + '/tasks', body),
+      async onQueryStarted({ boardId, columnId, body }, { dispatch, getState, queryFulfilled }) {
         const state = <RootState>getState();
-
-        if (from === to) {
-          const column = columnByIdSelector(state, { columnId: from });
+        const { source, destination, taskId } = body;
+        if (columnId === destination.columnId) {
+          const column = columnByIdSelector(state, { columnId });
 
           const newTasks = [...column.tasks];
-          newTasks.splice(body.sourceIndex, 1);
-          newTasks.splice(body.destinationIndex, 0, body.draggableId);
+          newTasks.splice(source.index, 1);
+          newTasks.splice(destination.index, 0, taskId);
 
           dispatch(
             updateTasksOrder({
-              columnId: from,
+              columnId,
               newOrderedTasks: newTasks,
             })
           );
         }
-        if (from !== to) {
-          const columnFrom = columnByIdSelector(state, { columnId: from });
-          const columnTo = columnByIdSelector(state, { columnId: to });
-          const { draggableId } = body;
-          const draggableTask = taskByIdSelector(state, { taskId: draggableId });
+        if (columnId !== destination.columnId) {
+          const columnFrom = columnByIdSelector(state, { columnId });
+          const columnTo = columnByIdSelector(state, { columnId: destination.columnId });
+
+          const draggableTask = taskByIdSelector(state, { taskId });
 
           const newTasksFrom = [...columnFrom.tasks];
-          newTasksFrom.splice(body.sourceIndex, 1);
+          newTasksFrom.splice(source.index, 1);
 
           const newTasksTo = [...columnTo.tasks];
-          newTasksTo.splice(body.destinationIndex, 0, body.draggableId);
+          newTasksTo.splice(destination.index, 0, taskId);
 
           dispatch(
             updateTasksOrder({
-              columnId: from,
+              columnId,
               newOrderedTasks: newTasksFrom,
             })
           );
           dispatch(
             updateTasksOrder({
-              columnId: to,
+              columnId: destination.columnId,
               newOrderedTasks: newTasksTo,
             })
           );
-          dispatch(updateTask({ ...draggableTask, columnId: to }));
+          dispatch(updateTask({ ...draggableTask, columnId: destination.columnId }));
         }
 
-        await queryFulfilled;
+        const { data } = await queryFulfilled;
+        console.log(data);
       },
     }),
   }),

@@ -64,11 +64,11 @@ const boardsApi = api.injectEndpoints({
       },
     }),
     columnsOrder: builder.mutation({
-      query: ({ board, body }) => apiParams.put(apiRoutes.boardById(board.id), body),
+      query: ({ board, body }) => apiParams.put(apiRoutes.boardById(board.id) + '/columns', body),
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
         const newColumns = [...board.columns];
-        newColumns.splice(body.sourceIndex, 1);
-        newColumns.splice(body.destinationIndex, 0, body.draggableId);
+        newColumns.splice(body.source.index, 1);
+        newColumns.splice(body.destination.index, 0, body.columnId);
 
         dispatch(
           updateColumnsOrder({
@@ -77,7 +77,8 @@ const boardsApi = api.injectEndpoints({
           })
         );
 
-        await queryFulfilled;
+        const { data } = await queryFulfilled;
+        console.log(data);
       },
     }),
   }),
