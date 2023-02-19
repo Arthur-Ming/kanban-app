@@ -1,8 +1,9 @@
-import s from './style.module.scss';
+import styles from './index.module.scss';
 import { useLanguage } from 'hooks/useLanguage';
 import NotFound from 'pages/NotFound';
 import Loader from 'components/Loader';
 import BoardTickets from '../Boards/BoardTickets';
+import { ReactComponent as Hero } from './hero.svg';
 
 interface ILANG {
   [key: string]: string;
@@ -20,14 +21,17 @@ const TEXT_MAIN_PAGE: Readonly<ITEXT> = {
 };
 
 const MainPage = () => {
-  const lang = useLanguage();
-
   return (
-    <div>Main Page</div>
-    /* <div className={s.page}>
-      <h2 className={s.title}>{TEXT_MAIN_PAGE.title[lang]}</h2>
-      <BoardsList />
-    </div> */
+    <main className={styles.box}>
+      <div>
+        <h2>Kanban board for teams to organize their work</h2>
+        <p>
+          Collaborate, manage projects, and reach new productivity peaks. Accomplish it all with RS
+          Project Management App
+        </p>
+      </div>
+      <Hero className={styles.hero} />
+    </main>
   );
 };
 

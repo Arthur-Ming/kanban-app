@@ -10,9 +10,11 @@ import BoardCreation from 'pages/Boards/BoardCreation';
 import Register from 'pages/Register';
 import Login from 'pages/Login';
 import BoardUpdate from 'pages/Board/BoardContent/BoardUpdate';
+import Main from 'pages/Main';
 
 const AppRoutes = () => (
   <Routes>
+    <Route index element={<Main />} />
     <Route path={'boards/*'} element={<Boards />}>
       <Route path="create" element={<BoardCreation />} />
     </Route>

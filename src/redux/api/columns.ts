@@ -35,7 +35,7 @@ const columnsApi = api.injectEndpoints({
     }),
     tasksOrder: builder.mutation({
       query: ({ boardId, columnId, body }) =>
-        apiParams.put(apiRoutes.columnById(boardId, columnId) + '/tasks', body),
+        apiParams.put(apiRoutes.columnById(boardId, columnId) + '/tasks/order', body),
       async onQueryStarted({ boardId, columnId, body }, { dispatch, getState, queryFulfilled }) {
         const state = <RootState>getState();
         const { source, destination, taskId } = body;
@@ -79,9 +79,12 @@ const columnsApi = api.injectEndpoints({
           );
           dispatch(updateTask({ ...draggableTask, columnId: destination.columnId }));
         }
-
-        const { data } = await queryFulfilled;
-        console.log(data);
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
   }),

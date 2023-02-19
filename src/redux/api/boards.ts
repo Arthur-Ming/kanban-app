@@ -64,7 +64,8 @@ const boardsApi = api.injectEndpoints({
       },
     }),
     columnsOrder: builder.mutation({
-      query: ({ board, body }) => apiParams.put(apiRoutes.boardById(board.id) + '/columns', body),
+      query: ({ board, body }) =>
+        apiParams.put(apiRoutes.boardById(board.id) + '/columns/order', body),
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
         const newColumns = [...board.columns];
         newColumns.splice(body.source.index, 1);

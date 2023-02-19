@@ -1,0 +1,11 @@
+.box {
+  display: flex;
+  column-gap: 40px;
+  align-items: center;
+  background-color: var(--task-content-background);
+  color: var(--text-color-dark);
+}
+.hero {
+  flex: 1 1 60%;
+  height: 90vh;
+}

@@ -24,9 +24,13 @@ const tasksApi = api.injectEndpoints({
     deleteTask: builder.mutation({
       query: (task) => apiParams.delete(apiRoutes.tasksById(task.boardId, task.columnId, task.id)),
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
-        await queryFulfilled;
-        dispatch(deleteRefToTask(task));
-        dispatch(deleteTask(task));
+        try {
+          await queryFulfilled;
+          dispatch(deleteRefToTask(task));
+          dispatch(deleteTask(task));
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
   }),
