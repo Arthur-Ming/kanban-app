@@ -9,16 +9,14 @@ type OwnProps = {
 
 type Props = OwnProps;
 
-const BoardTicket = ({ board }: Props) => {
-  return (
-    <div className={styles.box}>
-      <Link className={styles.link} to={board.id}>
-        <span className={styles.title}>{board.title}</span>
-        <span className={styles.description}>{board.description}</span>
-      </Link>
-      <BoardRemoval board={board} />
-    </div>
-  );
-};
+const BoardTicket = ({ board }: Props) => (
+  <div className={styles.box}>
+    <Link className={styles.link} to={board.id}>
+      <span className={styles.title}>{board.title}</span>
+      <span className={styles.description}>{board.description}</span>
+    </Link>
+    <BoardRemoval board={board} />
+  </div>
+);
 
 export default BoardTicket;

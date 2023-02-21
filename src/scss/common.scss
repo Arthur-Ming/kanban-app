@@ -8,6 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #212429;
   color: var(--text-color-white);
+  background-color: var(--main-color);
 }
 
 *,
@@ -26,39 +27,20 @@ button {
   text-decoration: none;
   outline: none;
 }
+
 li {
   list-style: none;
 }
 .wrapper {
   position: relative;
-  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   color: var(--text-color-white);
   background-color: var(--main-color);
 }
-.wrapper__box {
-  width: 100%;
+.wrapper-box {
+  max-width: 1800px;
   margin: 0 auto;
-}
-
-.dragging-element {
-  position: fixed;
-  max-width: 100%;
-  cursor: grabbing;
-  border: 1px solid blue;
-  margin: 0;
-  z-index: 10000;
-}
-
-.sortable-list__placeholder {
-  border: 1px solid blue;
-  margin: 3px 0;
-  border-radius: 4px;
-  list-style: none;
-}
-
-.hide {
-  display: none;
+  padding: 0px 40px;
 }

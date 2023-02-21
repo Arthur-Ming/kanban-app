@@ -8,8 +8,8 @@ import { RootState } from 'redux/reducer';
 import { columnByIdSelector } from 'redux/selectors/columns';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
-import ColumnRemoval from './ColumnRemoval';
 import { Droppable } from 'react-beautiful-dnd';
+import cl from 'classnames';
 
 export const DragItemsType = {
   TASKS: 'tasks',
@@ -30,12 +30,12 @@ const Column = ({ column }: Props) => {
   if (!column) return <div>No data</div>;
 
   return (
-    <div className={styles.box}>
-      <div className={styles.header}>
-        <ColumnHeader column={column} />
-        <ColumnRemoval column={column} />
-      </div>
-
+    <div
+      className={cl(styles.box, {
+        [styles.box_nolist]: !column.tasks.length,
+      })}
+    >
+      <ColumnHeader column={column} />
       <Droppable droppableId={column.id} type={DragItemsType.TASKS}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>

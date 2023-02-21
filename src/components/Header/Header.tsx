@@ -3,8 +3,10 @@ import styles from './index.module.scss';
 
 const Header = () => {
   return (
-    <header className={styles.box}>
-      <AuthLink />
+    <header className={styles.root}>
+      <div className={styles.box}>
+        <AuthLink />
+      </div>
     </header>
   );
 };

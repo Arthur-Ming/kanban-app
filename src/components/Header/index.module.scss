@@ -1,3 +1,8 @@
+@import '/src/index.scss';
+.root {
+}
 .box {
-  padding: 20px 40px;
+  @extend .wrapper-box;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }

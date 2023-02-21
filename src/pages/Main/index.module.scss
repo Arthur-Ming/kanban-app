@@ -1,11 +1,30 @@
+@import '/src/index.scss';
+
+.root {
+  background-color: var(--task-content-background);
+  color: var(--text-color-dark);
+}
+
 .box {
+  @extend .wrapper-box;
   display: flex;
   column-gap: 40px;
   align-items: center;
-  background-color: var(--task-content-background);
-  color: var(--text-color-dark);
 }
 .hero {
   flex: 1 1 60%;
   height: 90vh;
+}
+.text {
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  font-size: 48px;
+  line-height: 60px;
+  margin: 0;
+}
+.subtitle {
+  font-size: 20px;
+  line-height: 24px;
 }

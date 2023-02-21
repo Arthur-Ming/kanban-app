@@ -4,28 +4,19 @@
   border-radius: 3px;
   display: flex;
   flex-direction: column;
-  max-height: 100%;
-  position: relative;
   row-gap: 15px;
   width: 272px;
-  left: auto;
-  top: auto;
 }
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 40px;
+.box_nolist {
+  row-gap: 0px;
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  max-height: 350px;
-  position: relative;
+  row-gap: 8px;
+  min-height: 8px;
   padding: 0;
-  width: 100%;
-  min-height: 20px;
   overflow: auto;
   text-overflow: ellipsis;
   white-space: nowrap;

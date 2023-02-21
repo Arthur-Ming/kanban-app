@@ -8,7 +8,7 @@ interface Props {
   boards: IBoard[];
 }
 
-const BoardsList = ({ boards }: Props) => (
+const BoardTickets = ({ boards }: Props) => (
   <>
     {boards.map((board) => (
       <BoardTicket board={board} key={board.id} />
@@ -20,4 +20,4 @@ const mapStateToProps = (state: RootState) => ({
   boards: boardsListSelector(state),
 });
 
-export default connect(mapStateToProps)(BoardsList);
+export default connect(mapStateToProps)(BoardTickets);

@@ -1,20 +1,15 @@
-.task {
-  display: block;
+.box {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fff;
+  background-color: #fff; /* !!!!*/
   border-radius: 3px;
   box-shadow: 0 1px 0 #091e4240;
   cursor: pointer;
-  margin-bottom: 8px;
-  position: relative;
-  z-index: 0;
   color: var(--text-color-gray);
   transition: background-color 0.3s ease 0s;
-  cursor: pointer;
   &:hover {
-    background-color: #f4f5f7;
+    background-color: #1c2230;
     .link {
       color: var(--text-color-dark);
     }

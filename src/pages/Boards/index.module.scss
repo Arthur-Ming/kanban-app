@@ -1,7 +1,14 @@
+@import '/src/index.scss';
+
+.root {
+}
 .box {
+  @extend .wrapper-box;
   display: flex;
+  flex-wrap: wrap;
   gap: 30px;
 }
-.create {
+
+.creation {
   width: 250px;
 }

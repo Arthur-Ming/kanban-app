@@ -1,8 +1,4 @@
 import styles from './index.module.scss';
-import { useLanguage } from 'hooks/useLanguage';
-import NotFound from 'pages/NotFound';
-import Loader from 'components/Loader';
-import BoardTickets from '../Boards/BoardTickets';
 import { ReactComponent as Hero } from './hero.svg';
 
 interface ILANG {
@@ -20,19 +16,19 @@ const TEXT_MAIN_PAGE: Readonly<ITEXT> = {
   },
 };
 
-const MainPage = () => {
-  return (
-    <main className={styles.box}>
-      <div>
-        <h2>Kanban board for teams to organize their work</h2>
-        <p>
+const MainPage = () => (
+  <main className={styles.root}>
+    <section className={styles.box}>
+      <div className={styles.text}>
+        <h1 className={styles.title}>Kanban board for teams to organize their work</h1>
+        <p className={styles.subtitle}>
           Collaborate, manage projects, and reach new productivity peaks. Accomplish it all with RS
           Project Management App
         </p>
       </div>
       <Hero className={styles.hero} />
-    </main>
-  );
-};
+    </section>
+  </main>
+);
 
 export default MainPage;

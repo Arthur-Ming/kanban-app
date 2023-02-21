@@ -4,15 +4,11 @@ import { IBoard } from 'interfaces';
 import ColumnCreation from '../ColumnCreation';
 import { connect } from 'react-redux';
 import { RootState } from 'redux/reducer';
-
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
-
 import BoardHeader from './BoardHeader';
 import { boardByIdSelector } from 'redux/selectors/boards';
-
 import { Droppable, DragDropContext, DropResult } from 'react-beautiful-dnd';
-
 import { useColumnsOrderMutation } from 'redux/api/boards';
 import { useTasksOrderMutation } from 'redux/api/columns';
 
@@ -71,10 +67,6 @@ const BoardContent = ({ board }: Props) => {
     }
 
     if (type === 'columns') {
-      /*   columnsOrderChange({
-        board,
-        body: { sourceIndex: source.index, destinationIndex: destination.index, draggableId },
-      }); */
       columnsOrderChange({
         board,
         body: {
@@ -89,9 +81,10 @@ const BoardContent = ({ board }: Props) => {
   };
   if (!board) return <div>Not found</div>;
   return (
-    <div className={styles.container}>
-      {board && <BoardHeader board={board} />}
-      <div className={styles.columnsh}>
+    <div className={styles.box}>
+      <BoardHeader board={board} />
+      <div className={styles.body}>
+        {/*Draggable columns*/}
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId={board.id} direction="horizontal" type={DragItemsType.COLUMNS}>
             {(provided) => (
@@ -104,9 +97,9 @@ const BoardContent = ({ board }: Props) => {
             )}
           </Droppable>
         </DragDropContext>
-        <div className={styles.wrap}>
+        <div className={styles.creation}>
           <Routes>
-            {board && <Route path="columns/create" element={<ColumnCreation board={board} />} />}
+            <Route path="columns/create" element={<ColumnCreation board={board} />} />
             <Route
               path="/*"
               element={<CreationTicket label="создать колонку" path="columns/create" />}

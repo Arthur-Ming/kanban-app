@@ -12,15 +12,17 @@ const Boards = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <div className={styles.box}>
-      <BoardTickets />
-      <div className={styles.create}>
-        <Routes>
-          <Route path="/*" element={<CreationTicket label="создать доску" path="create" />} />
-          <Route path="create" element={<BoardCreation />} />
-        </Routes>
+    <main className={styles.root}>
+      <div className={styles.box}>
+        <BoardTickets />
+        <div className={styles.creation}>
+          <Routes>
+            <Route path="/*" element={<CreationTicket label="создать доску" path="create" />} />
+            <Route path="create" element={<BoardCreation />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -1,5 +1,4 @@
 import TaskTicket from './TaskTicket';
-import styles from './index.module.scss';
 import { TaskId } from 'interfaces';
 import { Draggable } from 'react-beautiful-dnd';
 
@@ -12,9 +11,9 @@ const TaskTicketList = ({ tasks }: Props) => (
     {tasks.map((taskId: string, index) => (
       <Draggable key={taskId} draggableId={taskId} index={index}>
         {(provided) => (
-          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+          <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <TaskTicket key={taskId} taskId={taskId} />
-          </div>
+          </li>
         )}
       </Draggable>
     ))}
