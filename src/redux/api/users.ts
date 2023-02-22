@@ -3,10 +3,17 @@ import { api, apiParams, apiRoutes } from './api';
 const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
     loginUser: builder.mutation({
-      query: (userRegisterBody) => apiParams.post(apiRoutes.userLogin(), userRegisterBody),
+      query: (userRegisterBody) => {
+        console.log(userRegisterBody);
+        return apiParams.post(apiRoutes.userLogin(), userRegisterBody);
+      },
       async onQueryStarted(_, { queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        console.log(data);
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
     registerUser: builder.mutation({
