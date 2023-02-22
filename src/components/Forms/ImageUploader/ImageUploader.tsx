@@ -1,14 +1,6 @@
 import styles from './index.module.scss';
-import {
-  FieldError,
-  FieldValues,
-  UseControllerProps,
-  useForm,
-  UseFormRegister,
-} from 'react-hook-form';
-
+import { useForm } from 'react-hook-form';
 import { ITask } from 'interfaces';
-import { apiRoutes } from 'redux/api/api';
 import { useUploadFileMutation } from 'redux/api/files';
 
 type Inputs = {
@@ -20,12 +12,7 @@ type Props = {
 };
 
 const ImageUploader = ({ task }: Props) => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register } = useForm<Inputs>();
 
   const [upload] = useUploadFileMutation();
 

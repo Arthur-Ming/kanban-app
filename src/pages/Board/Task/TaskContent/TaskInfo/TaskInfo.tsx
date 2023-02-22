@@ -45,10 +45,11 @@ const TaskInfo = ({ task }: Props) => {
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
           reset();
-          navigate(`/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task?.id}`);
+          navigate(`/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task.id}`);
         }
       }}
       onSubmit={handleSubmit(onSubmit)}
+      className={styles.box}
     >
       <div className={styles.titleBox}>
         <TitleIcon className={styles.icon} />
@@ -63,7 +64,6 @@ const TaskInfo = ({ task }: Props) => {
           />
         </TaskUpdateLink>
       </div>
-
       <div className={styles.descriptionBox}>
         <DescriptionIcon className={styles.icon} />
         <TaskUpdateLink
@@ -89,7 +89,7 @@ const TaskInfo = ({ task }: Props) => {
             element={
               <input
                 type="button"
-                className={styles.button}
+                className={styles.buttonSubmit}
                 value="Edit"
                 onClick={() => navigate(`update`)}
               />
