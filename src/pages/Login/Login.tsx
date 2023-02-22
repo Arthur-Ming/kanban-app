@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { IUserLoginBody, IUserRegisterBody } from 'interfaces';
+import { IUserLoginBody } from 'interfaces';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { addUser, loginUser } from 'redux/actions/users';
+import { loginUser } from 'redux/actions/users';
 import styles from './index.module.scss';
 
 type Inputs = IUserLoginBody;
