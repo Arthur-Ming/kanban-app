@@ -6,11 +6,12 @@ type Props = {
 };
 
 const ProtectedRoute = ({ children }: Props) => {
-  const token = Cookies.get('token') || null;
-
+  console.log('!!!');
+  /*  const token = Cookies.get('token') || null;
+  console.log('!!!');
   if (!token) {
     return <Navigate to="/signin" replace />;
-  }
+  } */
 
   return children ? children : <Outlet />;
 };

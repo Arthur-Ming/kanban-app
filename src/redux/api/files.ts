@@ -8,9 +8,13 @@ const filesApi = api.injectEndpoints({
       query: ({ task, file }) =>
         apiParams.fileUpload('http://localhost:8000' + `/tasks/${task.id}/files`, file),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(addRefToFile(data));
-        dispatch(addFile(data));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(addRefToFile(data));
+          dispatch(addFile(data));
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
     deleteFile: builder.mutation({

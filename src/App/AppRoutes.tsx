@@ -11,18 +11,21 @@ import Register from 'pages/Register';
 import Login from 'pages/Login';
 import BoardUpdate from 'pages/Board/BoardContent/BoardUpdate';
 import Main from 'pages/Main';
+import ProtectedRoute from './ProtectedRoute';
 
 const AppRoutes = () => (
   <Routes>
     <Route index element={<Main />} />
-    <Route path={'boards/*'} element={<Boards />}>
-      <Route path="create" element={<BoardCreation />} />
-    </Route>
-    <Route path={`${routes.boards.byId()}/*`} element={<Board />}>
-      <Route path="update" element={<BoardUpdate />} />
-      <Route path="columns/create" element={<ColumnCreation />} />
-      <Route path="columns/:columnId/tasks/create" element={<TaskCreation />} />
-      <Route path="columns/:columnId/tasks/:taskId/*" element={<Task />} />
+    <Route element={<ProtectedRoute />}>
+      <Route path={'boards/*'} element={<Boards />}>
+        <Route path="create" element={<BoardCreation />} />
+      </Route>
+      <Route path={`${routes.boards.byId()}/*`} element={<Board />}>
+        <Route path="update" element={<BoardUpdate />} />
+        <Route path="columns/create" element={<ColumnCreation />} />
+        <Route path="columns/:columnId/tasks/create" element={<TaskCreation />} />
+        <Route path="columns/:columnId/tasks/:taskId/*" element={<Task />} />
+      </Route>
     </Route>
     <Route path="register" element={<Register />} />
     <Route path="login" element={<Login />} />

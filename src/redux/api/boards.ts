@@ -14,8 +14,11 @@ import { addFiles } from 'redux/reducer/files';
 
 const boardsApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    /* getBoards */
     loadBoards: builder.query<IBoard[], null>({
-      query: () => apiRoutes.boards(),
+      query: () => {
+        return apiParams.get(apiRoutes.boards());
+      },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(addBoards(data));
@@ -25,7 +28,7 @@ const boardsApi = api.injectEndpoints({
       { files: IFile[]; tasks: ITask[]; columns: IColumn[]; board: IBoard },
       string
     >({
-      query: (boardId) => apiRoutes.boardById(boardId),
+      query: (boardId) => apiParams.get(apiRoutes.boardById(boardId)),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data: populatedBoard } = await queryFulfilled;
         const { tasks, columns, board, files } = populatedBoard;

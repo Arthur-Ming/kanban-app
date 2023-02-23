@@ -7,9 +7,11 @@ import CreationTicket from 'components/CreationTicket';
 import { useLoadBoardsQuery } from 'redux/api/boards';
 
 const Boards = () => {
-  const { isLoading } = useLoadBoardsQuery(null);
+  const r = useLoadBoardsQuery(null);
 
-  if (isLoading) return <Loader />;
+  console.log(r);
+
+  if (r.isLoading) return <Loader />;
 
   return (
     <main className={styles.root}>
