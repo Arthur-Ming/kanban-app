@@ -1,6 +1,7 @@
-import { api, apiParams, apiRoutes } from './api';
+import { api, httpClient, apiRoutes } from './api';
 import Cookies from 'js-cookie';
 import { IUser } from 'interfaces';
+import { getToken, getUserId } from 'utils/cookies';
 
 class AppError extends Error {
   status: number | undefined;
@@ -20,28 +21,17 @@ const tokenExpire = 0.5;
 
 const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    userById: builder.query<IUser, string | null>({
-      query: (userId) => {
-        console.log(userId);
-
-        if (!userId) return apiRoutes.userById('');
-        console.log(apiRoutes.userById(userId));
-        return apiRoutes.userById(userId);
+    userById: builder.query<IUser, null>({
+      query: () => {
+        return httpClient.get({ url: apiRoutes.userById(getUserId()), token: getToken() });
       },
       async onQueryStarted(_, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          console.log(data);
-        } catch (error) {
-          console.log(error);
-        }
+        const { data } = await queryFulfilled;
       },
     }),
     loginUser: builder.mutation({
-      query: (userRegisterBody) => {
-        console.log(userRegisterBody);
-
-        return apiParams.post(apiRoutes.userLogin(), userRegisterBody);
+      query: (body) => {
+        return httpClient.post({ url: apiRoutes.userLogin(), body });
       },
       async onQueryStarted(_, { queryFulfilled }) {
         try {
@@ -54,12 +44,12 @@ const usersApi = api.injectEndpoints({
             expires: tokenExpire,
           });
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       },
     }),
     registerUser: builder.mutation({
-      query: (userRegisterBody) => apiParams.post(apiRoutes.userRegister(), userRegisterBody),
+      query: (body) => httpClient.post({ url: apiRoutes.userRegister(), body }),
       async onQueryStarted(_, { queryFulfilled }) {
         const { data } = await queryFulfilled;
         console.log(data);

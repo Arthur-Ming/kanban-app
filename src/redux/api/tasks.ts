@@ -1,11 +1,18 @@
-import { api, apiParams, apiRoutes } from './api';
+import { api, httpClient, apiRoutes } from './api';
 import { addRefToTask, deleteRefToTask } from 'redux/reducer/columns';
 import { addTask, updateTask, deleteTask } from 'redux/reducer/tasks';
+import { getToken } from 'utils/cookies';
 
 const tasksApi = api.injectEndpoints({
   endpoints: (builder) => ({
     createTask: builder.mutation({
-      query: ({ column, body }) => apiParams.post(apiRoutes.tasks(column.boardId, column.id), body),
+      query: ({ column, body }) => {
+        return httpClient.post({
+          url: apiRoutes.tasks(column.boardId, column.id),
+          body,
+          token: getToken(),
+        });
+      },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(addRefToTask(data));
@@ -13,16 +20,25 @@ const tasksApi = api.injectEndpoints({
       },
     }),
     updateTask: builder.mutation({
-      query: ({ task, body }) =>
-        apiParams.put(apiRoutes.tasksById(task.boardId, task.columnId, task.id), body),
-
+      query: ({ task, body }) => {
+        return httpClient.put({
+          url: apiRoutes.tasksById(task.boardId, task.columnId, task.id),
+          body,
+          token: getToken(),
+        });
+      },
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(updateTask(data));
       },
     }),
     deleteTask: builder.mutation({
-      query: (task) => apiParams.delete(apiRoutes.tasksById(task.boardId, task.columnId, task.id)),
+      query: (task) => {
+        return httpClient.delete({
+          url: apiRoutes.tasksById(task.boardId, task.columnId, task.id),
+          token: getToken(),
+        });
+      },
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;

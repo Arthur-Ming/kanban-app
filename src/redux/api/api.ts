@@ -25,65 +25,31 @@ export const apiRoutes = {
   userLogin: () => `${apiRoutes.users()}/login`,
 };
 
-/*boardsApi = {
-   fetchBoards() {
-    return httpClient.get({
-           url: apiRoutes.boardById(boardId),
-           token: getToken()
-          });
-    },
-   fetchBoardById,
-   createBoard,
-   deleteBoard,
-   updateBoard
-}
-*/
 // ENV
-/*
-
- boards: () => apiParams.get({
-  url: `${BASE_URL}/${resource.boards}`
- }) ,
- */
 
 /*
 httpClient.get({
   url: apiRoutes.boardById(boardId),
   token: getToken()
 })
-
- get: ({
-  url,
-  token,
-  type
-}) => ({
-    url,
-    method: 'GET',
-    headers: getHeaders({
-       token,
-       type
-    }),
-  }),
 */
 
-/*
-{
-  url,
-  body,
-  type,
-  withToken
-}
-
-*/
-
-const getHeaders = () => {
+const getHeaders = (token?: string) => {
   const headers = new Headers();
-  headers.append('Authorization', `Bearer ${Cookies.get('token')}`);
-  headers.append('Content-Type', 'image/png');
+  if (token) headers.append('Authorization', `Bearer ${token}`);
+  headers.append('Content-Type', 'application/json;charset=utf-8');
   return headers;
 };
 
-export const apiParams = {
+interface IHttpClientQuery {
+  url: string;
+  token?: string;
+}
+interface IHttpClientMutation<T> extends IHttpClientQuery {
+  body?: T;
+}
+
+export const httpClient = {
   fileUpload: <T>(url: string, body: T) => ({
     url,
     method: 'POST',
@@ -91,26 +57,27 @@ export const apiParams = {
     body,
   }),
 
-  get: (url: string) => ({
+  get: ({ url, token }: IHttpClientQuery) => ({
     url,
     method: 'GET',
-    headers: getHeaders(),
+    headers: getHeaders(token),
   }),
-  post: <T>(url: string, body: T) => ({
+  post: <T>({ url, body, token }: IHttpClientMutation<T>) => ({
     url,
     method: 'POST',
-    headers: getHeaders(),
+    headers: getHeaders(token),
     body,
   }),
-  put: <T>(url: string, body: T) => ({
+
+  put: <T>({ url, body, token }: IHttpClientMutation<T>) => ({
     url,
     method: 'PUT',
-    headers: getHeaders(),
+    headers: getHeaders(token),
     body,
   }),
-  delete: (url: string) => ({
+  delete: ({ url, token }: IHttpClientMutation<null>) => ({
     url,
-    headers: getHeaders(),
+    headers: getHeaders(token),
     method: 'DELETE',
   }),
 };

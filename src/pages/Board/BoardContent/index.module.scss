@@ -4,6 +4,7 @@
   @extend .wrapper-box;
   display: flex;
   flex-direction: column;
+  width: 100%;
   row-gap: 20px;
 }
 
@@ -20,6 +21,7 @@
 
 .body {
   display: flex;
+  justify-content: flex-start;
   column-gap: 20px;
   width: fit-content;
 }

@@ -1,4 +1,4 @@
-import { api, apiParams, apiRoutes } from './api';
+import { api, httpClient, apiRoutes } from './api';
 import {
   addBoard,
   addBoards,
@@ -11,13 +11,13 @@ import { addTasks } from 'redux/reducer/tasks';
 import { separateBoard } from 'utils/separateBoard';
 import { IBoard, IColumn, ICreateBoardBody, IFile, IPopulatedBoard, ITask } from '../../interfaces';
 import { addFiles } from 'redux/reducer/files';
+import { getToken } from 'utils/cookies';
 
 const boardsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    /* getBoards */
     loadBoards: builder.query<IBoard[], null>({
       query: () => {
-        return apiParams.get(apiRoutes.boards());
+        return httpClient.get({ url: apiRoutes.boards(), token: getToken() });
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
@@ -28,7 +28,9 @@ const boardsApi = api.injectEndpoints({
       { files: IFile[]; tasks: ITask[]; columns: IColumn[]; board: IBoard },
       string
     >({
-      query: (boardId) => apiParams.get(apiRoutes.boardById(boardId)),
+      query: (boardId) => {
+        return httpClient.get({ url: apiRoutes.boardById(boardId), token: getToken() });
+      },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data: populatedBoard } = await queryFulfilled;
         const { tasks, columns, board, files } = populatedBoard;
@@ -41,14 +43,18 @@ const boardsApi = api.injectEndpoints({
       transformResponse: (response: IPopulatedBoard) => separateBoard(response),
     }),
     createBoard: builder.mutation<IBoard, ICreateBoardBody>({
-      query: (body) => apiParams.post(apiRoutes.boards(), body),
+      query: (body) => {
+        return httpClient.post({ url: apiRoutes.boards(), body, token: getToken() });
+      },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(addBoard(data));
       },
     }),
     updateBoard: builder.mutation({
-      query: ({ board, body }) => apiParams.put(apiRoutes.boardById(board.id), body),
+      query: ({ board, body }) => {
+        return httpClient.put({ url: apiRoutes.boardById(board.id), body, token: getToken() });
+      },
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
         dispatch(updateBoard(Object.assign({}, board, body)));
         try {
@@ -60,15 +66,22 @@ const boardsApi = api.injectEndpoints({
       },
     }),
     deleteBoard: builder.mutation({
-      query: (board) => apiParams.delete(apiRoutes.boardById(board.id)),
+      query: (board) => {
+        return httpClient.delete({ url: apiRoutes.boardById(board.id), token: getToken() });
+      },
       async onQueryStarted(board, { dispatch, queryFulfilled }) {
         await queryFulfilled;
         dispatch(deleteBoard(board));
       },
     }),
     columnsOrder: builder.mutation({
-      query: ({ board, body }) =>
-        apiParams.put(apiRoutes.boardById(board.id) + '/columns/order', body),
+      query: ({ board, body }) => {
+        return httpClient.put({
+          url: apiRoutes.boardById(board.id) + '/columns/order',
+          body,
+          token: getToken(),
+        });
+      },
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
         const newColumns = [...board.columns];
         newColumns.splice(body.source.index, 1);

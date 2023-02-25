@@ -1,22 +1,8 @@
-import Cookies from 'js-cookie';
-import { useEffect } from 'react';
-import { useLazyUserByIdQuery } from 'redux/api/users';
+import { useUserByIdQuery } from 'redux/api/users';
 
 const useAuth = () => {
-  const [query, { isLoading, data }] = useLazyUserByIdQuery();
-  const token = Cookies.get('token') || null;
-  const userId = Cookies.get('userId') || null;
-  console.log(data);
-  console.log(isLoading);
-  useEffect(() => {
-    if (token && userId) {
-      query(userId, false);
-    }
-  }, [query, token, userId]);
-
-  if (token && userId) {
-    /*  query(userId); */
-  }
+  const { data, isError, error } = useUserByIdQuery(null);
+  if (isError) console.error(error);
 
   return false;
 };
