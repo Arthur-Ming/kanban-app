@@ -31,11 +31,12 @@ const usersApi = api.injectEndpoints({
     }),
     loginUser: builder.mutation({
       query: (body) => {
-        return httpClient.post({ url: apiRoutes.userLogin(), body });
+        return httpClient.post({ url: apiRoutes.userLogin(), body: JSON.stringify(body) });
       },
       async onQueryStarted(_, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
+
           const { token, name, id } = data;
           Cookies.set('token', token, {
             expires: tokenExpire,
@@ -44,6 +45,7 @@ const usersApi = api.injectEndpoints({
             expires: tokenExpire,
           });
         } catch (error) {
+          console.log('!!!');
           console.error(error);
         }
       },

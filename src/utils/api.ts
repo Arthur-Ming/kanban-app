@@ -22,11 +22,12 @@ export const apiRoutes = {
   userRegister: () => `${apiRoutes.users()}/register`,
   userLogin: () => `${apiRoutes.users()}/login`,
 };
-
+/* 
 export const api = {
-  get: (route: string) => fetchJson(route),
+  get: (route: string) => fetchJson({ url: route }),
   post: async <T>(route: string, body: T) =>
-    await fetchJson(route, {
+    await fetchJson({
+      url: route,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -34,7 +35,8 @@ export const api = {
       body: JSON.stringify(body),
     }),
   put: async <T>(route: string, body: T) =>
-    await fetchJson(route, {
+    await fetchJson({
+      url: route,
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -42,7 +44,9 @@ export const api = {
       body: JSON.stringify(body),
     }),
   delete: (route: string) =>
-    fetchJson(route, {
+    fetchJson({
+      url: route,
       method: 'DELETE',
     }),
 };
+ */

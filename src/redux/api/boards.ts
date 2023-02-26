@@ -1,4 +1,4 @@
-import { api, httpClient, apiRoutes } from './api';
+import { api, httpClient, apiRoutes, apiRoutesAlt } from './api';
 import {
   addBoard,
   addBoards,
@@ -13,15 +13,45 @@ import { IBoard, IColumn, ICreateBoardBody, IFile, IPopulatedBoard, ITask } from
 import { addFiles } from 'redux/reducer/files';
 import { getToken } from 'utils/cookies';
 
+export class FetchError extends Error {
+  status: number | undefined;
+
+  constructor(status?: number, message = '') {
+    super(message);
+    this.status = status;
+    console.log(this.message);
+  }
+}
+
 const boardsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     loadBoards: builder.query<IBoard[], null>({
       query: () => {
-        return httpClient.get({ url: apiRoutes.boards(), token: getToken() });
+        const { url, isProtected } = apiRoutesAlt.boards;
+        return httpClient.get({ url: url(), isProtected: false });
       },
+      /*   queryFn: async () => {
+        try {
+          const data = await httpClient.getAlt({ url: apiRoutes.boards(), token: getToken() });
+
+          return { data };
+         eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
+          return {
+            error: {
+              status: err.response?.status,
+              data: err.response?.data || err.message,
+            },
+          };
+        }
+      }, */
+
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(addBoards(data));
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+          if (data) dispatch(addBoards(data));
+        } catch (error) {}
       },
     }),
     loadBoardById: builder.query<
@@ -40,11 +70,15 @@ const boardsApi = api.injectEndpoints({
         dispatch(addBoard(board));
       },
 
-      transformResponse: (response: IPopulatedBoard) => separateBoard(response),
+      /*  transformResponse: (response: IPopulatedBoard) => separateBoard(response), */
     }),
     createBoard: builder.mutation<IBoard, ICreateBoardBody>({
       query: (body) => {
-        return httpClient.post({ url: apiRoutes.boards(), body, token: getToken() });
+        return httpClient.post({
+          url: apiRoutes.boards(),
+          body: JSON.stringify(body),
+          isProtected: false,
+        });
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;

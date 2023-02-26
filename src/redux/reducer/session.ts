@@ -1,18 +1,29 @@
-import { ISetSessionAction } from 'interfaces';
-import { SET_SESSION } from '../action-types';
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface ISession {
+  name: string;
+}
 
 export interface ISessionState {
-  isUserAuth: boolean;
+  loggedUser: ISession | null;
 }
 
 const initialState: ISessionState = {
-  isUserAuth: false,
+  loggedUser: null,
 };
 
-export default createReducer(initialState, (builder) => {
-  builder.addCase(SET_SESSION, (state, action) => {
-    const { isAuth } = <ISetSessionAction>action;
-    state.isUserAuth = isAuth;
-  });
+const sessionSlice = createSlice({
+  name: 'session',
+  initialState,
+  reducers: {
+    login(state, action: PayloadAction<ISession | null>) {
+      state.loggedUser = action.payload;
+    },
+    logout(state) {
+      state.loggedUser = null;
+    },
+  },
 });
+
+export const { logout } = sessionSlice.actions;
+export default sessionSlice.reducer;

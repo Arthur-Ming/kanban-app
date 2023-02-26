@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import boards from './boards';
 import columns from './columns';
 import tasks from './tasks';
-import users from './users';
 import session from './session';
 import { api } from '../api/api';
 import files from './files';
@@ -12,7 +11,6 @@ const rootReducer = combineReducers({
   columns,
   tasks,
   files,
-  users,
   session,
   [api.reducerPath]: api.reducer,
 });
