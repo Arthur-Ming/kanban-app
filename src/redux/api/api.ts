@@ -48,71 +48,60 @@ const getHeaders = (token?: string) => {
   return headers;
 };
 
-interface IHttpClientQuery {
+interface IHttpClientQuery<T> {
   url: string;
-  token?: string;
   isProtected?: boolean;
+  body?: T;
 }
-export interface IHttpClientMutation extends IHttpClientQuery {
-  body?: unknown;
+
+interface IRequest<T> extends IHttpClientQuery<T> {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
 }
+
 //quiryParams
 export const httpClient = {
-  fileUpload: <T>(url: string, body: T) => ({
+  fileUpload: <T>({ url, body }: IHttpClientQuery<T>): IRequest<T> => ({
     url,
     method: 'POST',
-    headers: getHeaders(),
     body,
   }),
 
-  get: ({ url, isProtected }: IHttpClientQuery) => ({
+  get: <T>({ url, isProtected }: IHttpClientQuery<T>): IRequest<T> => ({
     url,
     method: 'GET',
     isProtected,
   }),
-  post: <T>({ url, body, token }: IHttpClientMutation) => ({
+  post: <T>({ url, body }: IHttpClientQuery<T>): IRequest<T> => ({
     url,
     method: 'POST',
-    /*  headers: getHeaders(token), */
     body,
   }),
 
-  put: <T>({ url, body, token }: IHttpClientMutation) => ({
+  put: <T>({ url, body }: IHttpClientQuery<T>): IRequest<T> => ({
     url,
     method: 'PUT',
-    headers: getHeaders(token),
     body,
   }),
-  delete: ({ url, token }: IHttpClientMutation) => ({
+  delete: <T>({ url }: IHttpClientQuery<T>): IRequest<T> => ({
     url,
-    headers: getHeaders(token),
     method: 'DELETE',
   }),
 };
 
 const axiosBaseQuery =
   ({ baseUrl }: { baseUrl: string } = { baseUrl: '' }) =>
-  async <T>({ url, isProtected, ...rest }: IHttpClientMutation) => {
-    /*   const request = new Request('https://jsonplaceholder.typicode.com/posts', {
-      method: 'post',
-      body: JSON.stringify({
-        title: 'my post',
-        body: 'some content',
-        userId: 1,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    }); */
-
+  async <T>({ url, isProtected, method, body, ...rest }: IRequest<T>) => {
     try {
       let token;
       if (isProtected) token = getToken();
-      const result = await fetchJson(url, { headers: getHeaders(token), ...rest });
+      const result = await fetchJson<T>({
+        url,
+        requesBody: body,
+        config: { method, headers: getHeaders(token), ...rest },
+      });
       return { data: result };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.log(err);
       return {
         error: {
           status: err.response?.status,

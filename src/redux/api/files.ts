@@ -6,7 +6,10 @@ const filesApi = api.injectEndpoints({
   endpoints: (builder) => ({
     uploadFile: builder.mutation({
       query: ({ task, file }) =>
-        httpClient.fileUpload('http://localhost:8000' + `/tasks/${task.id}/files`, file),
+        httpClient.fileUpload({
+          url: 'http://localhost:8000' + `/tasks/${task.id}/files`,
+          body: file,
+        }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;

@@ -11,7 +11,7 @@ const columnsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     createColumn: builder.mutation({
       query: ({ board, body }) => {
-        return httpClient.post({ url: apiRoutes.columns(board.id), body, token: getToken() });
+        return httpClient.post({ url: apiRoutes.columns(board.id), body });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
@@ -24,7 +24,6 @@ const columnsApi = api.injectEndpoints({
         return httpClient.put({
           url: apiRoutes.columnById(column.boardId, column.id),
           body,
-          token: getToken(),
         });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
@@ -36,7 +35,6 @@ const columnsApi = api.injectEndpoints({
       query: (column) => {
         return httpClient.delete({
           url: apiRoutes.columnById(column.boardId, column.id),
-          token: getToken(),
         });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
@@ -49,7 +47,6 @@ const columnsApi = api.injectEndpoints({
       query: ({ boardId, columnId, body }) => {
         return httpClient.put({
           url: apiRoutes.columnById(boardId, columnId) + '/tasks/order',
-          token: getToken(),
           body,
         });
       },

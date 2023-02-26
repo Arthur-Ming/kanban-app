@@ -23,7 +23,7 @@ const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
     userById: builder.query<IUser, null>({
       query: () => {
-        return httpClient.get({ url: apiRoutes.userById(getUserId()), token: getToken() });
+        return httpClient.get({ url: apiRoutes.userById(getUserId()), isProtected: false });
       },
       async onQueryStarted(_, { queryFulfilled }) {
         const { data } = await queryFulfilled;
@@ -31,7 +31,7 @@ const usersApi = api.injectEndpoints({
     }),
     loginUser: builder.mutation({
       query: (body) => {
-        return httpClient.post({ url: apiRoutes.userLogin(), body: JSON.stringify(body) });
+        return httpClient.post({ url: apiRoutes.userLogin(), body });
       },
       async onQueryStarted(_, { queryFulfilled }) {
         try {

@@ -28,23 +28,8 @@ const boardsApi = api.injectEndpoints({
     loadBoards: builder.query<IBoard[], null>({
       query: () => {
         const { url, isProtected } = apiRoutesAlt.boards;
-        return httpClient.get({ url: url(), isProtected: false });
+        return httpClient.get({ url: url(), isProtected: true });
       },
-      /*   queryFn: async () => {
-        try {
-          const data = await httpClient.getAlt({ url: apiRoutes.boards(), token: getToken() });
-
-          return { data };
-         eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
-          return {
-            error: {
-              status: err.response?.status,
-              data: err.response?.data || err.message,
-            },
-          };
-        }
-      }, */
 
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
@@ -59,18 +44,22 @@ const boardsApi = api.injectEndpoints({
       string
     >({
       query: (boardId) => {
-        return httpClient.get({ url: apiRoutes.boardById(boardId), token: getToken() });
+        return httpClient.get({ url: apiRoutes.boardById(boardId), isProtected: true });
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data: populatedBoard } = await queryFulfilled;
-        const { tasks, columns, board, files } = populatedBoard;
-        dispatch(addFiles(files));
-        dispatch(addTasks(tasks));
-        dispatch(addColumns(columns));
-        dispatch(addBoard(board));
+        console.log(populatedBoard);
+        if (populatedBoard) {
+          const { tasks, columns, board, files } = populatedBoard;
+          console.log(tasks);
+          dispatch(addFiles(files));
+          dispatch(addTasks(tasks));
+          dispatch(addColumns(columns));
+          dispatch(addBoard(board));
+        }
       },
 
-      /*  transformResponse: (response: IPopulatedBoard) => separateBoard(response), */
+      transformResponse: (response: IPopulatedBoard) => separateBoard(response),
     }),
     createBoard: builder.mutation<IBoard, ICreateBoardBody>({
       query: (body) => {
@@ -87,7 +76,7 @@ const boardsApi = api.injectEndpoints({
     }),
     updateBoard: builder.mutation({
       query: ({ board, body }) => {
-        return httpClient.put({ url: apiRoutes.boardById(board.id), body, token: getToken() });
+        return httpClient.put({ url: apiRoutes.boardById(board.id), body });
       },
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
         dispatch(updateBoard(Object.assign({}, board, body)));
@@ -101,7 +90,7 @@ const boardsApi = api.injectEndpoints({
     }),
     deleteBoard: builder.mutation({
       query: (board) => {
-        return httpClient.delete({ url: apiRoutes.boardById(board.id), token: getToken() });
+        return httpClient.delete({ url: apiRoutes.boardById(board.id) });
       },
       async onQueryStarted(board, { dispatch, queryFulfilled }) {
         await queryFulfilled;
@@ -113,7 +102,6 @@ const boardsApi = api.injectEndpoints({
         return httpClient.put({
           url: apiRoutes.boardById(board.id) + '/columns/order',
           body,
-          token: getToken(),
         });
       },
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {

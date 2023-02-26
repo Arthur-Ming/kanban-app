@@ -7,9 +7,14 @@
 } */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function (url: string, params?: any) {
+interface IParams<T> {
+  url: string;
+  requesBody?: T;
+  config?: RequestInit;
+}
+export default async function <T>({ url, requesBody, config }: IParams<T>) {
   let response;
-  console.log(params);
+  const params = { body: JSON.stringify(requesBody), ...config };
   try {
     response = await fetch(url, params);
     console.log(response);

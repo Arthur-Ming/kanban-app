@@ -10,7 +10,6 @@ const tasksApi = api.injectEndpoints({
         return httpClient.post({
           url: apiRoutes.tasks(column.boardId, column.id),
           body,
-          token: getToken(),
         });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
@@ -24,7 +23,6 @@ const tasksApi = api.injectEndpoints({
         return httpClient.put({
           url: apiRoutes.tasksById(task.boardId, task.columnId, task.id),
           body,
-          token: getToken(),
         });
       },
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
@@ -36,7 +34,6 @@ const tasksApi = api.injectEndpoints({
       query: (task) => {
         return httpClient.delete({
           url: apiRoutes.tasksById(task.boardId, task.columnId, task.id),
-          token: getToken(),
         });
       },
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
