@@ -1,9 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-import Cookies from 'js-cookie';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import fetchJson from 'utils/fetch-json';
-import type { BaseQueryFn } from '@reduxjs/toolkit/query';
-
 import { getToken } from 'utils/cookies';
 
 const BASE_URL = 'http://localhost:8000';
@@ -14,31 +10,78 @@ const resource = {
   tasks: 'tasks',
   users: 'users',
 };
+interface IRoutes {
+  [endpoint: string]: {
+    getUrl: (...params: string[]) => string;
+    isProtected: boolean;
+  };
+}
 
-export const apiRoutesAlt = {
+export const boardRoutes: IRoutes = {
   boards: {
-    url: () => `${BASE_URL}/${resource.boards}`,
+    getUrl: () => `${BASE_URL}/${resource.boards}`,
     isProtected: true,
   },
   boardById: {
-    url: (boardId: string) => `${apiRoutes.boards()}/${boardId}`,
+    getUrl: (boardId = ':boardId') => `${boardRoutes.boards.getUrl()}/${boardId}`,
     isProtected: true,
   },
 };
 
-export const apiRoutes = {
-  boards: () => `${BASE_URL}/${resource.boards}`,
-  boardById: (boardId: string) => `${apiRoutes.boards()}/${boardId}`,
-  columns: (boardId: string) => `${apiRoutes.boardById(boardId)}/${resource.columns}`,
-  columnById: (boardId: string, columnId: string) => `${apiRoutes.columns(boardId)}/${columnId}`,
-  tasks: (boardId: string, columnId: string) =>
-    `${apiRoutes.columnById(boardId, columnId)}/${resource.tasks}`,
-  tasksById: (boardId: string, columnId: string, taskId: string) =>
-    `${apiRoutes.tasks(boardId, columnId)}/${taskId}`,
-  users: () => `${BASE_URL}/${resource.users}`,
-  userById: (userId: string) => `${BASE_URL}/${resource.users}/${userId}`,
-  userRegister: () => `${apiRoutes.users()}/register`,
-  userLogin: () => `${apiRoutes.users()}/login`,
+export const columnRoutes = {
+  columns: {
+    getUrl: (boardId = ':boardId') =>
+      `${boardRoutes.boardById.getUrl(boardId)}/${resource.columns}`,
+    isProtected: true,
+  },
+  columnById: {
+    getUrl: (boardId = ':boardId', columnId = ':columnId') =>
+      `${columnRoutes.columns.getUrl(boardId)}/${columnId}`,
+    isProtected: true,
+  },
+  order: {
+    getUrl: (boardId = ':boardId') =>
+      `${boardRoutes.boardById.getUrl(boardId)}/${resource.columns}/order`,
+    isProtected: true,
+  },
+};
+
+export const taskRoutes = {
+  tasks: {
+    getUrl: (boardId = ':boardId', columnId = ':columnId') =>
+      `${columnRoutes.columnById.getUrl(boardId, columnId)}/${resource.tasks}`,
+    isProtected: true,
+  },
+  tasksById: {
+    getUrl: (boardId = ':boardId', columnId = ':columnId', taskId = ':taskId') =>
+      `${taskRoutes.tasks.getUrl(boardId, columnId)}/${taskId}`,
+    isProtected: true,
+  },
+  order: {
+    getUrl: (boardId = ':boardId', columnId = ':columnId') =>
+      `${columnRoutes.columnById.getUrl(boardId, columnId)}/${resource.tasks}/order`,
+    isProtected: true,
+  },
+};
+
+export const userRoutes = {
+  base: `${BASE_URL}/${resource.boards}`,
+  users: {
+    getUrl: () => `${BASE_URL}/${resource.users}`,
+    isProtected: true,
+  },
+  userById: {
+    getUrl: (userId = ':userId') => `${userRoutes.users.getUrl()}/${userId}`,
+    isProtected: true,
+  },
+  registration: {
+    getUrl: () => `${userRoutes.users.getUrl()}/register`,
+    isProtected: false,
+  },
+  login: {
+    getUrl: () => `${userRoutes.users.getUrl()}/login`,
+    isProtected: false,
+  },
 };
 
 const getHeaders = (token?: string) => {
@@ -48,44 +91,54 @@ const getHeaders = (token?: string) => {
   return headers;
 };
 
-interface IHttpClientQuery<T> {
+interface IHttpClient<T> {
   url: string;
   isProtected?: boolean;
   body?: T;
 }
 
-interface IRequest<T> extends IHttpClientQuery<T> {
+interface IRequest<T> extends IHttpClient<T> {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
 }
 
-//quiryParams
 export const httpClient = {
-  fileUpload: <T>({ url, body }: IHttpClientQuery<T>): IRequest<T> => ({
+  fileUpload: <T>({ url, body }: IHttpClient<T>): IRequest<T> => ({
     url,
     method: 'POST',
     body,
   }),
 
-  get: <T>({ url, isProtected }: IHttpClientQuery<T>): IRequest<T> => ({
+  get: <T>({ url, isProtected }: IHttpClient<T>): IRequest<T> => ({
     url,
     method: 'GET',
     isProtected,
   }),
-  post: <T>({ url, body }: IHttpClientQuery<T>): IRequest<T> => ({
+  post: <T>({ url, body, isProtected }: IHttpClient<T>): IRequest<T> => ({
     url,
     method: 'POST',
     body,
+    isProtected,
   }),
 
-  put: <T>({ url, body }: IHttpClientQuery<T>): IRequest<T> => ({
+  put: <T>({ url, body, isProtected }: IHttpClient<T>): IRequest<T> => ({
     url,
     method: 'PUT',
     body,
+    isProtected,
   }),
-  delete: <T>({ url }: IHttpClientQuery<T>): IRequest<T> => ({
+  delete: <T>({ url, isProtected }: IHttpClient<T>): IRequest<T> => ({
     url,
     method: 'DELETE',
+    isProtected,
   }),
+};
+
+type CustomError = {
+  response: {
+    status?: number;
+    data?: string;
+  };
+  message: string;
 };
 
 const axiosBaseQuery =
@@ -95,13 +148,13 @@ const axiosBaseQuery =
       let token;
       if (isProtected) token = getToken();
       const result = await fetchJson<T>({
-        url,
-        requesBody: body,
+        url: baseUrl + url,
+        body,
         config: { method, headers: getHeaders(token), ...rest },
       });
       return { data: result };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as CustomError;
       return {
         error: {
           status: err.response?.status,

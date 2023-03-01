@@ -9,12 +9,12 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface IParams<T> {
   url: string;
-  requesBody?: T;
+  body?: T;
   config?: RequestInit;
 }
-export default async function <T>({ url, requesBody, config }: IParams<T>) {
+export default async function <T>({ url, body, config }: IParams<T>) {
   let response;
-  const params = { body: JSON.stringify(requesBody), ...config };
+  const params = { body: JSON.stringify(body), ...config };
   try {
     response = await fetch(url, params);
     console.log(response);
@@ -23,17 +23,17 @@ export default async function <T>({ url, requesBody, config }: IParams<T>) {
     throw new FetchError(response, 'Network error has occurred.');
   }
 
-  let body;
+  let errorBody;
 
   if (!response.ok) {
     let errorText = response.statusText; // Not Found (for 404)
-
+    console.log(errorText);
     try {
-      body = await response.json();
+      errorBody = await response.json();
 
       errorText =
-        (body.error && body.error.message) ||
-        (body.data && body.data.error && body.data.error.message) ||
+        (errorBody.error && errorBody.error.message) ||
+        (errorBody.data && errorBody.data.error && errorBody.data.error.message) ||
         errorText;
     } catch (error) {
       /* ignore failed body */
@@ -41,7 +41,7 @@ export default async function <T>({ url, requesBody, config }: IParams<T>) {
 
     const message = `Error ${response.status}: ${errorText}`;
 
-    throw new FetchError(response, body, message);
+    throw new FetchError(response, errorBody, message);
   }
 
   try {
@@ -62,7 +62,7 @@ export class FetchError extends Error {
     super(message);
     this.response = response;
     this.body = body;
-    console.log(this.message);
+    console.log(body);
   }
 }
 

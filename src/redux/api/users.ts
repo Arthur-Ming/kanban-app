@@ -1,4 +1,4 @@
-import { api, httpClient, apiRoutes } from './api';
+import { api, httpClient, userRoutes } from './api';
 import Cookies from 'js-cookie';
 import { IUser } from 'interfaces';
 import { getToken, getUserId } from 'utils/cookies';
@@ -23,7 +23,8 @@ const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
     userById: builder.query<IUser, null>({
       query: () => {
-        return httpClient.get({ url: apiRoutes.userById(getUserId()), isProtected: false });
+        const { getUrl, isProtected } = userRoutes.userById;
+        return httpClient.get({ url: getUrl(getUserId()), isProtected });
       },
       async onQueryStarted(_, { queryFulfilled }) {
         const { data } = await queryFulfilled;
@@ -31,7 +32,8 @@ const usersApi = api.injectEndpoints({
     }),
     loginUser: builder.mutation({
       query: (body) => {
-        return httpClient.post({ url: apiRoutes.userLogin(), body });
+        const { getUrl, isProtected } = userRoutes.login;
+        return httpClient.post({ url: getUrl(), body, isProtected });
       },
       async onQueryStarted(_, { queryFulfilled }) {
         try {
@@ -51,7 +53,10 @@ const usersApi = api.injectEndpoints({
       },
     }),
     registerUser: builder.mutation({
-      query: (body) => httpClient.post({ url: apiRoutes.userRegister(), body }),
+      query: (body) => {
+        const { getUrl, isProtected } = userRoutes.registration;
+        return httpClient.post({ url: getUrl(), body, isProtected });
+      },
       async onQueryStarted(_, { queryFulfilled }) {
         const { data } = await queryFulfilled;
         console.log(data);

@@ -1,4 +1,4 @@
-import { api, httpClient, apiRoutes } from './api';
+import { api, httpClient, columnRoutes, taskRoutes } from './api';
 import { addRefToColumn, deleteRefToColumn } from 'redux/reducer/boards';
 import { addColumn, deleteColumn, updateColumn, updateTasksOrder } from 'redux/reducer/columns';
 import { RootState } from 'redux/store';
@@ -11,7 +11,8 @@ const columnsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     createColumn: builder.mutation({
       query: ({ board, body }) => {
-        return httpClient.post({ url: apiRoutes.columns(board.id), body });
+        const { getUrl, isProtected } = columnRoutes.columns;
+        return httpClient.post({ url: getUrl(board.id), body, isProtected });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
@@ -21,9 +22,11 @@ const columnsApi = api.injectEndpoints({
     }),
     updateColumn: builder.mutation({
       query: ({ column, body }) => {
+        const { getUrl, isProtected } = columnRoutes.columnById;
         return httpClient.put({
-          url: apiRoutes.columnById(column.boardId, column.id),
+          url: getUrl(column.boardId, column.id),
           body,
+          isProtected,
         });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
@@ -33,8 +36,10 @@ const columnsApi = api.injectEndpoints({
     }),
     deleteColumn: builder.mutation({
       query: (column) => {
+        const { getUrl, isProtected } = columnRoutes.columnById;
         return httpClient.delete({
-          url: apiRoutes.columnById(column.boardId, column.id),
+          url: getUrl(column.boardId, column.id),
+          isProtected,
         });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
@@ -45,9 +50,11 @@ const columnsApi = api.injectEndpoints({
     }),
     tasksOrder: builder.mutation({
       query: ({ boardId, columnId, body }) => {
+        const { getUrl, isProtected } = taskRoutes.order;
         return httpClient.put({
-          url: apiRoutes.columnById(boardId, columnId) + '/tasks/order',
+          url: getUrl(boardId, columnId),
           body,
+          isProtected,
         });
       },
       async onQueryStarted({ boardId, columnId, body }, { dispatch, getState, queryFulfilled }) {

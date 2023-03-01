@@ -1,4 +1,4 @@
-import { api, httpClient, apiRoutes, apiRoutesAlt } from './api';
+import { api, httpClient, boardRoutes, columnRoutes } from './api';
 import {
   addBoard,
   addBoards,
@@ -11,7 +11,6 @@ import { addTasks } from 'redux/reducer/tasks';
 import { separateBoard } from 'utils/separateBoard';
 import { IBoard, IColumn, ICreateBoardBody, IFile, IPopulatedBoard, ITask } from '../../interfaces';
 import { addFiles } from 'redux/reducer/files';
-import { getToken } from 'utils/cookies';
 
 export class FetchError extends Error {
   status: number | undefined;
@@ -27,8 +26,8 @@ const boardsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     loadBoards: builder.query<IBoard[], null>({
       query: () => {
-        const { url, isProtected } = apiRoutesAlt.boards;
-        return httpClient.get({ url: url(), isProtected: true });
+        const { getUrl, isProtected } = boardRoutes.boards;
+        return httpClient.get({ url: getUrl(), isProtected });
       },
 
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
@@ -44,7 +43,8 @@ const boardsApi = api.injectEndpoints({
       string
     >({
       query: (boardId) => {
-        return httpClient.get({ url: apiRoutes.boardById(boardId), isProtected: true });
+        const { getUrl, isProtected } = boardRoutes.boardById;
+        return httpClient.get({ url: getUrl(boardId), isProtected });
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data: populatedBoard } = await queryFulfilled;
@@ -63,11 +63,8 @@ const boardsApi = api.injectEndpoints({
     }),
     createBoard: builder.mutation<IBoard, ICreateBoardBody>({
       query: (body) => {
-        return httpClient.post({
-          url: apiRoutes.boards(),
-          body: JSON.stringify(body),
-          isProtected: false,
-        });
+        const { getUrl, isProtected } = boardRoutes.boards;
+        return httpClient.post({ url: getUrl(), body, isProtected });
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
@@ -76,7 +73,8 @@ const boardsApi = api.injectEndpoints({
     }),
     updateBoard: builder.mutation({
       query: ({ board, body }) => {
-        return httpClient.put({ url: apiRoutes.boardById(board.id), body });
+        const { getUrl, isProtected } = boardRoutes.boardById;
+        return httpClient.put({ url: getUrl(board.id), body, isProtected });
       },
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
         dispatch(updateBoard(Object.assign({}, board, body)));
@@ -90,18 +88,26 @@ const boardsApi = api.injectEndpoints({
     }),
     deleteBoard: builder.mutation({
       query: (board) => {
-        return httpClient.delete({ url: apiRoutes.boardById(board.id) });
+        const { getUrl, isProtected } = boardRoutes.boardById;
+        return httpClient.delete({ url: getUrl(board.id), isProtected });
       },
       async onQueryStarted(board, { dispatch, queryFulfilled }) {
-        await queryFulfilled;
-        dispatch(deleteBoard(board));
+        try {
+          await queryFulfilled;
+          dispatch(deleteBoard(board));
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
     columnsOrder: builder.mutation({
       query: ({ board, body }) => {
+        const { getUrl, isProtected } = columnRoutes.order;
+        console.log(getUrl(board.id));
         return httpClient.put({
-          url: apiRoutes.boardById(board.id) + '/columns/order',
+          url: getUrl(board.id),
           body,
+          isProtected,
         });
       },
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
@@ -115,9 +121,12 @@ const boardsApi = api.injectEndpoints({
             newOrderedColumns: newColumns,
           })
         );
-
-        const { data } = await queryFulfilled;
-        console.log(data);
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
   }),
