@@ -33,7 +33,6 @@ const boardsApi = api.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
           if (data) dispatch(addBoards(data));
         } catch (error) {}
       },
@@ -47,16 +46,16 @@ const boardsApi = api.injectEndpoints({
         return httpClient.get({ url: getUrl(boardId), isProtected });
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        const { data: populatedBoard } = await queryFulfilled;
-        console.log(populatedBoard);
-        if (populatedBoard) {
-          const { tasks, columns, board, files } = populatedBoard;
-          console.log(tasks);
-          dispatch(addFiles(files));
-          dispatch(addTasks(tasks));
-          dispatch(addColumns(columns));
-          dispatch(addBoard(board));
-        }
+        try {
+          const { data: populatedBoard } = await queryFulfilled;
+          if (populatedBoard) {
+            const { tasks, columns, board, files } = populatedBoard;
+            dispatch(addFiles(files));
+            dispatch(addTasks(tasks));
+            dispatch(addColumns(columns));
+            dispatch(addBoard(board));
+          }
+        } catch (error) {}
       },
 
       transformResponse: (response: IPopulatedBoard) => separateBoard(response),
@@ -67,8 +66,10 @@ const boardsApi = api.injectEndpoints({
         return httpClient.post({ url: getUrl(), body, isProtected });
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(addBoard(data));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(addBoard(data));
+        } catch (error) {}
       },
     }),
     updateBoard: builder.mutation({
@@ -95,15 +96,12 @@ const boardsApi = api.injectEndpoints({
         try {
           await queryFulfilled;
           dispatch(deleteBoard(board));
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       },
     }),
     columnsOrder: builder.mutation({
       query: ({ board, body }) => {
         const { getUrl, isProtected } = columnRoutes.order;
-        console.log(getUrl(board.id));
         return httpClient.put({
           url: getUrl(board.id),
           body,
@@ -122,11 +120,8 @@ const boardsApi = api.injectEndpoints({
           })
         );
         try {
-          const { data } = await queryFulfilled;
-          console.log(data);
-        } catch (error) {
-          console.log(error);
-        }
+          await queryFulfilled;
+        } catch (error) {}
       },
     }),
   }),

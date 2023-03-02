@@ -1,9 +1,10 @@
 import Cookies from 'js-cookie';
+import { AuthorizationError } from './appErrors';
 
 export const getToken = (): string => {
   const token = Cookies.get('token') || null;
   if (!token) {
-    throw new Error('NO_TOKEN');
+    throw new AuthorizationError();
   }
   return token;
 };
@@ -11,7 +12,7 @@ export const getToken = (): string => {
 export const getUserId = (): string => {
   const userId = Cookies.get('userId') || null;
   if (!userId) {
-    throw new Error('NO_USER_ID');
+    throw new AuthorizationError();
   }
   return userId;
 };

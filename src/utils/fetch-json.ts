@@ -17,9 +17,7 @@ export default async function <T>({ url, body, config }: IParams<T>) {
   const params = { body: JSON.stringify(body), ...config };
   try {
     response = await fetch(url, params);
-    console.log(response);
   } catch (err) {
-    console.log(err);
     throw new FetchError(response, 'Network error has occurred.');
   }
 
@@ -27,7 +25,7 @@ export default async function <T>({ url, body, config }: IParams<T>) {
 
   if (!response.ok) {
     let errorText = response.statusText; // Not Found (for 404)
-    console.log(errorText);
+
     try {
       errorBody = await response.json();
 
@@ -45,9 +43,7 @@ export default async function <T>({ url, body, config }: IParams<T>) {
   }
 
   try {
-    const d = await response.json();
-    console.log(d);
-    return d;
+    return await response.json();
   } catch (error: unknown) {
     throw new FetchError(response, null, (error as Error).message);
   }
@@ -62,7 +58,6 @@ export class FetchError extends Error {
     super(message);
     this.response = response;
     this.body = body;
-    console.log(body);
   }
 }
 

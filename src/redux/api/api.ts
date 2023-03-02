@@ -133,15 +133,16 @@ export const httpClient = {
   }),
 };
 
-type CustomError = {
-  response: {
+interface IError {
+  response?: {
     status?: number;
     data?: string;
   };
   message: string;
-};
+  status?: number;
+}
 
-const axiosBaseQuery =
+const fetchQuery =
   ({ baseUrl }: { baseUrl: string } = { baseUrl: '' }) =>
   async <T>({ url, isProtected, method, body, ...rest }: IRequest<T>) => {
     try {
@@ -152,12 +153,14 @@ const axiosBaseQuery =
         body,
         config: { method, headers: getHeaders(token), ...rest },
       });
+
       return { data: result };
     } catch (error: unknown) {
-      const err = error as CustomError;
+      const err = error as IError;
+
       return {
         error: {
-          status: err.response?.status,
+          status: err?.response?.status || err?.status,
           data: err.response?.data || err.message,
         },
       };
@@ -166,8 +169,9 @@ const axiosBaseQuery =
 
 export const api = createApi({
   reducerPath: 'api',
-  baseQuery: axiosBaseQuery({
+  baseQuery: fetchQuery({
     baseUrl: '',
   }),
   endpoints: () => ({}),
+  keepUnusedDataFor: 0,
 });

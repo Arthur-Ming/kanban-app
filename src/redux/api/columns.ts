@@ -5,7 +5,6 @@ import { RootState } from 'redux/store';
 import { columnByIdSelector } from 'redux/selectors/columns';
 import { updateTask } from 'redux/reducer/tasks';
 import { taskByIdSelector } from 'redux/selectors/tasks';
-import { getToken } from 'utils/cookies';
 
 const columnsApi = api.injectEndpoints({
   endpoints: (builder) => ({

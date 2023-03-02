@@ -19,6 +19,7 @@ const CreationForm = ({ onSubmit, onCancel, isLoading, placeholder }: Props) => 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -36,7 +37,10 @@ const CreationForm = ({ onSubmit, onCancel, isLoading, placeholder }: Props) => 
           disabled={isLoading}
           type="submit"
           value="Готово"
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmit((body) => {
+            onSubmit(body);
+            reset();
+          })}
         />
         <InputButton disabled={isLoading} type="button" value="Очистить" onClick={onCancel} />
       </div>

@@ -13,7 +13,7 @@ const App = () => {
         <Header />
         <AppRoutes />
       </Router>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };

@@ -1,15 +1,18 @@
 import BoardTickets from './BoardTickets';
 import BoardCreation from './BoardCreation';
+import { toast } from 'react-toastify';
 import styles from './index.module.scss';
 import { Navigate, Route, Routes } from 'react-router';
 import Loader from 'components/Loader';
 import CreationTicket from 'components/CreationTicket';
 import { useLoadBoardsQuery } from 'redux/api/boards';
-import { withErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundaryProps, withErrorBoundary } from 'react-error-boundary';
+import { IFetchError } from 'interfaces';
 
 const Boards = () => {
   const { isLoading, isError, error } = useLoadBoardsQuery(null);
-  if (isError) console.log(error);
+
+  if (isError) throw error;
   if (isLoading) return <Loader />;
 
   return (
@@ -27,21 +30,24 @@ const Boards = () => {
   );
 };
 
-export default Boards;
-/* 
-export default withErrorBoundary(Boards, {
+/* export default Boards; */
+const f: ErrorBoundaryProps = {
   fallbackRender: ({ error, resetErrorBoundary }) => {
-    console.log(error.message);
-    console.log((error as { originalStatus?: number })?.originalStatus);
-    if (error.message === 'NO_TOKEN') {
+    const errorStatus = (error as unknown as IFetchError)?.status;
+
+    if (errorStatus === 401 || errorStatus === 403) {
+      toast('you need to log in!', {
+        toastId: errorStatus,
+      });
+
       return <Navigate to={`/login`} replace={true} />;
     }
     return (
       <div role="alert">
         <div>Oh no</div>
-        <pre>{error.message}</pre>
+        <pre>{(error as unknown as { data: string })?.data}</pre>
       </div>
     );
   },
-});
- */
+};
+export default withErrorBoundary(Boards, f);

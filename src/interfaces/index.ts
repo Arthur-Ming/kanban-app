@@ -118,3 +118,8 @@ export interface IRequestState {
   loaded: boolean;
   failed: boolean;
 }
+
+export interface IFetchError {
+  status: number;
+  data: string;
+}
