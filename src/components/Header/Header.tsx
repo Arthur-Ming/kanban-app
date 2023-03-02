@@ -9,7 +9,9 @@ const Header = () => {
       <NavLink to="boards" className={styles.box}>
         <span>boards</span>
       </NavLink>
-      <div className={styles.box}>{/* <AuthLink isAuth={false} user={undefined} /> */}</div>
+      <div className={styles.box}>
+        <AuthLink />
+      </div>
     </header>
   );
 };

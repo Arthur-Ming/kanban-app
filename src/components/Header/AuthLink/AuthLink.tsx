@@ -1,21 +1,22 @@
 import { NavLink } from 'react-router-dom';
 import { ReactComponent as UserIcon } from './user.svg';
 import styles from './index.module.scss';
-
-import { IUser } from 'interfaces';
+import { RootState } from 'redux/reducer';
+import { ISession } from 'interfaces';
+import { connect } from 'react-redux';
+import { loggedUserSelector } from 'redux/selectors/session';
 
 type StateProps = {
-  isAuth: boolean;
-  user?: IUser;
+  loggedUser: ISession | null;
 };
 
 type Props = StateProps;
 
-const AuthLink = ({ isAuth, user }: Props) => {
-  if (isAuth)
+const AuthLink = ({ loggedUser }: Props) => {
+  if (loggedUser)
     return (
       <span className={styles.box}>
-        {user?.name && <span>{user.name}</span>}
+        <span>{loggedUser.userName}</span>
         <UserIcon className={styles.icon} />
       </span>
     );
@@ -28,4 +29,8 @@ const AuthLink = ({ isAuth, user }: Props) => {
   );
 };
 
-export default AuthLink;
+const mapStateToProps = (state: RootState) => ({
+  loggedUser: loggedUserSelector(state),
+});
+
+export default connect(mapStateToProps)(AuthLink);

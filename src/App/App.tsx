@@ -6,7 +6,7 @@ import Header from 'components/Header';
 import useAuth from 'hooks/useAuth';
 
 const App = () => {
-  /*  useAuth(); */
+  useAuth();
   return (
     <div className="wrapper">
       <Router>

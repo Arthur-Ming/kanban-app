@@ -1,10 +1,11 @@
 import { useUserByIdQuery } from 'redux/api/users';
+import { getUserId } from 'utils/cookies';
 
 const useAuth = () => {
-  const { data, isError, error } = useUserByIdQuery(null);
-  if (isError) console.error(error);
+  const { isError } = useUserByIdQuery(null);
+  if (isError) return false;
 
-  return false;
+  return true;
 };
 
 export default useAuth;

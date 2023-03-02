@@ -63,6 +63,7 @@ export interface IUser {
   name: string;
   id: string;
   token: string;
+  email: string;
 }
 
 export interface IUserRegisterBody {
@@ -122,4 +123,9 @@ export interface IRequestState {
 export interface IFetchError {
   status: number;
   data: string;
+}
+
+export interface ISession {
+  userName: string;
+  email: string;
 }

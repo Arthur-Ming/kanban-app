@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ISession {
-  name: string;
+  userName: string;
+  email: string;
 }
 
 export interface ISessionState {
@@ -25,5 +26,5 @@ const sessionSlice = createSlice({
   },
 });
 
-export const { logout } = sessionSlice.actions;
+export const { logout, login } = sessionSlice.actions;
 export default sessionSlice.reducer;
