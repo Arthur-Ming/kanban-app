@@ -8,16 +8,17 @@ import styles from './index.module.scss';
 type Props = {
   onConfirm: () => void;
   iconClass?: string;
+  disabled?: boolean;
 };
 
-const Removal = ({ onConfirm, iconClass }: Props) => {
+const Removal = ({ onConfirm, iconClass, disabled }: Props) => {
   const [isRemoveMode, setRemoveMode] = useState(false);
   return (
     <div className={styles.remove}>
-      <RemoveIcon
-        className={classNames(styles.remove_icon, iconClass)}
-        onClick={() => setRemoveMode(true)}
-      />
+      <button onClick={() => setRemoveMode(true)} className={styles.button} disabled={disabled}>
+        <RemoveIcon className={classNames(styles.remove_icon, iconClass)} />
+      </button>
+
       {isRemoveMode && (
         <Modal
           handleClickOutside={() => {

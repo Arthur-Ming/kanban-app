@@ -84,7 +84,6 @@ const BoardContent = ({ board }: Props) => {
     <div className={styles.box}>
       <BoardHeader board={board} />
       <div className={styles.body}>
-        {/*Draggable columns*/}
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId={board.id} direction="horizontal" type={DragItemsType.COLUMNS}>
             {(provided) => (

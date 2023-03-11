@@ -15,8 +15,6 @@ const Board = () => {
   if (isError) throw error;
   if (isLoading) return <Loader />;
 
-  if (!boardId) return <NotFound />;
-
   return (
     <main className={styles.root}>
       <BoardContent boardId={boardId} />
@@ -37,7 +35,7 @@ const f: ErrorBoundaryProps = {
         toastId: errorStatus,
       });
 
-      return <Navigate to={`/login`} replace={true} />;
+      return <Navigate to={`/login`} />;
     }
     return (
       <div role="alert">

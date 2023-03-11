@@ -1,6 +1,7 @@
 import Removal from 'components/Removal';
-import { IBoard } from 'interfaces';
+import { IBoard, IFetchError } from 'interfaces';
 import { useDeleteBoardMutation } from 'redux/api/boards';
+import { toast } from 'react-toastify';
 
 type OwnProps = {
   board: IBoard;
@@ -9,10 +10,18 @@ type OwnProps = {
 type Props = OwnProps;
 
 const BoardRemoval = ({ board }: Props) => {
-  const [deleteBoard, { isError, error }] = useDeleteBoardMutation();
-  if (isError) throw error;
+  const [deleteBoard, { isLoading, isError, error }] = useDeleteBoardMutation();
+  if (isError) {
+    const errorStatus = (error as unknown as IFetchError)?.status;
+    if (errorStatus === 401 || errorStatus === 403) {
+      throw error;
+    }
+    toast.error('failed to remove board', {
+      toastId: errorStatus,
+    });
+  }
 
-  return <Removal onConfirm={() => deleteBoard(board)} />;
+  return <Removal onConfirm={() => deleteBoard(board)} disabled={isLoading} />;
 };
 
 export default BoardRemoval;

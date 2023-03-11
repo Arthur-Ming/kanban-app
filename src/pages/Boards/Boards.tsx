@@ -40,7 +40,7 @@ const f: ErrorBoundaryProps = {
         toastId: errorStatus,
       });
 
-      return <Navigate to={`/login`} replace={true} />;
+      return <Navigate to={`/login`} />;
     }
     return (
       <div role="alert">

@@ -28,6 +28,10 @@
   &::placeholder {
     opacity: 0.5;
   }
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
 }
 
 .invalid_text {

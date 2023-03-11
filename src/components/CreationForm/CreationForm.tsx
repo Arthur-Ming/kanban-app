@@ -24,7 +24,14 @@ const CreationForm = ({ onSubmit, onCancel, isLoading, placeholder }: Props) => 
   } = useForm<Inputs>();
 
   return (
-    <form className={styles.box}>
+    <form
+      className={styles.box}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          onCancel();
+        }
+      }}
+    >
       <InputText<Inputs>
         error={errors.title}
         register={register}

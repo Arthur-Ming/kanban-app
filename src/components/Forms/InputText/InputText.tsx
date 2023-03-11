@@ -9,6 +9,7 @@ interface Props<T extends FieldValues> extends UseControllerProps<T> {
   label?: string;
   placeholder?: string;
   extraClass?: string;
+  disabled?: boolean;
 }
 
 const InputText = <T extends FieldValues>({
@@ -20,6 +21,7 @@ const InputText = <T extends FieldValues>({
   placeholder = '',
   defaultValue,
   extraClass,
+  disabled = false,
 }: Props<T>) => (
   <label className={classNames(styles.box, extraClass)}>
     <span className={styles.label}>{label}</span>
@@ -31,6 +33,7 @@ const InputText = <T extends FieldValues>({
       defaultValue={defaultValue}
       placeholder={placeholder}
       autoFocus
+      disabled={disabled}
       {...register(name, { required })}
     />
     {error && <span className={styles.invalid_text}>{error.message}</span>}

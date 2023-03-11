@@ -83,7 +83,6 @@ const boardsApi = api.injectEndpoints({
           await queryFulfilled;
         } catch (err) {
           dispatch(updateBoard(board));
-          throw err;
         }
       },
     }),
@@ -130,6 +129,7 @@ const boardsApi = api.injectEndpoints({
 
 export const {
   useLoadBoardsQuery,
+  useLazyLoadBoardsQuery,
   useDeleteBoardMutation,
   useCreateBoardMutation,
   useUpdateBoardMutation,
