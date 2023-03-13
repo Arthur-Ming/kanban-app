@@ -1,13 +1,14 @@
 import InputText from 'components/Forms/InputText';
-import { ITask, ITEXT } from 'interfaces';
+import { IFetchError, ITask, ITEXT } from 'interfaces';
 import { useForm } from 'react-hook-form';
-import { Route, Routes, useNavigate } from 'react-router';
+import { Navigate, Route, Routes, useNavigate } from 'react-router';
 import { IoMdList as DescriptionIcon } from 'react-icons/io';
 import styles from './index.module.scss';
 import { AiFillCreditCard as TitleIcon } from 'react-icons/ai';
 import Textarea from 'components/Forms/Textarea';
 import { useUpdateTaskMutation } from 'redux/api/tasks';
 import TaskUpdateLink from '../TaskUpdateLink';
+import { toast } from 'react-toastify';
 
 const TEXT_TASK_CONTENT_DESCRIPTION: ITEXT = {
   title: {
@@ -37,15 +38,31 @@ const TaskInfo = ({ task }: Props) => {
     formState: { errors },
   } = useForm<Inputs>();
   const navigate = useNavigate();
-  const [update] = useUpdateTaskMutation();
+  const [update, { isError, error }] = useUpdateTaskMutation();
 
-  const onSubmit = (body: Inputs) => update({ task, body });
+  const onCancel = () =>
+    navigate(`/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task.id}`);
+  const onSubmit = (body: Inputs) => {
+    update({ task, body });
+    onCancel();
+  };
+  if (isError) {
+    const errorStatus = (error as unknown as IFetchError)?.status;
+
+    if (errorStatus === 401 || errorStatus === 403) {
+      throw error;
+    }
+    toast.error('failed to update task', {
+      toastId: errorStatus,
+    });
+  }
+
   return (
     <form
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
           reset();
-          navigate(`/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task.id}`);
+          onCancel();
         }
       }}
       onSubmit={handleSubmit(onSubmit)}
@@ -105,9 +122,7 @@ const TaskInfo = ({ task }: Props) => {
                   value="Cancel"
                   onClick={() => {
                     reset();
-                    navigate(
-                      `/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task?.id}`
-                    );
+                    onCancel();
                   }}
                 />
                 <input type="submit" className={styles.button} value="Submit" />

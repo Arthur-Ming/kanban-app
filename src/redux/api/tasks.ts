@@ -1,7 +1,6 @@
-import { api, httpClient, columnRoutes, taskRoutes } from './api';
+import { api, httpClient, taskRoutes } from './api';
 import { addRefToTask, deleteRefToTask } from 'redux/reducer/columns';
 import { addTask, updateTask, deleteTask } from 'redux/reducer/tasks';
-import { getToken } from 'utils/cookies';
 
 const tasksApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -30,8 +29,10 @@ const tasksApi = api.injectEndpoints({
         });
       },
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(updateTask(data));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(updateTask(data));
+        } catch (error) {}
       },
     }),
     deleteTask: builder.mutation({

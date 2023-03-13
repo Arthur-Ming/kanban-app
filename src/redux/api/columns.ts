@@ -28,9 +28,13 @@ const columnsApi = api.injectEndpoints({
           isProtected,
         });
       },
-      async onQueryStarted(column, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(updateColumn(data));
+      async onQueryStarted({ column, body }, { dispatch, queryFulfilled }) {
+        dispatch(updateColumn(Object.assign({}, column, body)));
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          dispatch(updateColumn(column));
+        }
       },
     }),
     deleteColumn: builder.mutation({
@@ -42,9 +46,11 @@ const columnsApi = api.injectEndpoints({
         });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
-        await queryFulfilled;
-        dispatch(deleteRefToColumn(column));
-        dispatch(deleteColumn(column));
+        try {
+          await queryFulfilled;
+          dispatch(deleteRefToColumn(column));
+          dispatch(deleteColumn(column));
+        } catch (error) {}
       },
     }),
     tasksOrder: builder.mutation({

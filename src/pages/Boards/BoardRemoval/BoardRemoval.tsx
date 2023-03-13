@@ -10,7 +10,7 @@ type OwnProps = {
 type Props = OwnProps;
 
 const BoardRemoval = ({ board }: Props) => {
-  const [deleteBoard, { isLoading, isError, error }] = useDeleteBoardMutation();
+  const [remove, { isLoading, isError, error }] = useDeleteBoardMutation();
   if (isError) {
     const errorStatus = (error as unknown as IFetchError)?.status;
     if (errorStatus === 401 || errorStatus === 403) {
@@ -21,7 +21,7 @@ const BoardRemoval = ({ board }: Props) => {
     });
   }
 
-  return <Removal onConfirm={() => deleteBoard(board)} disabled={isLoading} />;
+  return <Removal onConfirm={() => remove(board)} disabled={isLoading} />;
 };
 
 export default BoardRemoval;

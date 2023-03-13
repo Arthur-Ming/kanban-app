@@ -12,11 +12,12 @@ type Inputs = ICreationInput;
 
 type OwnProps = {
   column: IColumn;
+  update: ({ body, column }: { body: ICreationInput; column: IColumn }) => void;
 };
 
 type Props = OwnProps;
 
-const ColumnUpdate = ({ column }: Props) => {
+const ColumnUpdate = ({ column, update }: Props) => {
   const {
     register,
     handleSubmit,
@@ -25,30 +26,18 @@ const ColumnUpdate = ({ column }: Props) => {
 
   const wrapperRef: RefObject<HTMLFormElement> = useRef(null);
   useOutside<HTMLFormElement>(wrapperRef, `/boards/${column.boardId}`);
-  const [update, { isLoading, isError, isSuccess, error }] = useUpdateColumnMutation();
+
   const navigate = useNavigate();
 
   const onCancel = () => navigate(`/boards/${column.boardId}`);
 
-  if (isError) {
-    const errorStatus = (error as unknown as IFetchError)?.status;
-
-    if (errorStatus === 401 || errorStatus === 403) {
-      throw error;
-    }
-    toast.error('failed to update column', {
-      toastId: errorStatus,
-    });
-  }
-
-  if (isSuccess) {
-    onCancel();
-  }
-
   return (
     <form
       className={styles.box}
-      onSubmit={handleSubmit((body) => update({ column, body }))}
+      onSubmit={handleSubmit((body) => {
+        onCancel();
+        update({ column, body });
+      })}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
           onCancel();
@@ -63,7 +52,6 @@ const ColumnUpdate = ({ column }: Props) => {
         required="this field is required!"
         defaultValue={column.title}
         extraClass={styles.input}
-        disabled={isLoading}
       />
     </form>
   );
