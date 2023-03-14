@@ -17,7 +17,7 @@ const ImageUploader = ({ task }: Props) => {
   const [upload] = useUploadFileMutation();
 
   return (
-    <form method="post" encType="multipart/form-data" action="/upload">
+    <form>
       <label className={styles.file_preview} style={{ backgroundImage: `url()` }}>
         <input
           className={styles.file_input}

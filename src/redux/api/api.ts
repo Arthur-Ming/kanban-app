@@ -106,6 +106,7 @@ export const httpClient = {
     url,
     method: 'POST',
     body,
+    isProtected: false,
   }),
 
   get: <T>({ url, isProtected }: IHttpClient<T>): IRequest<T> => ({
@@ -148,12 +149,13 @@ const fetchQuery =
     try {
       let token;
       if (isProtected) token = getToken();
+      console.log('!!!!');
       const result = await fetchJson<T>({
         url: baseUrl + url,
         body,
         config: { method, headers: getHeaders(token), ...rest },
       });
-
+      console.log(result);
       return { data: result };
     } catch (error: unknown) {
       const err = error as IError;

@@ -38,7 +38,7 @@ const TaskInfo = ({ task }: Props) => {
     formState: { errors },
   } = useForm<Inputs>();
   const navigate = useNavigate();
-  const [update, { isError, error }] = useUpdateTaskMutation();
+  const [update, { isError, error, reset: resetMutation }] = useUpdateTaskMutation();
 
   const onCancel = () =>
     navigate(`/boards/${task?.boardId}/columns/${task?.columnId}/tasks/${task.id}`);
@@ -55,6 +55,7 @@ const TaskInfo = ({ task }: Props) => {
     toast.error('failed to update task', {
       toastId: errorStatus,
     });
+    resetMutation();
   }
 
   return (
