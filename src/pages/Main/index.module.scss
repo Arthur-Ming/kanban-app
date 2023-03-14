@@ -1,8 +1,9 @@
 @import '/src/index.scss';
 
 .root {
-  background-color: var(--task-content-background);
-  color: var(--text-color-dark);
+  background-color: var(--primary-dark);
+  color: var(--text-secondary-dark);
+  flex: 1 0 100%;
 }
 
 .box {
