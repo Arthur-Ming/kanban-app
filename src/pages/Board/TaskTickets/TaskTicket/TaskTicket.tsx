@@ -18,7 +18,6 @@ type Props = StateProps & OwnProps;
 
 const TaskTicket = ({ task }: Props) => (
   <div className={styles.box}>
-    {/*  Not found */}
     <Link to={`columns/${task.columnId}/tasks/${task.id}`} className={styles.link}>
       {task?.title}
     </Link>

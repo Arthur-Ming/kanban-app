@@ -1,12 +1,16 @@
 @import '/src/index.scss';
 
 .root {
+  background: var(--primary-dark);
+  flex: 1 0 auto;
 }
 .box {
   @extend .wrapper-box;
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .creation {

@@ -2,6 +2,7 @@ import Removal from 'components/Removal';
 import { IBoard, IFetchError } from 'interfaces';
 import { useDeleteBoardMutation } from 'redux/api/boards';
 import { toast } from 'react-toastify';
+import styles from './index.module.scss';
 
 type OwnProps = {
   board: IBoard;
@@ -21,7 +22,7 @@ const BoardRemoval = ({ board }: Props) => {
     });
   }
 
-  return <Removal onConfirm={() => remove(board)} disabled={isLoading} />;
+  return <Removal onConfirm={() => remove(board)} disabled={isLoading} iconClass={styles.icon} />;
 };
 
 export default BoardRemoval;
