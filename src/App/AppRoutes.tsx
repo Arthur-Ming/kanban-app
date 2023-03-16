@@ -12,18 +12,23 @@ import Login from 'pages/Login';
 import BoardUpdate from 'pages/Board/BoardContent/BoardUpdate';
 import Main from 'pages/Main';
 
+//TODO
+//routes
+//styles
+//delete unused elements
+//
+
 const AppRoutes = () => (
   <Routes>
     <Route index element={<Main />} />
-
-    <Route path={'boards/*'} element={<Boards />}>
-      <Route path="create" element={<BoardCreation />} />
+    <Route path={`${routes.boards.base}/*`} element={<Boards />}>
+      <Route path={routes.boards.create} element={<BoardCreation />} />
     </Route>
     <Route path={`${routes.boards.byId()}/*`} element={<Board />}>
-      <Route path="update" element={<BoardUpdate />} />
-      <Route path="columns/create" element={<ColumnCreation />} />
-      <Route path="columns/:columnId/tasks/create" element={<TaskCreation />} />
-      <Route path="columns/:columnId/tasks/:taskId/*" element={<Task />} />
+      <Route path={routes.boards.update} element={<BoardUpdate />} />
+      <Route path={routes.columns.create} element={<ColumnCreation />} />
+      <Route path={routes.tasks.create()} element={<TaskCreation />} />
+      <Route path={`${routes.tasks.byId()}/*`} element={<Task />} />
     </Route>
 
     <Route path="register" element={<Register />} />
@@ -34,3 +39,11 @@ const AppRoutes = () => (
 );
 
 export default AppRoutes;
+
+//boards
+//boards.create
+//boardsById
+//boardsById.update
+//columns.create
+//tasks.create
+//taskById

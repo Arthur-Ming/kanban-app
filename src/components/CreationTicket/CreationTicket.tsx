@@ -16,23 +16,4 @@ const CreationTicket = ({ path, label }: Props) => (
   </Link>
 );
 
-/* const CreationTicket = ({ path, label }: Props) => {
-  const navigate = useNavigate();
-  return (
-    <a
-      href={path}
-      className={styles.label}
-      onClick={(e) => e.preventDefault()}
-      onMouseUp={() => {
-        navigate(path);
-      }}
-    >
-      <span className={styles.box}>
-        <PlusIcon className={styles.icon} />
-        <span className={styles.text}>{label}</span>
-      </span>
-    </a>
-  );
-}; */
-
 export default CreationTicket;

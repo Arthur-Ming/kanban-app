@@ -22,9 +22,8 @@ body {
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #212429;
-  color: var(--text-color-white);
-  background-color: var(--main-color);
+  color: var(--text-secondary-dark);
+  background-color: var(--primary-dark);
 }
 
 *,
@@ -53,8 +52,8 @@ li {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  color: var(--text-color-white);
-  background-color: var(--main-color);
+  color: var(--text-secondary-dark);
+  background-color: var(--primary-dark);
   font-family: 'RobotoRegular', sans-serif;
 }
 .wrapper-box {

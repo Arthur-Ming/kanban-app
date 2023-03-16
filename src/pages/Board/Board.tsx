@@ -8,6 +8,7 @@ import styles from './index.module.scss';
 import { ErrorBoundaryProps, withErrorBoundary } from 'react-error-boundary';
 import { toast } from 'react-toastify';
 import { IFetchError } from 'interfaces';
+import { routes } from 'utils/routes';
 
 const Board = () => {
   const { boardId = '', taskId } = useParams();
@@ -18,14 +19,11 @@ const Board = () => {
   return (
     <main className={styles.root}>
       <BoardContent boardId={boardId} />
-      <Routes>
-        {taskId && <Route path="columns/:columnId/tasks/:taskId/*" element={<Task />} />}
-      </Routes>
+      <Routes>{taskId && <Route path={`${routes.tasks.byId()}/*`} element={<Task />} />}</Routes>
     </main>
   );
 };
-//BoardsFallbackRender
-/* export default Board; */
+
 const f: ErrorBoundaryProps = {
   fallbackRender: ({ error, resetErrorBoundary }) => {
     const errorStatus = (error as unknown as IFetchError)?.status;
