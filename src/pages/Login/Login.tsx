@@ -1,10 +1,11 @@
 import { IFetchError } from 'interfaces';
 import { withErrorBoundary } from 'react-error-boundary';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useLoginUserMutation } from 'redux/api/users';
 import LoginForm from './LoginForm';
 import styles from './index.module.scss';
+import AuthLayout from 'components/AuthLayout';
 
 const Login = () => {
   const [loginUser, { isLoading, isSuccess, isError, error }] = useLoginUserMutation();
@@ -18,9 +19,15 @@ const Login = () => {
     }
   }
   return (
-    <main className={styles.root}>
+    <AuthLayout>
       <LoginForm onSubmit={loginUser} isLoading={isLoading} />
-    </main>
+      <div className={styles.text}>
+        <span>Нет аккаунта?</span>
+        <NavLink className={styles.link} to="/register">
+          Зарегистрируйтесь
+        </NavLink>
+      </div>
+    </AuthLayout>
   );
 };
 

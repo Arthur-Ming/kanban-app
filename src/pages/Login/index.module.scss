@@ -1,4 +1,32 @@
-.root {
-  background-color: var(--primary-dark);
-  flex: 1 0 auto;
+.text {
+  margin-top: 50px;
+  display: flex;
+  column-gap: 10px;
+  justify-content: center;
+  line-height: 28px;
+}
+
+.link {
+  position: relative;
+  opacity: 0.9;
+  color: var(--main-color-dark);
+  transition: opacity 0.2s ease 0s;
+  line-height: 28px;
+  &:hover {
+    opacity: 1;
+    &::after {
+      width: 90%;
+    }
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 1px;
+    background: var(--main-color-dark);
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + 3px);
+    transition: all 0.2s ease 0s;
+  }
 }
