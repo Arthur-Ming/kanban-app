@@ -1,11 +1,16 @@
 import { useRegisterUserMutation } from 'redux/api/users';
 import RegisterForm from './RegisterForm';
 import styles from './index.module.scss';
-import { NavLink } from 'react-router-dom';
+import { Navigate, NavLink } from 'react-router-dom';
 import AuthLayout from 'components/AuthLayout';
+import { useSelector } from 'react-redux';
+import { loggedUserSelector } from 'redux/selectors/session';
 
 const Register = () => {
+  const loggedUser = useSelector(loggedUserSelector);
   const [addUser, { isLoading }] = useRegisterUserMutation();
+
+  if (loggedUser) return <Navigate to="/" />;
 
   return (
     <AuthLayout>

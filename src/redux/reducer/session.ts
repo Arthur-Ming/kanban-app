@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface ISession {
-  userName: string;
-  email: string;
-}
+import { ISession } from 'interfaces';
 
 export interface ISessionState {
   loggedUser: ISession | null;

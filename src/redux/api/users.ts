@@ -1,6 +1,6 @@
 import { api, httpClient, userRoutes } from './api';
 import Cookies from 'js-cookie';
-import { IUser } from 'interfaces';
+import { IUser, IUserLoginBody } from 'interfaces';
 import { getToken, getUserId } from 'utils/cookies';
 import { login } from 'redux/reducer/session';
 
@@ -22,10 +22,11 @@ const tokenExpire = 0.5;
 
 const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    userById: builder.query<IUser, null>({
-      query: () => {
+    userById: builder.query<IUser, string>({
+      query: (userId) => {
         const { getUrl, isProtected } = userRoutes.userById;
-        const userId = getUserId();
+
+        /*  const userId = getUserId(); */
         return httpClient.get({ url: getUrl(userId), isProtected });
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
@@ -33,33 +34,37 @@ const usersApi = api.injectEndpoints({
           const { data: user } = await queryFulfilled;
           dispatch(
             login({
-              userName: user.name,
+              name: user.name,
               email: user.email,
             })
           );
-        } catch (error) {}
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
-    loginUser: builder.mutation({
+    loginUser: builder.mutation<IUser, IUserLoginBody>({
       query: (body) => {
         const { getUrl, isProtected } = userRoutes.login;
         return httpClient.post({ url: getUrl(), body, isProtected });
       },
-      async onQueryStarted(_, { queryFulfilled }) {
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
-          const { data } = await queryFulfilled;
-
-          const { token, name, id } = data;
+          const { data: user } = await queryFulfilled;
+          const { token, name, id, email } = user;
           Cookies.set('token', token, {
             expires: tokenExpire,
           });
           Cookies.set('userId', id, {
             expires: tokenExpire,
           });
-        } catch (error) {
-          console.log('!!!');
-          console.error(error);
-        }
+          dispatch(
+            login({
+              name: name,
+              email: email,
+            })
+          );
+        } catch (error) {}
       },
     }),
     registerUser: builder.mutation({

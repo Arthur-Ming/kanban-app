@@ -21,7 +21,7 @@ export const rtkQueryErrorLogger: Middleware = (api: MiddlewareAPI) => (next) =>
 const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware, rtkQueryErrorLogger),
+    getDefaultMiddleware().concat(api.middleware /* , rtkQueryErrorLogger */),
 });
 
 export default store;

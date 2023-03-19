@@ -1,14 +1,13 @@
 import BoardTickets from './BoardTickets';
 import BoardCreation from './BoardCreation';
-import { toast } from 'react-toastify';
 import styles from './index.module.scss';
-import { Navigate, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
 import Loader from 'components/Loader';
 import CreationTicket from 'components/CreationTicket';
 import { useLoadBoardsQuery } from 'redux/api/boards';
-import { ErrorBoundaryProps, withErrorBoundary } from 'react-error-boundary';
-import { IFetchError } from 'interfaces';
+import { withErrorBoundary } from 'react-error-boundary';
 import { routes } from 'utils/routes';
+import PageErrorFallback from 'components/PageErrorFallback';
 
 const Boards = () => {
   const { isLoading, isError, error } = useLoadBoardsQuery(null);
@@ -34,24 +33,6 @@ const Boards = () => {
   );
 };
 
-/* export default Boards; */
-const f: ErrorBoundaryProps = {
-  fallbackRender: ({ error, resetErrorBoundary }) => {
-    const errorStatus = (error as unknown as IFetchError)?.status;
-
-    if (errorStatus === 401 || errorStatus === 403) {
-      toast('you need to log in!', {
-        toastId: errorStatus,
-      });
-
-      return <Navigate to={`/login`} />;
-    }
-    return (
-      <div role="alert">
-        <div>Oh no</div>
-        <pre>{(error as unknown as { data: string })?.data}</pre>
-      </div>
-    );
-  },
-};
-export default withErrorBoundary(Boards, f);
+export default withErrorBoundary(Boards, {
+  FallbackComponent: PageErrorFallback,
+});

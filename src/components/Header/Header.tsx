@@ -8,6 +8,7 @@ const Header = () => {
     <header className={styles.root}>
       <div className={styles.box}>
         <Logo />
+        <NavLink to="/boards">Boards</NavLink>
         <AuthLink />
       </div>
     </header>

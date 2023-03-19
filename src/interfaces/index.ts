@@ -126,6 +126,6 @@ export interface IFetchError {
 }
 
 export interface ISession {
-  userName: string;
+  name: string;
   email: string;
 }

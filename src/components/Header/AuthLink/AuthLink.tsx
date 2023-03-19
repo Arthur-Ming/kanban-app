@@ -3,7 +3,7 @@ import { ReactComponent as UserIcon } from './user.svg';
 import styles from './index.module.scss';
 import { RootState } from 'redux/reducer';
 import { ISession } from 'interfaces';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { loggedUserSelector } from 'redux/selectors/session';
 
 type StateProps = {
@@ -12,11 +12,12 @@ type StateProps = {
 
 type Props = StateProps;
 
-const AuthLink = ({ loggedUser }: Props) => {
+const AuthLink = () => {
+  const loggedUser = useSelector(loggedUserSelector);
   if (loggedUser)
     return (
       <span className={styles.box}>
-        <span>{loggedUser.userName}</span>
+        <span>{loggedUser.name}</span>
         <UserIcon className={styles.icon} />
       </span>
     );
@@ -33,4 +34,4 @@ const mapStateToProps = (state: RootState) => ({
   loggedUser: loggedUserSelector(state),
 });
 
-export default connect(mapStateToProps)(AuthLink);
+export default AuthLink;
