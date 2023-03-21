@@ -37,7 +37,7 @@ export default async function <T>({ url, body, config }: IParams<T>) {
       /* ignore failed body */
     }
 
-    const message = `Error ${response.status}: ${errorText}`;
+    const message = errorText;
 
     throw new FetchError(response, errorBody, message);
   }

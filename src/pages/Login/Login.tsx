@@ -1,6 +1,5 @@
 import { IFetchError } from 'interfaces';
-import { withErrorBoundary } from 'react-error-boundary';
-import { Navigate, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useLoginUserMutation } from 'redux/api/users';
 import LoginForm from './LoginForm';
@@ -17,7 +16,19 @@ const Login = () => {
 
   if (loggedUser) return <Navigate to="/" />;
 
-  if (isError) throw error;
+  if (isError) {
+    const errorStatus = (error as unknown as IFetchError)?.status;
+
+    if (errorStatus === 404 || errorStatus === 403) {
+      toast.error('неверные учетные данные!', {
+        toastId: errorStatus,
+      });
+    } else {
+      toast.error('неудалось войти', {
+        toastId: errorStatus,
+      });
+    }
+  }
   if (isSuccess) {
     if (window.history.state && window.history.state.idx > 0) {
       navigate(-1);
@@ -38,16 +49,4 @@ const Login = () => {
     </AuthLayout>
   );
 };
-
-export default withErrorBoundary(Login, {
-  fallbackRender: ({ error, resetErrorBoundary }) => {
-    const errorStatus = (error as unknown as IFetchError)?.status;
-
-    if (errorStatus === 404 || errorStatus === 403) {
-      toast.error('неверные учетные данные!', {
-        toastId: errorStatus,
-      });
-    }
-    return <Login />;
-  },
-});
+export default Login;

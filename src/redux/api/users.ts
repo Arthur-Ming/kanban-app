@@ -38,9 +38,7 @@ const usersApi = api.injectEndpoints({
               email: user.email,
             })
           );
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       },
     }),
     loginUser: builder.mutation<IUser, IUserLoginBody>({
@@ -73,8 +71,11 @@ const usersApi = api.injectEndpoints({
         return httpClient.post({ url: getUrl(), body, isProtected });
       },
       async onQueryStarted(_, { queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        console.log(data);
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
   }),

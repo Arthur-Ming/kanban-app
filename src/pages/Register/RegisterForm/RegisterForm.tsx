@@ -3,11 +3,7 @@ import { IUserRegisterBody } from 'interfaces';
 import { useForm } from 'react-hook-form';
 import styles from './index.module.scss';
 
-type Inputs = {
-  email: string;
-  name: string;
-  password: string;
-};
+type Inputs = IUserRegisterBody;
 
 type Props = {
   onSubmit: (userRegisterBody: IUserRegisterBody) => void;
