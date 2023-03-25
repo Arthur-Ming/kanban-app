@@ -3,18 +3,19 @@ import AppRoutes from './AppRoutes';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Header from 'components/Header';
-import { useLazyUserByIdQuery } from 'redux/api/users';
+import { useLazyUserByIdQuery, useUserByIdQuery } from 'redux/api/users';
 import { getUserId } from 'utils/cookies';
 import { useEffect } from 'react';
 
 const App = () => {
-  const [getUserById] = useLazyUserByIdQuery();
+  useUserByIdQuery(null);
+  /* const [getUserById] = useLazyUserByIdQuery();
 
   useEffect(() => {
     try {
-      getUserById(getUserId());
+      getUserById(null);
     } catch (error) {}
-  }, [getUserById]);
+  }, [getUserById]); */
 
   return (
     <div className="wrapper">

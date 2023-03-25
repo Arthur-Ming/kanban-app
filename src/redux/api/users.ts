@@ -22,11 +22,11 @@ const tokenExpire = 0.5;
 
 const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    userById: builder.query<IUser, string>({
-      query: (userId) => {
+    userById: builder.query<IUser, null>({
+      query: () => {
         const { getUrl, isProtected } = userRoutes.userById;
 
-        /*  const userId = getUserId(); */
+        const userId = getUserId();
         return httpClient.get({ url: getUrl(userId), isProtected });
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
