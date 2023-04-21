@@ -1,4 +1,4 @@
-import { useLoginUserMutation, useRegisterUserMutation } from 'redux/api/users';
+import { useLoginMutation, useRegisterMutation } from 'redux/api/auth';
 import RegisterForm from './RegisterForm';
 import styles from './index.module.scss';
 import { Navigate, NavLink } from 'react-router-dom';
@@ -22,9 +22,9 @@ const Register = () => {
       isError: isRegisterError,
       error: registerError,
     },
-  ] = useRegisterUserMutation();
+  ] = useRegisterMutation();
 
-  const [loginUser, { isLoading: isLoginLoading }] = useLoginUserMutation();
+  const [loginUser, { isLoading: isLoginLoading }] = useLoginMutation();
 
   useEffect(() => {
     if (isRegisterSuccess && registerBody) {

@@ -1,7 +1,7 @@
 import { IFetchError } from 'interfaces';
 import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useLoginUserMutation } from 'redux/api/users';
+import { useLoginMutation } from 'redux/api/auth';
 import LoginForm from './LoginForm';
 import styles from './index.module.scss';
 import AuthLayout from 'components/AuthLayout';
@@ -11,7 +11,7 @@ import { loggedUserSelector } from 'redux/selectors/session';
 
 const Login = () => {
   const loggedUser = useSelector(loggedUserSelector);
-  const [loginUser, { isLoading, isSuccess, isError, error }] = useLoginUserMutation();
+  const [loginUser, { isLoading, isSuccess, isError, error }] = useLoginMutation();
   const navigate = useNavigate();
 
   if (loggedUser) return <Navigate to="/" />;

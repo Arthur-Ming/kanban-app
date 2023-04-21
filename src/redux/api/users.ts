@@ -1,7 +1,6 @@
 import { api, httpClient, userRoutes } from './api';
-import Cookies from 'js-cookie';
-import { IUser, IUserLoginBody } from 'interfaces';
-import { getToken, getUserId } from 'utils/cookies';
+import { IUser } from 'interfaces';
+import { getUserId } from 'utils/cookies';
 import { login } from 'redux/reducer/session';
 
 class AppError extends Error {
@@ -17,8 +16,6 @@ export class AuthorizationError extends AppError {
     this.status = 401;
   }
 }
-
-const tokenExpire = 0.5;
 
 const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -41,50 +38,8 @@ const usersApi = api.injectEndpoints({
         } catch (error) {}
       },
     }),
-    loginUser: builder.mutation<IUser, IUserLoginBody>({
-      query: (body) => {
-        const { getUrl, isProtected } = userRoutes.login;
-        return httpClient.post({ url: getUrl(), body, isProtected });
-      },
-      async onQueryStarted(_, { queryFulfilled, dispatch }) {
-        try {
-          const { data: user } = await queryFulfilled;
-          const { token, name, id, email } = user;
-          Cookies.set('token', token, {
-            expires: tokenExpire,
-          });
-          Cookies.set('userId', id, {
-            expires: tokenExpire,
-          });
-          dispatch(
-            login({
-              name: name,
-              email: email,
-            })
-          );
-        } catch (error) {}
-      },
-    }),
-    registerUser: builder.mutation({
-      query: (body) => {
-        const { getUrl, isProtected } = userRoutes.registration;
-        return httpClient.post({ url: getUrl(), body, isProtected });
-      },
-      async onQueryStarted(_, { queryFulfilled }) {
-        try {
-          await queryFulfilled;
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    }),
   }),
   overrideExisting: false,
 });
 
-export const {
-  useLoginUserMutation,
-  useRegisterUserMutation,
-  useUserByIdQuery,
-  useLazyUserByIdQuery,
-} = usersApi;
+export const { useUserByIdQuery, useLazyUserByIdQuery } = usersApi;

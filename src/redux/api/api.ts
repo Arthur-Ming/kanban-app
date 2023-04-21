@@ -74,12 +74,15 @@ export const userRoutes = {
     getUrl: (userId = ':userId') => `${userRoutes.users.getUrl()}/${userId}`,
     isProtected: true,
   },
-  registration: {
-    getUrl: () => `${userRoutes.users.getUrl()}/register`,
+};
+
+export const authRoutes = {
+  register: {
+    getUrl: () => `${BASE_URL}/register`,
     isProtected: false,
   },
   login: {
-    getUrl: () => `${userRoutes.users.getUrl()}/login`,
+    getUrl: () => `${BASE_URL}/login`,
     isProtected: false,
   },
 };
