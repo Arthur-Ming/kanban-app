@@ -28,7 +28,7 @@ const ImageUploader = ({ task }: Props) => {
             if (e.target.files) {
               const file = e.target.files[0];
               const data = new FormData();
-              data.append('image', file);
+              data.append('files', file);
               upload({ task, file: data });
             }
           }}

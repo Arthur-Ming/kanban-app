@@ -10,7 +10,6 @@ import { addColumns } from 'redux/reducer/columns';
 import { addTasks } from 'redux/reducer/tasks';
 import { separateBoard } from 'utils/separateBoard';
 import { IBoard, IColumn, ICreateBoardBody, IFile, IPopulatedBoard, ITask } from '../../interfaces';
-import { addFiles } from 'redux/reducer/files';
 
 export class FetchError extends Error {
   status: number | undefined;
@@ -51,7 +50,7 @@ const boardsApi = api.injectEndpoints({
           console.log(populatedBoard);
           if (populatedBoard) {
             const { tasks, columns, board, files } = populatedBoard;
-            dispatch(addFiles(files));
+
             dispatch(addTasks(tasks));
             dispatch(addColumns(columns));
             dispatch(addBoard(board));

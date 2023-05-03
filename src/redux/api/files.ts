@@ -1,6 +1,4 @@
 import { api, httpClient } from './api';
-import { addRefToFile, deleteRefToFile } from 'redux/reducer/tasks';
-import { addFile, deleteFile } from 'redux/reducer/files';
 
 const filesApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,11 +12,15 @@ const filesApi = api.injectEndpoints({
       }, */
       queryFn: async ({ task, file }) => {
         console.log(file);
-        const res = await fetch('http://localhost:8000' + `/tasks/${task.id}/files`, {
-          method: 'POST',
-          headers: {},
-          body: file,
-        });
+        const res = await fetch(
+          'http://localhost:8000' +
+            `/boards/${task.boardId}/columns/${task.columnId}/tasks/${task.id}/files`,
+          {
+            method: 'PUT',
+            headers: {},
+            body: file,
+          }
+        );
 
         const data = await res.json();
 
@@ -28,8 +30,6 @@ const filesApi = api.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           console.log(data);
-          dispatch(addRefToFile(data));
-          dispatch(addFile(data));
         } catch (error) {
           console.log(error);
         }
@@ -43,8 +43,6 @@ const filesApi = api.injectEndpoints({
       },
       async onQueryStarted(file, { dispatch, queryFulfilled }) {
         await queryFulfilled;
-        dispatch(deleteFile(file));
-        dispatch(deleteRefToFile(file));
       },
     }),
   }),

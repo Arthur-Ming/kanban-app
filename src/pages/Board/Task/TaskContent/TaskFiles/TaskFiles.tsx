@@ -3,13 +3,13 @@ import TaskFile from './TaskFile/TaskFile';
 import styles from './index.module.scss';
 
 type Props = {
-  fileIds: FileId[];
+  fileIds: string[];
 };
 
 const TaskFiles = ({ fileIds }: Props) => (
   <div className={styles.box}>
     {fileIds.map((fileId) => (
-      <TaskFile key={fileId} fileId={fileId} />
+      <TaskFile key={fileId} file={fileId} />
     ))}
   </div>
 );

@@ -2,7 +2,6 @@ import { FileId, IFile } from 'interfaces';
 import { connect } from 'react-redux';
 import { useDeleteFileMutation } from 'redux/api/files';
 import { RootState } from 'redux/reducer';
-import { fileByIdSelector } from 'redux/selectors/files';
 import buildPathToFile from 'utils/buildPathToFile';
 import styles from './index.module.scss';
 
@@ -14,7 +13,9 @@ type StateProps = {
   file: IFile;
 };
 
-type Props = OwnProps & StateProps;
+type Props = {
+  file: string;
+};
 
 const TaskFile = ({ file }: Props) => {
   const [remove] = useDeleteFileMutation();
@@ -32,8 +33,4 @@ const TaskFile = ({ file }: Props) => {
   );
 };
 
-const mapStateToProps = (state: RootState, props: OwnProps) => ({
-  file: fileByIdSelector(state, props),
-});
-
-export default connect(mapStateToProps)(TaskFile);
+export default TaskFile;

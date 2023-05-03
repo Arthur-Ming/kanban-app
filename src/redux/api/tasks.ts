@@ -31,11 +31,8 @@ const tasksApi = api.injectEndpoints({
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
           dispatch(updateTask(data));
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       },
     }),
     deleteTask: builder.mutation({
@@ -59,6 +56,5 @@ const tasksApi = api.injectEndpoints({
   }),
   overrideExisting: false,
 });
-console.log(tasksApi.util);
 
 export const { useCreateTaskMutation, useDeleteTaskMutation, useUpdateTaskMutation } = tasksApi;
