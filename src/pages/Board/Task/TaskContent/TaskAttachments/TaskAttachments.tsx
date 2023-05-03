@@ -13,7 +13,7 @@ const TaskAttachments = ({ task }: Props) => (
       <ClipIcon className={styles.clip} />
       <h4 className={styles.title}>Attachments</h4>
     </div>
-    <TaskFiles fileIds={task.files} />
+    {/*  <TaskFiles fileIds={task.files} /> */}
   </div>
 );
 

@@ -1,7 +1,6 @@
-import { api, authRoutes, httpClient, userRoutes } from './api';
+import { api, authRoutes, httpClient } from './api';
 import Cookies from 'js-cookie';
 import { IUser, IUserLoginBody } from 'interfaces';
-import { getUserId } from 'utils/cookies';
 import { login } from 'redux/reducer/session';
 
 class AppError extends Error {
@@ -22,6 +21,12 @@ const tokenExpire = 0.5;
 
 const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getUser: builder.query<IUser, void>({
+      query: () => {
+        const { getUrl, isProtected } = authRoutes.user;
+        return httpClient.get({ url: getUrl(), isProtected });
+      },
+    }),
     login: builder.mutation<IUser, IUserLoginBody>({
       query: (body) => {
         const { getUrl, isProtected } = authRoutes.login;
@@ -63,4 +68,4 @@ const authApi = api.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetUserQuery } = authApi;

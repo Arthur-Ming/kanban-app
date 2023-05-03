@@ -48,6 +48,7 @@ const boardsApi = api.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data: populatedBoard } = await queryFulfilled;
+          console.log(populatedBoard);
           if (populatedBoard) {
             const { tasks, columns, board, files } = populatedBoard;
             dispatch(addFiles(files));

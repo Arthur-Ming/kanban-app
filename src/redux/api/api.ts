@@ -64,7 +64,7 @@ export const taskRoutes = {
   },
 };
 
-export const userRoutes = {
+/* export const userRoutes = {
   base: `${BASE_URL}/${resource.boards}`,
   users: {
     getUrl: () => `${BASE_URL}/${resource.users}`,
@@ -74,15 +74,19 @@ export const userRoutes = {
     getUrl: (userId = ':userId') => `${userRoutes.users.getUrl()}/${userId}`,
     isProtected: true,
   },
-};
+}; */
 
 export const authRoutes = {
+  user: {
+    getUrl: () => `${BASE_URL}/auth/user`,
+    isProtected: true,
+  },
   register: {
-    getUrl: () => `${BASE_URL}/register`,
+    getUrl: () => `${BASE_URL}/auth/register`,
     isProtected: false,
   },
   login: {
-    getUrl: () => `${BASE_URL}/login`,
+    getUrl: () => `${BASE_URL}/auth/login`,
     isProtected: false,
   },
 };

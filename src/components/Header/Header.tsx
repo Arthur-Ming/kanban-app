@@ -2,11 +2,10 @@ import AuthLink from './AuthLink';
 import styles from './index.module.scss';
 import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
-import { useSelector } from 'react-redux';
-import { loggedUserSelector } from 'redux/selectors/session';
+import { useGetUserQuery } from 'redux/api/auth';
 
 const Header = () => {
-  const loggedUser = useSelector(loggedUserSelector);
+  const { data: loggedUser } = useGetUserQuery();
   return (
     <header className={styles.root}>
       <div className={styles.box}>

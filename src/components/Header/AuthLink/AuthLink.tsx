@@ -4,7 +4,7 @@ import styles from './index.module.scss';
 import { ISession } from 'interfaces';
 
 type Props = {
-  loggedUser: ISession | null;
+  loggedUser?: ISession;
 };
 
 const AuthLink = ({ loggedUser }: Props) => {

@@ -5,9 +5,12 @@ export const separateBoard = (populatedBoard: IPopulatedBoard) => {
 
   const tasks: ITask[] = populatedTasks.map((task) => ({
     ...task,
-    files: task.files.map(({ id }) => id),
+    files: task?.files ? task.files.map(({ id }) => id) : [],
   }));
-  const files: IFile[] = populatedTasks.map((task) => task.files).flat();
+  const files: IFile[] = populatedTasks
+    .map((task) => task.files)
+    .flat()
+    .filter((file) => file !== undefined);
 
   const columns: IColumn[] = populatedBoard.columns.map(({ id, title, boardId, tasks }) => ({
     id,
