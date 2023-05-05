@@ -17,7 +17,7 @@ const Task = () => {
         <div className={styles.close} onClick={onCloseClick}>
           <CloseIcon className={styles['close-icon']} />
         </div>
-        <TaskContent taskId={taskId} />
+        <TaskContent taskId={taskId} boardId={boardId} />
       </div>
     </Modal>
   );

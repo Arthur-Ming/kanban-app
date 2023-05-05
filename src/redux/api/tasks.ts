@@ -33,10 +33,17 @@ const tasksApi = api.injectEndpoints({
           isProtected,
         });
       },
-      async onQueryStarted(task, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ task, body }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          boardsApi.util.updateQueryData('loadBoardById', task.boardId, (draft) => {
+            Object.assign(draft.tasks[task.id], body);
+          })
+        );
         try {
-          const { data } = await queryFulfilled;
-        } catch (error) {}
+          await queryFulfilled;
+        } catch (error) {
+          patchResult.undo();
+        }
       },
     }),
     deleteTask: builder.mutation({
