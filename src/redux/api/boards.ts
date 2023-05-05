@@ -1,13 +1,4 @@
 import { api, httpClient, boardRoutes, columnRoutes } from './api';
-import {
-  addBoard,
-  addBoards,
-  updateColumnsOrder,
-  deleteBoard,
-  updateBoard,
-} from 'redux/reducer/boards';
-import { addColumns } from 'redux/reducer/columns';
-import { addTasks } from 'redux/reducer/tasks';
 import { separateBoard } from 'utils/separateBoard';
 import { IBoard, IColumn, ICreateBoardBody, IFile, IPopulatedBoard, ITask } from '../../interfaces';
 
@@ -21,23 +12,18 @@ export class FetchError extends Error {
   }
 }
 
-const boardsApi = api.injectEndpoints({
+export const boardsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    loadBoards: builder.query<IBoard[], null>({
+    loadBoards: builder.query<IBoard[], void>({
       query: () => {
         const { getUrl, isProtected } = boardRoutes.boards;
         return httpClient.get({ url: getUrl(), isProtected });
       },
-
-      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          if (data) dispatch(addBoards(data));
-        } catch (error) {}
-      },
+      providesTags: ['Boards'],
     }),
+
     loadBoardById: builder.query<
-      { files: IFile[]; tasks: ITask[]; columns: IColumn[]; board: IBoard },
+      { tasks: { [key: string]: ITask }; columns: { [key: string]: IColumn }; board: IBoard },
       string
     >({
       query: (boardId) => {
@@ -46,20 +32,13 @@ const boardsApi = api.injectEndpoints({
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
-          const { data: populatedBoard } = await queryFulfilled;
-          console.log(populatedBoard);
-          if (populatedBoard) {
-            const { tasks, columns, board, files } = populatedBoard;
-
-            dispatch(addTasks(tasks));
-            dispatch(addColumns(columns));
-            dispatch(addBoard(board));
-          }
+          await queryFulfilled;
         } catch (error) {}
       },
 
       transformResponse: (response: IPopulatedBoard) => separateBoard(response),
     }),
+
     createBoard: builder.mutation<IBoard, ICreateBoardBody>({
       query: (body) => {
         const { getUrl, isProtected } = boardRoutes.boards;
@@ -68,25 +47,36 @@ const boardsApi = api.injectEndpoints({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(addBoard(data));
+          dispatch(
+            boardsApi.util.updateQueryData('loadBoards', undefined, (draft) => {
+              draft.push(data);
+            })
+          );
         } catch (error) {}
       },
     }),
+
     updateBoard: builder.mutation({
       query: ({ board, body }) => {
         const { getUrl, isProtected } = boardRoutes.boardById;
         return httpClient.put({ url: getUrl(board.id), body, isProtected });
       },
+      invalidatesTags: ['Boards'],
       async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
-        dispatch(updateBoard(Object.assign({}, board, body)));
+        const patchResult = dispatch(
+          boardsApi.util.updateQueryData('loadBoardById', board.id, (draft) => {
+            Object.assign(draft.board, body);
+          })
+        );
         try {
           await queryFulfilled;
         } catch (err) {
-          dispatch(updateBoard(board));
+          patchResult.undo();
         }
       },
     }),
-    deleteBoard: builder.mutation({
+
+    removeBoard: builder.mutation({
       query: (board) => {
         const { getUrl, isProtected } = boardRoutes.boardById;
         return httpClient.delete({ url: getUrl(board.id), isProtected });
@@ -94,10 +84,16 @@ const boardsApi = api.injectEndpoints({
       async onQueryStarted(board, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          dispatch(deleteBoard(board));
+          dispatch(
+            boardsApi.util.updateQueryData('loadBoards', undefined, (draft) => {
+              const index = draft.findIndex(({ id }) => id === board.id);
+              index !== -1 && draft.splice(index, 1);
+            })
+          );
         } catch (error) {}
       },
     }),
+
     columnsOrder: builder.mutation({
       query: ({ board, body }) => {
         const { getUrl, isProtected } = columnRoutes.order;
@@ -112,12 +108,6 @@ const boardsApi = api.injectEndpoints({
         newColumns.splice(body.source.index, 1);
         newColumns.splice(body.destination.index, 0, body.columnId);
 
-        dispatch(
-          updateColumnsOrder({
-            boardId: board.id,
-            newOrderedColumns: newColumns,
-          })
-        );
         try {
           await queryFulfilled;
         } catch (error) {}
@@ -129,10 +119,9 @@ const boardsApi = api.injectEndpoints({
 
 export const {
   useLoadBoardsQuery,
-  useLazyLoadBoardsQuery,
-  useDeleteBoardMutation,
+  useLoadBoardByIdQuery,
   useCreateBoardMutation,
   useUpdateBoardMutation,
-  useLoadBoardByIdQuery,
+  useRemoveBoardMutation,
   useColumnsOrderMutation,
 } = boardsApi;

@@ -181,6 +181,7 @@ export const api = createApi({
   baseQuery: fetchQuery({
     baseUrl: '',
   }),
+  tagTypes: ['Boards'],
   endpoints: () => ({}),
-  keepUnusedDataFor: 0,
+  keepUnusedDataFor: 20,
 });

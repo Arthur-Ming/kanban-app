@@ -1,32 +1,31 @@
-import { ITask, TaskId } from 'interfaces';
+import { TaskId } from 'interfaces';
 import styles from './index.module.scss';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { taskByIdSelector } from 'redux/selectors/tasks';
-import { RootState } from 'redux/reducer';
 import TaskRemoval from 'pages/Board/TaskRemoval';
+import { useLoadBoardByIdQuery } from 'redux/api/boards';
+import { memo } from 'react';
 
-type StateProps = {
-  task: ITask;
-};
-
-type OwnProps = {
+type Props = {
   taskId: TaskId;
+  boardId: string;
 };
 
-type Props = StateProps & OwnProps;
+const TaskTicket = ({ taskId, boardId }: Props) => {
+  const { task } = useLoadBoardByIdQuery(boardId, {
+    selectFromResult: ({ data }) => ({
+      task: data && data.tasks && data.tasks[taskId],
+    }),
+  });
 
-const TaskTicket = ({ task }: Props) => (
-  <div className={styles.box}>
-    <Link to={`columns/${task.columnId}/tasks/${task.id}`} className={styles.link}>
-      {task?.title}
-    </Link>
-    <TaskRemoval task={task} />
-  </div>
-);
+  if (!task) return <div>!!!!</div>;
+  return (
+    <div className={styles.box}>
+      <Link to={`columns/${task.columnId}/tasks/${task.id}`} className={styles.link}>
+        {task?.title}
+      </Link>
+      <TaskRemoval task={task} />
+    </div>
+  );
+};
 
-const mapStateToProps = (state: RootState, props: OwnProps) => ({
-  task: taskByIdSelector(state, props),
-});
-
-export default connect(mapStateToProps)(TaskTicket);
+export default memo(TaskTicket);

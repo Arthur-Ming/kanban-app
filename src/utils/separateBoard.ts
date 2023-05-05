@@ -1,4 +1,5 @@
 import { IBoard, IColumn, IFile, IPopulatedBoard, IPopulatedTask, ITask } from 'interfaces';
+import { arrToMap } from './arrToMap';
 
 export const separateBoard = (populatedBoard: IPopulatedBoard) => {
   const populatedTasks: IPopulatedTask[] = populatedBoard.columns.map(({ tasks }) => tasks).flat();
@@ -7,28 +8,20 @@ export const separateBoard = (populatedBoard: IPopulatedBoard) => {
     ...task,
     files: task?.files ? task.files.map(({ id }) => id) : [],
   }));
-  const files: IFile[] = populatedTasks
-    .map((task) => task.files)
-    .flat()
-    .filter((file) => file !== undefined);
 
-  const columns: IColumn[] = populatedBoard.columns.map(({ id, title, boardId, tasks }) => ({
-    id,
-    title,
-    boardId,
+  const columns: IColumn[] = populatedBoard.columns.map(({ tasks, ...rest }) => ({
+    ...rest,
     tasks: tasks.map(({ id }) => id),
   }));
-  const { id, title, description } = populatedBoard;
+
   const board: IBoard = {
-    id,
-    title,
-    description,
+    ...populatedBoard,
     columns: populatedBoard.columns.map(({ id }) => id),
   };
+
   return {
-    tasks,
-    columns,
+    tasks: arrToMap(tasks),
+    columns: arrToMap(columns),
     board,
-    files,
   };
 };

@@ -1,14 +1,11 @@
 import { IFetchError } from 'interfaces';
 import { FallbackProps } from 'react-error-boundary';
-import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import { toast } from 'react-toastify';
-import { logout } from 'redux/reducer/session';
-import { loggedUserSelector } from 'redux/selectors/session';
 
 const PageErrorFallback = ({ error }: FallbackProps) => {
-  const loggedUser = useSelector(loggedUserSelector);
-  const dispatch = useDispatch();
+  /*   const loggedUser = useSelector(loggedUserSelector); */
+  /* const dispatch = useDispatch(); */
 
   const errorStatus = (error as unknown as IFetchError)?.status;
 
@@ -16,7 +13,7 @@ const PageErrorFallback = ({ error }: FallbackProps) => {
     toast('you need to log in!', {
       toastId: errorStatus,
     });
-    loggedUser && dispatch(logout());
+    /*  loggedUser && dispatch(logout()); */
 
     return <Navigate to={`/login`} />;
   }

@@ -1,32 +1,31 @@
 import TaskCreation from 'pages/Board/TaskCreation';
 import styles from './index.module.scss';
-import { ColumnId, IColumn } from 'interfaces';
 import TaskTickets from '../../TaskTickets';
 import ColumnHeader from './ColumnHeader';
-import { connect } from 'react-redux';
-import { RootState } from 'redux/reducer';
-import { columnByIdSelector } from 'redux/selectors/columns';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
 import { Droppable } from 'react-beautiful-dnd';
 import cl from 'classnames';
+import { useLoadBoardByIdQuery } from 'redux/api/boards';
+import { memo } from 'react';
 
 export const DragItemsType = {
   TASKS: 'tasks',
   COLUMN: 'column',
 };
 
-type StateProps = {
-  column?: IColumn;
+type Props = {
+  columnId: string;
+  boardId: string;
 };
 
-type OwnProps = {
-  columnId: ColumnId;
-};
-
-type Props = StateProps & OwnProps;
-
-const Column = ({ column }: Props) => {
+const Column = ({ columnId, boardId }: Props) => {
+  const { column } = useLoadBoardByIdQuery(boardId, {
+    selectFromResult: ({ data }) => ({
+      column: data && data.columns && data.columns[columnId],
+    }),
+  });
+  console.log(`column ${columnId}`);
   if (!column) return <div>No data</div>;
 
   return (
@@ -40,7 +39,7 @@ const Column = ({ column }: Props) => {
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <ul className={styles.list}>
-              <TaskTickets tasks={column.tasks} />
+              <TaskTickets taskIds={column.tasks} boardId={column.boardId} />
               {provided.placeholder}
             </ul>
           </div>
@@ -63,8 +62,4 @@ const Column = ({ column }: Props) => {
   );
 };
 
-const mapStateToProps = (state: RootState, props: OwnProps) => ({
-  column: columnByIdSelector(state, props),
-});
-
-export default connect(mapStateToProps)(Column);
+export default memo(Column);

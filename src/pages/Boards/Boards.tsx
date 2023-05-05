@@ -10,7 +10,7 @@ import { routes } from 'utils/routes';
 import PageErrorFallback from 'components/PageErrorFallback';
 
 const Boards = () => {
-  const { isLoading, isError, error } = useLoadBoardsQuery(null);
+  const { data: boards, isLoading, isError, error } = useLoadBoardsQuery();
 
   if (isError) throw error;
   if (isLoading) return <Loader />;
@@ -18,7 +18,7 @@ const Boards = () => {
   return (
     <main className={styles.root}>
       <div className={styles.box}>
-        <BoardTickets />
+        {boards && <BoardTickets boards={boards} />}
         <div className={styles.creation}>
           <Routes>
             <Route

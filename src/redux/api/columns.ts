@@ -1,10 +1,5 @@
 import { api, httpClient, columnRoutes, taskRoutes } from './api';
-import { addRefToColumn, deleteRefToColumn } from 'redux/reducer/boards';
-import { addColumn, deleteColumn, updateColumn, updateTasksOrder } from 'redux/reducer/columns';
-import { RootState } from 'redux/store';
-import { columnByIdSelector } from 'redux/selectors/columns';
-import { updateTask } from 'redux/reducer/tasks';
-import { taskByIdSelector } from 'redux/selectors/tasks';
+import { boardsApi } from './boards';
 
 const columnsApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,10 +8,16 @@ const columnsApi = api.injectEndpoints({
         const { getUrl, isProtected } = columnRoutes.columns;
         return httpClient.post({ url: getUrl(board.id), body, isProtected });
       },
-      async onQueryStarted(column, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(addRefToColumn(data));
-        dispatch(addColumn(data));
+      async onQueryStarted({ board }, { dispatch, queryFulfilled }) {
+        try {
+          const { data: createdColumn } = await queryFulfilled;
+          dispatch(
+            boardsApi.util.updateQueryData('loadBoardById', board.id, (draft) => {
+              draft.columns[createdColumn.id] = createdColumn;
+              draft.board?.columns.push(createdColumn.id);
+            })
+          );
+        } catch (error) {}
       },
     }),
     updateColumn: builder.mutation({
@@ -29,11 +30,15 @@ const columnsApi = api.injectEndpoints({
         });
       },
       async onQueryStarted({ column, body }, { dispatch, queryFulfilled }) {
-        dispatch(updateColumn(Object.assign({}, column, body)));
+        const patchResult = dispatch(
+          boardsApi.util.updateQueryData('loadBoardById', column.boardId, (draft) => {
+            Object.assign(draft.columns[column.id], body);
+          })
+        );
         try {
           await queryFulfilled;
         } catch (error) {
-          dispatch(updateColumn(column));
+          patchResult.undo();
         }
       },
     }),
@@ -48,8 +53,14 @@ const columnsApi = api.injectEndpoints({
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          dispatch(deleteRefToColumn(column));
-          dispatch(deleteColumn(column));
+          dispatch(
+            boardsApi.util.updateQueryData('loadBoardById', column.boardId, (draft) => {
+              draft.board.columns = draft.board.columns.filter(
+                (columnId) => columnId !== column.id
+              );
+              delete draft.columns[column.id];
+            })
+          );
         } catch (error) {}
       },
     }),
@@ -61,56 +72,6 @@ const columnsApi = api.injectEndpoints({
           body,
           isProtected,
         });
-      },
-      async onQueryStarted({ boardId, columnId, body }, { dispatch, getState, queryFulfilled }) {
-        const state = <RootState>getState();
-        const { source, destination, taskId } = body;
-        if (columnId === destination.columnId) {
-          const column = columnByIdSelector(state, { columnId });
-
-          const newTasks = [...column.tasks];
-          newTasks.splice(source.index, 1);
-          newTasks.splice(destination.index, 0, taskId);
-
-          dispatch(
-            updateTasksOrder({
-              columnId,
-              newOrderedTasks: newTasks,
-            })
-          );
-        }
-        if (columnId !== destination.columnId) {
-          const columnFrom = columnByIdSelector(state, { columnId });
-          const columnTo = columnByIdSelector(state, { columnId: destination.columnId });
-
-          const draggableTask = taskByIdSelector(state, { taskId });
-
-          const newTasksFrom = [...columnFrom.tasks];
-          newTasksFrom.splice(source.index, 1);
-
-          const newTasksTo = [...columnTo.tasks];
-          newTasksTo.splice(destination.index, 0, taskId);
-
-          dispatch(
-            updateTasksOrder({
-              columnId,
-              newOrderedTasks: newTasksFrom,
-            })
-          );
-          dispatch(
-            updateTasksOrder({
-              columnId: destination.columnId,
-              newOrderedTasks: newTasksTo,
-            })
-          );
-          dispatch(updateTask({ ...draggableTask, columnId: destination.columnId }));
-        }
-        try {
-          const { data } = await queryFulfilled;
-          console.log(data);
-        } catch (error) {
-          console.log(error);
-        }
       },
     }),
   }),

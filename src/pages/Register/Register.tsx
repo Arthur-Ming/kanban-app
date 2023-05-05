@@ -3,15 +3,13 @@ import RegisterForm from './RegisterForm';
 import styles from './index.module.scss';
 import { Navigate, NavLink } from 'react-router-dom';
 import AuthLayout from 'components/AuthLayout';
-import { useSelector } from 'react-redux';
-import { loggedUserSelector } from 'redux/selectors/session';
 import SpinnerLoader from 'components/SpinnerLoader';
 import { useEffect, useState } from 'react';
 import { IFetchError, IUserRegisterBody } from 'interfaces';
 import { toast } from 'react-toastify';
 
 const Register = () => {
-  const loggedUser = useSelector(loggedUserSelector);
+  const loggedUser = false;
   const [registerBody, setRegisterBody] = useState<IUserRegisterBody | undefined>();
 
   const [

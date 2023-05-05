@@ -7,10 +7,9 @@ import styles from './index.module.scss';
 import AuthLayout from 'components/AuthLayout';
 import SpinnerLoader from 'components/SpinnerLoader';
 import { useSelector } from 'react-redux';
-import { loggedUserSelector } from 'redux/selectors/session';
 
 const Login = () => {
-  const loggedUser = useSelector(loggedUserSelector);
+  const loggedUser = false;
   const [loginUser, { isLoading, isSuccess, isError, error }] = useLoginMutation();
   const navigate = useNavigate();
 

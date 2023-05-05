@@ -1,7 +1,4 @@
 import { IBoard } from 'interfaces';
-import { connect } from 'react-redux';
-import { RootState } from 'redux/reducer';
-import { boardsListSelector } from 'redux/selectors/boards';
 import BoardTicket from './BoardTicket';
 
 interface Props {
@@ -16,8 +13,4 @@ const BoardTickets = ({ boards }: Props) => (
   </>
 );
 
-const mapStateToProps = (state: RootState) => ({
-  boards: boardsListSelector(state),
-});
-
-export default connect(mapStateToProps)(BoardTickets);
+export default BoardTickets;

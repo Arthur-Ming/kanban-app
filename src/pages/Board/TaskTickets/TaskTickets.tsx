@@ -3,16 +3,17 @@ import { TaskId } from 'interfaces';
 import { Draggable } from 'react-beautiful-dnd';
 
 type Props = {
-  tasks: TaskId[];
+  taskIds: TaskId[];
+  boardId: string;
 };
 
-const TaskTicketList = ({ tasks }: Props) => (
+const TaskTicketList = ({ taskIds, boardId }: Props) => (
   <>
-    {tasks.map((taskId: string, index) => (
+    {taskIds.map((taskId, index) => (
       <Draggable key={taskId} draggableId={taskId} index={index}>
         {(provided) => (
           <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-            <TaskTicket key={taskId} taskId={taskId} />
+            <TaskTicket key={taskId} taskId={taskId} boardId={boardId} />
           </li>
         )}
       </Draggable>

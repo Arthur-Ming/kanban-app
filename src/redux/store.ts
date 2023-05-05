@@ -1,9 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import reducer from './reducer';
 import { api } from './api/api';
-
 import { isRejectedWithValue } from '@reduxjs/toolkit';
 import type { MiddlewareAPI, Middleware } from '@reduxjs/toolkit';
+import reducer from './reducer';
 
 /**
  * Log a warning and show a toast!

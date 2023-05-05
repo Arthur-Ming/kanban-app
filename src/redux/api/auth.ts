@@ -1,7 +1,6 @@
 import { api, authRoutes, httpClient } from './api';
 import Cookies from 'js-cookie';
 import { IUser, IUserLoginBody } from 'interfaces';
-import { login } from 'redux/reducer/session';
 
 class AppError extends Error {
   status: number | undefined;
@@ -42,12 +41,6 @@ const authApi = api.injectEndpoints({
           Cookies.set('userId', id, {
             expires: tokenExpire,
           });
-          dispatch(
-            login({
-              name: name,
-              email: email,
-            })
-          );
         } catch (error) {}
       },
     }),

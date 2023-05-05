@@ -1,6 +1,6 @@
 import Removal from 'components/Removal';
 import { IBoard, IFetchError } from 'interfaces';
-import { useDeleteBoardMutation } from 'redux/api/boards';
+import { useRemoveBoardMutation } from 'redux/api/boards';
 import { toast } from 'react-toastify';
 import styles from './index.module.scss';
 
@@ -11,7 +11,7 @@ type OwnProps = {
 type Props = OwnProps;
 
 const BoardRemoval = ({ board }: Props) => {
-  const [remove, { isLoading, isError, error }] = useDeleteBoardMutation();
+  const [remove, { isLoading, isError, error }] = useRemoveBoardMutation();
   if (isError) {
     const errorStatus = (error as unknown as IFetchError)?.status;
     if (errorStatus === 401 || errorStatus === 403) {

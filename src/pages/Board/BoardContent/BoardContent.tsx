@@ -2,34 +2,33 @@ import styles from './index.module.scss';
 import Columns from '../Columns';
 import { IBoard } from 'interfaces';
 import ColumnCreation from '../ColumnCreation';
-import { connect } from 'react-redux';
-import { RootState } from 'redux/reducer';
 import { Route, Routes } from 'react-router';
 import CreationTicket from 'components/CreationTicket';
 import BoardHeader from './BoardHeader';
-import { boardByIdSelector } from 'redux/selectors/boards';
 import { Droppable, DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { useColumnsOrderMutation } from 'redux/api/boards';
+import { useColumnsOrderMutation, useLoadBoardByIdQuery } from 'redux/api/boards';
 import { useTasksOrderMutation } from 'redux/api/columns';
-
-type OwnProps = {
-  boardId: string;
-};
-
-type StateProps = {
-  board?: IBoard;
-};
+import { memo } from 'react';
 
 export const DragItemsType = {
   TASK_CARD: 'task_card',
   COLUMNS: 'columns',
 };
 
-type Props = OwnProps & StateProps;
+type Props = {
+  boardId: string;
+};
 
-const BoardContent = ({ board }: Props) => {
+const BoardContent = ({ boardId }: Props) => {
   const [columnsOrderChange] = useColumnsOrderMutation();
   const [tasksOrderChange] = useTasksOrderMutation();
+  const { board } = useLoadBoardByIdQuery(boardId, {
+    selectFromResult: ({ data }) => ({
+      board: data?.board,
+    }),
+  });
+  console.log('board');
+  if (!board) return <div>!!!</div>;
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -38,10 +37,6 @@ const BoardContent = ({ board }: Props) => {
       return;
     }
     if (Number(destination.droppableId) === source.index && destination.index === source.index) {
-      return;
-    }
-
-    if (!board?.columns) {
       return;
     }
 
@@ -89,7 +84,7 @@ const BoardContent = ({ board }: Props) => {
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 <ul className={styles.columns}>
-                  <Columns columnIds={board.columns} />
+                  <Columns columnIds={board.columns} boardId={board.id} />
                   {provided.placeholder}
                 </ul>
               </div>
@@ -110,8 +105,4 @@ const BoardContent = ({ board }: Props) => {
   );
 };
 
-const mapStateToProps = (state: RootState, props: OwnProps) => ({
-  board: boardByIdSelector(state, props),
-});
-
-export default connect(mapStateToProps)(BoardContent);
+export default memo(BoardContent);

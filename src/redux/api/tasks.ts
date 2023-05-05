@@ -1,6 +1,5 @@
 import { api, httpClient, taskRoutes } from './api';
-import { addRefToTask, deleteRefToTask } from 'redux/reducer/columns';
-import { addTask, updateTask, deleteTask } from 'redux/reducer/tasks';
+import { boardsApi } from './boards';
 
 const tasksApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,9 +13,15 @@ const tasksApi = api.injectEndpoints({
         });
       },
       async onQueryStarted(column, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        dispatch(addRefToTask(data));
-        dispatch(addTask(data));
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            boardsApi.util.updateQueryData('loadBoardById', data.boardId, (draft) => {
+              draft.tasks[data.id] = data;
+              draft.columns[data.columnId]?.tasks.push(data.id);
+            })
+          );
+        } catch (error) {}
       },
     }),
     updateTask: builder.mutation({
@@ -31,7 +36,6 @@ const tasksApi = api.injectEndpoints({
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(updateTask(data));
         } catch (error) {}
       },
     }),
@@ -46,11 +50,15 @@ const tasksApi = api.injectEndpoints({
       async onQueryStarted(task, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          dispatch(deleteRefToTask(task));
-          dispatch(deleteTask(task));
-        } catch (error) {
-          console.log(error);
-        }
+          dispatch(
+            boardsApi.util.updateQueryData('loadBoardById', task.boardId, (draft) => {
+              draft.columns[task.columnId].tasks = draft.columns[task.columnId].tasks.filter(
+                (taskId) => taskId !== task.id
+              );
+              delete draft.tasks[task.id];
+            })
+          );
+        } catch (error) {}
       },
     }),
   }),
