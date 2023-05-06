@@ -1,15 +1,16 @@
-import { FileId } from 'interfaces';
+import { FileId, ITask } from 'interfaces';
 import TaskFile from './TaskFile/TaskFile';
 import styles from './index.module.scss';
 
 type Props = {
-  fileIds: string[];
+  files: string[];
+  task: ITask;
 };
 
-const TaskFiles = ({ fileIds }: Props) => (
+const TaskFiles = ({ files, task }: Props) => (
   <div className={styles.box}>
-    {fileIds.map((fileId) => (
-      <TaskFile key={fileId} file={fileId} />
+    {files.map((file) => (
+      <TaskFile key={file} file={file} task={task} />
     ))}
   </div>
 );

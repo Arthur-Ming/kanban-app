@@ -1,4 +1,4 @@
-import { FileId, IFile } from 'interfaces';
+import { FileId, IFile, ITask } from 'interfaces';
 import { connect } from 'react-redux';
 import { useDeleteFileMutation } from 'redux/api/files';
 import { RootState } from 'redux/reducer';
@@ -15,9 +15,10 @@ type StateProps = {
 
 type Props = {
   file: string;
+  task: ITask;
 };
 
-const TaskFile = ({ file }: Props) => {
+const TaskFile = ({ file, task }: Props) => {
   const [remove] = useDeleteFileMutation();
   return (
     <div>
@@ -28,7 +29,7 @@ const TaskFile = ({ file }: Props) => {
         style={{ backgroundImage: `url(${buildPathToFile(file)})` }}
         rel="noreferrer"
       ></a>
-      <button onClick={() => remove(file)}>delete</button>
+      <button onClick={() => remove({ file, task })}>delete</button>
     </div>
   );
 };

@@ -44,11 +44,11 @@ export interface ITaskBase {
 }
 
 export interface IPopulatedTask extends ITaskBase {
-  files: IFile[];
+  files: string[];
 }
 
 export interface ITask extends ITaskBase {
-  files: FileId[];
+  files: string[];
 }
 
 interface ILANG {

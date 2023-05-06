@@ -32,7 +32,8 @@ export const boardsApi = api.injectEndpoints({
       },
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
-          await queryFulfilled;
+          const data = await queryFulfilled;
+          console.log(data);
         } catch (error) {}
       },
 

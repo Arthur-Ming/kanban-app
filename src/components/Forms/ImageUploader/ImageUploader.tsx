@@ -23,12 +23,19 @@ const ImageUploader = ({ task }: Props) => {
           className={styles.file_input}
           type="file"
           accept="image/*"
+          multiple
           {...register('image')}
           onChange={(e) => {
             if (e.target.files) {
-              const file = e.target.files[0];
+              /*  const file = e.target.files[0];
               const data = new FormData();
               data.append('files', file);
+              upload({ task, file: data }); */
+              const files = e.target.files;
+              const data = new FormData();
+              Array.from(files).forEach((file) => {
+                data.append('files', file);
+              });
               upload({ task, file: data });
             }
           }}

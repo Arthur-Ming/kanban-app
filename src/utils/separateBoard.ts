@@ -2,12 +2,7 @@ import { IBoard, IColumn, IFile, IPopulatedBoard, IPopulatedTask, ITask } from '
 import { arrToMap } from './arrToMap';
 
 export const separateBoard = (populatedBoard: IPopulatedBoard) => {
-  const populatedTasks: IPopulatedTask[] = populatedBoard.columns.map(({ tasks }) => tasks).flat();
-
-  const tasks: ITask[] = populatedTasks.map((task) => ({
-    ...task,
-    files: task?.files ? task.files.map(({ id }) => id) : [],
-  }));
+  const tasks: IPopulatedTask[] = populatedBoard.columns.map(({ tasks }) => tasks).flat();
 
   const columns: IColumn[] = populatedBoard.columns.map(({ tasks, ...rest }) => ({
     ...rest,
