@@ -7,7 +7,7 @@ import CreationTicket from 'components/CreationTicket';
 import BoardHeader from './BoardHeader';
 import { Droppable, DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { useColumnsOrderMutation, useLoadBoardByIdQuery } from 'redux/api/boards';
-import { useTasksOrderMutation } from 'redux/api/columns';
+import { useTasksOrderMutation } from 'redux/api/boards';
 import { memo } from 'react';
 
 export const DragItemsType = {
@@ -46,30 +46,30 @@ const BoardContent = ({ boardId }: Props) => {
 
     if (type === 'tasks') {
       tasksOrderChange({
-        boardId: board.id,
-        columnId: source.droppableId,
+        boardId: board.id, //del
         body: {
           source: {
             index: source.index,
+            columnId: source.droppableId,
           },
           destination: {
             index: destination.index,
             columnId: destination.droppableId,
           },
-          taskId: draggableId,
         },
       });
     }
 
     if (type === 'columns') {
       columnsOrderChange({
-        board,
+        boardId: board.id,
         body: {
           source: {
             index: source.index,
           },
-          destination: { index: destination.index },
-          columnId: draggableId,
+          destination: {
+            index: destination.index,
+          },
         },
       });
     }

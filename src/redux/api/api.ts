@@ -26,6 +26,11 @@ export const boardRoutes: IRoutes = {
     getUrl: (boardId = ':boardId') => `${boardRoutes.boards.getUrl()}/${boardId}`,
     isProtected: true,
   },
+  columnsOrder: {
+    getUrl: (boardId = ':boardId') =>
+      `${boardRoutes.boardById.getUrl(boardId)}/${resource.columns}/order`,
+    isProtected: true,
+  },
 };
 
 export const columnRoutes = {
@@ -37,11 +42,6 @@ export const columnRoutes = {
   columnById: {
     getUrl: (boardId = ':boardId', columnId = ':columnId') =>
       `${columnRoutes.columns.getUrl(boardId)}/${columnId}`,
-    isProtected: true,
-  },
-  order: {
-    getUrl: (boardId = ':boardId') =>
-      `${boardRoutes.boardById.getUrl(boardId)}/${resource.columns}/order`,
     isProtected: true,
   },
 };
@@ -58,8 +58,8 @@ export const taskRoutes = {
     isProtected: true,
   },
   order: {
-    getUrl: (boardId = ':boardId', columnId = ':columnId') =>
-      `${columnRoutes.columnById.getUrl(boardId, columnId)}/${resource.tasks}/order`,
+    getUrl: (boardId = ':boardId') =>
+      `${boardRoutes.boardById.getUrl(boardId)}/${resource.tasks}/order`,
     isProtected: true,
   },
 };

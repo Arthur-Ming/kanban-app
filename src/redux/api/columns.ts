@@ -64,23 +64,9 @@ const columnsApi = api.injectEndpoints({
         } catch (error) {}
       },
     }),
-    tasksOrder: builder.mutation({
-      query: ({ boardId, columnId, body }) => {
-        const { getUrl, isProtected } = taskRoutes.order;
-        return httpClient.put({
-          url: getUrl(boardId, columnId),
-          body,
-          isProtected,
-        });
-      },
-    }),
   }),
   overrideExisting: false,
 });
 
-export const {
-  useCreateColumnMutation,
-  useDeleteColumnMutation,
-  useUpdateColumnMutation,
-  useTasksOrderMutation,
-} = columnsApi;
+export const { useCreateColumnMutation, useDeleteColumnMutation, useUpdateColumnMutation } =
+  columnsApi;

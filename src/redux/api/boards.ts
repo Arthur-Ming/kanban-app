@@ -1,4 +1,4 @@
-import { api, httpClient, boardRoutes, columnRoutes } from './api';
+import { api, httpClient, boardRoutes, columnRoutes, taskRoutes } from './api';
 import { separateBoard } from 'utils/separateBoard';
 import { IBoard, IColumn, ICreateBoardBody, IFile, IPopulatedBoard, ITask } from '../../interfaces';
 
@@ -96,22 +96,62 @@ export const boardsApi = api.injectEndpoints({
     }),
 
     columnsOrder: builder.mutation({
-      query: ({ board, body }) => {
-        const { getUrl, isProtected } = columnRoutes.order;
+      query: ({ boardId, body }) => {
+        const { getUrl, isProtected } = boardRoutes.columnsOrder;
         return httpClient.put({
-          url: getUrl(board.id),
+          url: getUrl(boardId),
           body,
-          isProtected,
+          isProtected: false, // !!!!
         });
       },
-      async onQueryStarted({ board, body }, { dispatch, queryFulfilled }) {
-        const newColumns = [...board.columns];
-        newColumns.splice(body.source.index, 1);
-        newColumns.splice(body.destination.index, 0, body.columnId);
+      async onQueryStarted({ boardId, body }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          boardsApi.util.updateQueryData('loadBoardById', boardId, (draft) => {
+            const movedColumnId = draft.board.columns[body.source.index];
+            draft.board.columns.splice(body.source.index, 1);
+            draft.board.columns.splice(body.destination.index, 0, movedColumnId);
+          })
+        );
 
         try {
           await queryFulfilled;
-        } catch (error) {}
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
+    }),
+    tasksOrder: builder.mutation({
+      query: ({ boardId, body }) => {
+        const { getUrl, isProtected } = taskRoutes.order;
+        console.log(body);
+        return httpClient.put({
+          url: getUrl(boardId),
+          body,
+          isProtected: false, //!!!!
+        });
+      },
+      async onQueryStarted({ boardId, body }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          boardsApi.util.updateQueryData('loadBoardById', boardId, (draft) => {
+            const { source, destination } = body;
+            const movedTaskId = draft.columns[source.columnId].tasks[source.index];
+            if (source.columnId === destination.columnId) {
+              draft.columns[source.columnId].tasks.splice(source.index, 1);
+              draft.columns[source.columnId].tasks.splice(destination.index, 0, movedTaskId);
+            }
+            if (source.columnId !== destination.columnId) {
+              draft.columns[source.columnId].tasks.splice(source.index, 1);
+              draft.columns[destination.columnId].tasks.splice(destination.index, 0, movedTaskId);
+              draft.tasks[movedTaskId].columnId = destination.columnId;
+            }
+          })
+        );
+
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          patchResult.undo();
+        }
       },
     }),
   }),
@@ -125,4 +165,5 @@ export const {
   useUpdateBoardMutation,
   useRemoveBoardMutation,
   useColumnsOrderMutation,
+  useTasksOrderMutation,
 } = boardsApi;
